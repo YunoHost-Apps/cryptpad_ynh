@@ -141,6 +141,7 @@ sudo npm install
 sudo npm install -g bower
 sudo chown -R $app: $final_path
 sudo su -c "cd $final_path && bower install" $app
+popd
 
 #=================================================
 # CONFIGURE SERVER.JS	
