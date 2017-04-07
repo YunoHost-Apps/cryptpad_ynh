@@ -1,0 +1,55 @@
+{
+    "name": "CryptPad",
+    "id": "cryptpad",
+    "packaging_format": 1,
+    "description": {
+        "en": "Encrypted Pad",
+	      "fr": "Créateur de pad crypté."
+    },
+    "url": "https://cryptpad.fr/",
+    "license": "GPLv3",
+    "maintainer": {
+        "name": "frju365",
+        "email": "win10@tutanota.com",
+        "url": "https://github.com/frju365/cryptpad_ynh"
+    },
+    "requirements": {
+        "yunohost": ">> 2.4.0"
+    },
+    "multi_instance": false,
+    "services": [
+        "nginx"
+    ],
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+		            "type": "domain",
+                "ask": {
+                    "en": "Choose a domain name for CryptPad",
+                    "fr": "Choisissez un nom de domaine pour CryptPad"
+                },
+                "example": "example.com"
+            },
+            {
+                "name": "path",
+		            "type": "path",
+                "ask": {
+                    "en": "Choose a path for CryptPad, only / is allowed.",
+                    "fr": "Choisissez un chemin pour CryptPad, seul / est autorisé."
+                },
+                "example": "/",
+                "default": "/"
+            },
+            {
+                "name": "is_public",
+                "type": "boolean",
+                "ask": {
+                    "en": "Is it a public site? ",
+                    "fr": "Est-ce un site publique ? "
+                },
+                "default": true
+            }
+        ]
+    }
+}
