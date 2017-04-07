@@ -8,7 +8,7 @@ Type=simple
 User=__APP__
 Group=__APP__
 WorkingDirectory=_DIRECTORY_
-ExecStart=/usr/bin/node server.js --port _PORT_
+ExecStart=/usr/bin/node server.js
 Restart=always
 Environment=USER=__APP__ HOME=_DIRECTORY_
 
