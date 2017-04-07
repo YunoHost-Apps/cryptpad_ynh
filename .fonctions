@@ -1,0 +1,73 @@
+#!/bin/bash
+
+CHECK_VAR () {	# Vérifie que la variable n'est pas vide.
+# $1 = Variable à vérifier
+# $2 = Texte à afficher en cas d'erreur
+	test -n "$1" || (echo "$2" >&2 && false)
+}
+
+CHECK_PATH () {	# Vérifie la présence du / en début de path. Et son absence à la fin.
+	if [ "${path:0:1}" != "/" ]; then    # Si le premier caractère n'est pas un /
+		path="/$path"    # Ajoute un / en début de path
+	fi
+	if [ "${path:${#path}-1}" == "/" ] && [ ${#path} -gt 1 ]; then    # Si le dernier caractère est un / et que ce n'est pas le seul caractère.
+		path="${path:0:${#path}-1}"	# Supprime le dernier caractère
+	fi
+}
+
+CHECK_DOMAINPATH () {	# Vérifie la disponibilité du path et du domaine.
+	sudo yunohost app checkurl $domain$path -a $app
+}
+
+CHECK_FINALPATH () {	# Vérifie que le dossier de destination n'est pas déjà utilisé.
+	final_path=/var/www/$app
+	if [ -e "$final_path" ]
+	then
+		echo "This path already contains a folder" >&2
+		false
+	fi
+}
+
+# Create a user
+#
+# usage: ynh_mysql_create_user user pwd [host]
+# | arg: user - the user name to create
+# | arg: pwd - the password to identify user by
+ynh_psql_create_user() {
+        sudo su -c "psql" postgres <<< \
+        "CREATE USER ${1} WITH PASSWORD '${2}';"
+}
+
+# Create a database and grant optionnaly privilegies to a user
+#
+# usage: ynh_mysql_create_db db [user [pwd]]
+# | arg: db - the database name to create
+# | arg: user - the user to grant privilegies
+# | arg: pwd - the password to identify user by
+ynh_psql_create_db() {
+    db=$1
+    # grant all privilegies to user
+    if [[ $# -gt 1 ]]; then
+        ynh_psql_create_user ${2} "${3}"
+        sudo su -c "createdb -O ${2} $db" postgres
+    else
+        sudo su -c "createdb $db" postgres
+    fi
+
+}
+
+# Drop a database
+#
+# usage: ynh_mysql_drop_db db
+# | arg: db - the database name to drop
+ynh_psql_drop_db() {
+    sudo su -c "dropdb ${1}" postgres
+}
+
+# Drop a user
+#
+# usage: ynh_mysql_drop_user user
+# | arg: user - the user name to drop
+ynh_psql_drop_user() {
+    sudo su -c "dropuser ${1}" postgres
+}
