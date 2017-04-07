@@ -85,16 +85,16 @@ SETUP_SOURCE	# Télécharge la source, décompresse et copie dans $final_path
 # CREATE A SQL BDD
 #=================================================
 
-pushd $final_path
+#pushd $final_path
 # Setting up the database
-dbname=$app
-dbuser=$app
+#dbname=$app
+#dbuser=$app
 
 # Generate random password
-dbpass=$(ynh_string_random)
+#dbpass=$(ynh_string_random)
 ##### dbpass
-ynh_psql_create_db "$dbname" "$dbuser" "$dbpass"
-popd
+#ynh_psql_create_db "$dbname" "$dbuser" "$dbpass"
+#popd
 
 #=================================================
 # NGINX CONFIGURATION
@@ -136,23 +136,28 @@ script_dir="$PWD"
 pushd "$final_path"
 sudo npm install
 sudo npm install -g bower
-sudo chown -R $app: $final_path/node_modules
-sudo su - $app -c "cd $final_path && bower install"
-cp ../config.js.dist config.js
-
-#=================================================
-# SECURING FILES AND DIRECTORIES
-#=================================================
-
-# Les fichiers appartiennent à etherpad
 sudo chown -R $app: $final_path
-sudo chmod 600 $final_path/credentials.json	# Restreint l'accès à credentials.json
+sudo su -c "cd $final_path && bower install" $app
+
+#=================================================
+# CONFIGURE SERVER.JS	
+#=================================================
+
+sudo mv ../config.js $final_path/config.js
+sudo sed -i "s@__URL__@$path_url@g" $final_path/config.js
+sudo sed -i "s@__PORT__@$port@g" $final_path/config.js
+
+#=================================================
+# INSTALL MODULES FOR CRYPTPAD
+#=================================================
+
+#npm install cryptpad-level-store;
 
 #=================================================
 # SETUP SYSTEMD
 #=================================================
 
-sudo cp ../conf/etherpad.service /etc/systemd/system/$app.service
+sudo cp ../conf/cryptpad.service /etc/systemd/system/$app.service
 sudo chown root: /etc/systemd/system/$app.service
 sudo sed -i "s@__DIRECTORY__@$final_path/@g" /etc/systemd/system/$app.service
 sudo sed -i "s@__APP__@$app@g" /etc/systemd/system/$app.service
