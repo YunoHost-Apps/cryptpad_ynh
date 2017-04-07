@@ -1,0 +1,192 @@
+#!/bin/bash
+
+#=================================================
+# GENERIC STARTING
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source .fonctions
+source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE FAILURE OF THE SCRIPT
+#=================================================
+
+ynh_clean_setup () {
+# Nettoyage des résidus d'installation non pris en charge par le script remove.
+	if test -n "$PID_TAIL"
+	then
+		SUPPRESS_WARNING kill -s 15 $PID_TAIL	# Arrête l'exécution de tail.
+		sudo rm -f "$tempfile"
+	fi
+	echo ""
+}
+ynh_abort_if_errors	# Active trap pour arrêter le script si une erreur est détectée.
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
+
+domain=$YNH_APP_ARG_DOMAIN
+is_public=$YNH_APP_ARG_IS_PUBLIC
+path_url="" # Assure la compatibilité avec les fonctions utilisant $path_url
+
+app=$YNH_APP_INSTANCE_NAME
+
+#=================================================
+# CHECK IF THE APP CAN BE INSTALLED WITH THIS ARGS
+#=================================================
+
+CHECK_USER "$admin"	# Vérifie la validité de l'user admin
+
+if sudo yunohost domain list | grep -q $domain	# Vérifie la liste des domaines
+then	# Si le domaine existe dans Yunohost
+	if sudo yunohost app map | grep -q $domain	# Vérifie la liste des apps par domaine
+	then 	# Si une app est installée sur ce domaine.
+		WARNING echo "An app is already installed on the domain $domain. Mypads needs a whole domain or subdomain to himself."
+	fi
+fi
+
+CHECK_DOMAINPATH	# Vérifie la disponibilité du path et du domaine.
+CHECK_FINALPATH	# Vérifie que le dossier de destination n'est pas déjà utilisé.
+
+#=================================================
+# STORE SETTINGS FROM MANIFEST
+#=================================================
+
+ynh_app_setting_set $app domain $domain
+ynh_app_setting_set $app is_public $is_public
+
+#=================================================
+# STANDARD MODIFICATIONS
+#=================================================
+# FIND AND OPEN A PORT
+#=================================================
+
+port=$(ynh_find_port 3000)	# Cherche un port libre.
+ynh_app_setting_set $app port $port
+
+#=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+
+ynh_install_app_dependencies npm nodejs-legacy
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+
+final_path=/var/www/$app
+ynh_app_setting_set $app final_path $final_path
+SETUP_SOURCE	# Télécharge la source, décompresse et copie dans $final_path
+
+#=================================================
+# CREATE A SQL BDD
+#=================================================
+
+pushd $final_path
+# Setting up the database
+dbname=$app
+dbuser=$app
+
+# Generate random password
+dbpass=$(ynh_string_random)
+##### dbpass
+ynh_psql_create_db "$dbname" "$dbuser" "$dbpass"
+popd
+
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+
+# Et copie le fichier de config nginx
+sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
+# Modifie les variables dans le fichier de configuration nginx
+sudo sed -i "s@__PORT__@$port@g" /etc/nginx/conf.d/$domain.d/$app.conf
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+
+ynh_system_user_create $app	# Créer un utilisateur système dédié à l'app
+
+#=================================================
+# SPECIFIC SETUP
+#=================================================
+# HANDLE LOG FILES AND LOGROTATE
+#=================================================
+
+# Créer le dossier de log
+sudo mkdir -p /var/log/$app
+sudo touch /var/log/$app/cryptpad.log
+install_log=/var/log/$app/installation.log
+sudo touch $install_log
+sudo chown $app -R /var/log/$app
+sudo chown admin -R $install_log
+
+# Configuration de logrotate
+ynh_use_logrotate
+
+#=================================================
+# INSTALL ETHERPAD
+#=================================================
+
+script_dir="$PWD"
+pushd "$final_path"
+sudo npm install
+sudo npm install -g bower
+sudo chown -R $app: $final_path/node_modules
+sudo su - $app -c "cd $final_path && bower install"
+cp ../config.js.dist config.js
+
+#=================================================
+# SECURING FILES AND DIRECTORIES
+#=================================================
+
+# Les fichiers appartiennent à etherpad
+sudo chown -R $app: $final_path
+sudo chmod 600 $final_path/credentials.json	# Restreint l'accès à credentials.json
+
+#=================================================
+# SETUP SYSTEMD
+#=================================================
+
+sudo cp ../conf/etherpad.service /etc/systemd/system/$app.service
+sudo chown root: /etc/systemd/system/$app.service
+sudo sed -i "s@__DIRECTORY__@$final_path/@g" /etc/systemd/system/$app.service
+sudo sed -i "s@__APP__@$app@g" /etc/systemd/system/$app.service
+## Démarrage auto du service
+sudo systemctl enable $app
+
+#=================================================
+# ENABLE SERVICE IN ADMIN PANEL
+#=================================================
+
+# Ajoute le service au monitoring de Yunohost.
+sudo yunohost service add $app --log "/var/log/$app/cryptpad.log"
+
+#=================================================
+# START ETHERPAD IN BACKGROUND
+#=================================================
+
+WARNING echo "Démarrage d'etherpad"
+tempfile="$(mktemp)"
+tail -f -n1 /var/log/$app/etherpad.log > "$tempfile" &	# Suit le démarrage dans le log
+PID_TAIL=$!	# Récupère le PID de la commande tail, qui est passée en arrière plan.
+sudo systemctl start $app	# Démarre etherpad. Le démarrage est fait le plus tôt possible, car il est très long...
+
+#=================================================
+# SETUP SSOWAT
+#=================================================
+
+if [ "$is_public" = 0 ];
+then
+  ynh_app_setting_set "$app" unprotected_uris "/"
+fi
+
+#=================================================
+# RELOAD NGINX
+#=================================================
+
+sudo systemctl reload nginx
