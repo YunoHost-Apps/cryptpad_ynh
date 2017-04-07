@@ -125,10 +125,10 @@ module.exports = {
         For the most up to date solution, use the default storage adaptor.
     */
     storage: './storage/file',
-    {
-    storage: 'cryptpad-level-store',
-    levelPath: './datastore.db',
-    },
+    //{
+    //storage: 'cryptpad-level-store',
+    //levelPath: './datastore.db',
+    //},
     /*
         Cryptpad stores each document in an individual file on your hard drive.
         Specify a directory where files should be stored.
