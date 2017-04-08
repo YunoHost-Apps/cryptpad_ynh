@@ -138,7 +138,7 @@ pushd "$final_path"
 sudo npm install
 sudo npm install -g bower
 sudo chown -R $app: $final_path
-sudo su -c "cd $final_path && bower install" $app
+sudo su $app -c "cd $final_path && bower install"
 popd
 
 #=================================================
