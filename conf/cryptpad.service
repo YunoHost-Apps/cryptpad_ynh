@@ -5,8 +5,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=__APP__
-Group=__APP__
+User=root
 WorkingDirectory=__DIRECTORY__
 ExecStart=/usr/bin/node server.js
 Restart=always
