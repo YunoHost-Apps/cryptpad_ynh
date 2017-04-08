@@ -38,8 +38,6 @@ app=$YNH_APP_INSTANCE_NAME
 # CHECK IF THE APP CAN BE INSTALLED WITH THIS ARGS
 #=================================================
 
-CHECK_USER "$admin"	# Vérifie la validité de l'user admin
-
 if sudo yunohost domain list | grep -q $domain	# Vérifie la liste des domaines
 then	# Si le domaine existe dans Yunohost
 	if sudo yunohost app map | grep -q $domain	# Vérifie la liste des apps par domaine
