@@ -7,10 +7,10 @@ After=network.target
 Type=simple
 User=__APP__
 Group=__APP__
-WorkingDirectory=_DIRECTORY_
+WorkingDirectory=__DIRECTORY__
 ExecStart=/usr/bin/node server.js
 Restart=always
-Environment=USER=__APP__ HOME=_DIRECTORY_
+Environment=USER=__APP__ HOME=__DIRECTORY__
 
 [Install]
 WantedBy=multi-user.target
