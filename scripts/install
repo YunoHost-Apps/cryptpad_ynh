@@ -165,7 +165,7 @@ sudo sed -i "s@__DIRECTORY__@$final_path/@g" /etc/systemd/system/$app.service
 sudo sed -i "s@__APP__@$app@g" /etc/systemd/system/$app.service
 ## Démarrage auto du service
 sudo systemctl enable $app
-sudo systemctl start $app
+
 #=================================================
 # ENABLE SERVICE IN ADMIN PANEL
 #=================================================
@@ -177,10 +177,6 @@ sudo yunohost service add $app --log "/var/log/$app/cryptpad.log"
 # START ETHERPAD IN BACKGROUND
 #=================================================
 
-WARNING echo "Démarrage d'etherpad"
-tempfile="$(mktemp)"
-tail -f -n1 /var/log/$app/cryptpad.log > "$tempfile" &	# Suit le démarrage dans le log
-PID_TAIL=$!	# Récupère le PID de la commande tail, qui est passée en arrière plan.
 sudo systemctl start $app	# Démarre etherpad. Le démarrage est fait le plus tôt possible, car il est très long...
 
 #=================================================
