@@ -145,7 +145,7 @@ popd
 # CONFIGURE SERVER.JS	
 #=================================================
 
-sudo mv ../config.js $final_path/config.js
+sudo mv ../conf/config.js $final_path/config.js
 sudo sed -i "s@__URL__@$path_url@g" $final_path/config.js
 sudo sed -i "s@__PORT__@$port@g" $final_path/config.js
 
