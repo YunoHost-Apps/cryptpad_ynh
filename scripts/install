@@ -165,7 +165,7 @@ sudo sed -i "s@__DIRECTORY__@$final_path/@g" /etc/systemd/system/$app.service
 sudo sed -i "s@__APP__@$app@g" /etc/systemd/system/$app.service
 ## Démarrage auto du service
 sudo systemctl enable $app
-
+sudo systemctl start $app
 #=================================================
 # ENABLE SERVICE IN ADMIN PANEL
 #=================================================
