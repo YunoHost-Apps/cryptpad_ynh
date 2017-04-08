@@ -110,7 +110,7 @@ sudo sed -i "s@__PORT__@$port@g" /etc/nginx/conf.d/$domain.d/$app.conf
 # CREATE DEDICATED USER
 #=================================================
 
-ynh_system_user_create $app	# Créer un utilisateur système dédié à l'app
+sudo useradd -N $app -d	$final_path # Créer un utilisateur système dédié à l'app
 
 #=================================================
 # SPECIFIC SETUP
