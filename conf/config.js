@@ -5,7 +5,7 @@ module.exports = {
 
     // the address you want to bind to, :: means all ipv4 and ipv6 addresses
     // this may not work on all operating systems
-    httpAddress: '__URL__',
+    httpAddress: '::',
 
     // the port on which your httpd will listen
 
