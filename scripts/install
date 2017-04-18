@@ -69,10 +69,8 @@ ynh_app_setting_set $app port $port
 # INSTALL DEPENDENCIES
 #=================================================
 
-sudo cp -a ../conf/cryptpad.list /etc/apt/sources.list.d/
-sudo apt-get update
-ynh_package_install npm nodejs-legacy
-npm -v
+sudo curl -sL https://deb.nodesource.com/setup_7.x | bash -
+sudo apt-get install -yy -qq nodejs
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
