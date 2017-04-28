@@ -103,6 +103,7 @@ SETUP_SOURCE	# Télécharge la source, décompresse et copie dans $final_path
 sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
 # Modifie les variables dans le fichier de configuration nginx
 sudo sed -i "s@__PORT__@$port@g" /etc/nginx/conf.d/$domain.d/$app.conf
+sudo sed -i "s@ROOT_PATH@/var/www/$app@g" /etc/nginx/conf.d/$domain.d/$app.conf
 
 #=================================================
 # CREATE DEDICATED USER
