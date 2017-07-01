@@ -134,10 +134,10 @@ ynh_use_logrotate
 
 script_dir="$PWD"
 pushd "$final_path"
-sudo npm install
-sudo npm install -g bower
 sudo chown -R $app: $final_path
-sudo su $app -c "cd $final_path && bower install chainpad#^0.4.0 -f && bower install -F"
+sudo su $app -c "cd $final_path && npm install"
+sudo npm install -g bower
+sudo su $app -c "cd $final_path && bower install && bower install chainpad#^0.4.0"
 popd
 
 #=================================================
