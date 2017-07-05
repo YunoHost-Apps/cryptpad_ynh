@@ -138,6 +138,7 @@ sudo chown -R $app: $final_path
 sudo su $app -c "cd $final_path && npm install"
 sudo npm install -g bower
 sudo su $app -c "cd $final_path && bower install && bower install chainpad#^0.4.0"
+sudo mv customize.dist customize
 popd
 
 #=================================================
