@@ -66,11 +66,33 @@ port=$(ynh_find_port 3000)	# Cherche un port libre.
 ynh_app_setting_set $app port $port
 
 #=================================================
-# INSTALL DEPENDENCIES
+# INSTALL NODEJS
+#=================================================
+version=8.0.0
+ynh_install_nodejs 8.0.0
+
+#=================================================
+# CREATE DEDICATED USER
 #=================================================
 
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-sudo apt-get install -yy -qq nodejs
+ynh_system_user_create $app /home/$app	# Créer un utilisateur système dédié à l'app
+
+#=================================================
+# SPECIFIC SETUP
+#=================================================
+# HANDLE LOG FILES AND LOGROTATE
+#=================================================
+
+# Créer le dossier de log
+sudo mkdir -p /var/log/$app
+sudo touch /var/log/$app/osjs.log
+install_log=/var/log/$app/installation.log
+sudo touch $install_log
+sudo chown $app -R /var/log/$app
+sudo chown admin -R $install_log
+
+# Configuration de logrotate
+ynh_use_logrotate
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -95,47 +117,41 @@ SETUP_SOURCE	# Télécharge la source, décompresse et copie dans $final_path
 #ynh_psql_create_db "$dbname" "$dbuser" "$dbpass"
 #popd
 
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-
-# Et copie le fichier de config nginx
-sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
-# Modifie les variables dans le fichier de configuration nginx
-sudo sed -i "s@__PORT__@$port@g" /etc/nginx/conf.d/$domain.d/$app.conf
-sudo sed -i "s@ROOT_PATH@/var/www/$app@g" /etc/nginx/conf.d/$domain.d/$app.conf
 
 #=================================================
-# CREATE DEDICATED USER
+# Files owned by root, www-data can just read
 #=================================================
 
-sudo useradd -N $app -d	$final_path # Créer un utilisateur système dédié à l'app
+sudo chown $app: $final_path -R
+sudo chmod 755 $final_path -R
 
 #=================================================
-# SPECIFIC SETUP
-#=================================================
-# HANDLE LOG FILES AND LOGROTATE
+# Modify Nginx configuration file and copy it to Nginx conf directory
 #=================================================
 
-# Créer le dossier de log
-sudo mkdir -p /var/log/$app
-sudo touch /var/log/$app/cryptpad.log
-install_log=/var/log/$app/installation.log
-sudo touch $install_log
-sudo chown $app -R /var/log/$app
-sudo chown admin -R $install_log
+ynh_nginx_config
+nginxconf=/etc/nginx/conf.d/$domain.d/$app.conf
+ynh_replace_string "__PORT__" "$port" "/etc/nginx/conf.d/$domain.d/$app.conf"
+ynh_replace_string "ROOT_PATH" "/var/www/$app" "/etc/nginx/conf.d/$domain.d/$app.conf"
+sudo chown root: $nginxconf
+sudo chmod 600 $nginxconf
+ynh_systemd_config
+ynh_replace_string "__NODEJS__" "$nodejs_use_version" "/etc/systemd/system/$app.service"
+ynh_replace_string "__ENV_PATH__" "$PATH" "/etc/systemd/system/$app.service"
+ynh_replace_string "__NODE__" "$nodejs_path" "/etc/systemd/system/$app.service"
+sudo sed -i "s@__DIRECTORY__@$final_path/@g" /etc/systemd/system/$app.service
+sudo sed -i "s@__APP__@$app@g" /etc/systemd/system/$app.service
 
-# Configuration de logrotate
-ynh_use_logrotate
+cat /etc/systemd/system/$app.service
 
 #=================================================
-# INSTALL ETHERPAD
+# INSTALL CRYPTPAD
 #=================================================
 
 script_dir="$PWD"
 pushd "$final_path"
 sudo chown -R $app: $final_path
-sudo su $app -c "cd $final_path && npm install"
+sudo_path npm install
 sudo npm install -g bower
 sudo su $app -c "cd $final_path && bower install && bower install chainpad#^0.4.0"
 popd
@@ -145,25 +161,14 @@ popd
 #=================================================
 
 sudo mv ../conf/config.js $final_path/config.js
-sudo sed -i "s@__URL__@$path_url@g" $final_path/config.js
-sudo sed -i "s@__PORT__@$port@g" $final_path/config.js
+ynh_replace_string "__URL__" "$path_url" "$final_path/config.js"
+ynh_replace_string "__PORT__" "$port" "$final_path/config.js"
 
 #=================================================
 # INSTALL MODULES FOR CRYPTPAD
 #=================================================
 
 #npm install cryptpad-level-store;
-
-#=================================================
-# SETUP SYSTEMD
-#=================================================
-
-sudo cp ../conf/cryptpad.service /etc/systemd/system/$app.service
-sudo chown root: /etc/systemd/system/$app.service
-sudo sed -i "s@__DIRECTORY__@$final_path/@g" /etc/systemd/system/$app.service
-sudo sed -i "s@__APP__@$app@g" /etc/systemd/system/$app.service
-## Démarrage auto du service
-sudo systemctl enable $app
 
 #=================================================
 # ENABLE SERVICE IN ADMIN PANEL
