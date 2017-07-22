@@ -78,7 +78,8 @@ sudo apt-get install -yy -qq nodejs
 
 final_path=/var/www/$app
 ynh_app_setting_set $app final_path $final_path
-SETUP_SOURCE	# Télécharge la source, décompresse et copie dans $final_path
+# SETUP_SOURCE	# Télécharge la source, décompresse et copie dans $final_path
+sudo git clone https://github.com/xwiki-labs/cryptpad.git $final_path
 
 #=================================================
 # CREATE A SQL BDD
@@ -129,15 +130,18 @@ sudo chown admin -R $install_log
 ynh_use_logrotate
 
 #=================================================
-# INSTALL ETHERPAD
+# INSTALL CRYPTPAD
 #=================================================
 
 script_dir="$PWD"
-pushd "$final_path"
-sudo chown -R $app: $final_path
-sudo su $app -c "cd $final_path && npm install"
-sudo npm install -g bower
-sudo su $app -c "cd $final_path && bower install && bower install chainpad#^0.4.0"
+pushd "${final_path}"
+sudo chown -R $app: "${final_path}"
+#sudo su admin -c "cd $final_path && npm install && npm install bower"
+# sudo npm install -g bower
+# sudo su admin -c "cd $final_path && bower install && bower install chainpad#^0.4.0"
+sudo su $app -c "npm install"
+sudo su $app -c "npm install bower"
+sudo su $app -c "bower install"
 popd
 
 #=================================================

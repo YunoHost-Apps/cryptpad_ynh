@@ -5,7 +5,7 @@ source /usr/share/yunohost/helpers
 
 # Exit on command errors and treat unset variables as an error
 set -u
-set -eu
+
 app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve app settings
@@ -14,13 +14,13 @@ domain=$(ynh_app_setting_get $app domain)
 sudo systemctl stop $app.service
 
 # Remove sources
-sudo rm -rf /var/www/$app
+ynh_secure_remove /var/www/$app
 
 # Remove nginx configuration file
 [[ -n $domain ]] && sudo rm -f /etc/nginx/conf.d/${domain}.d/${app}.conf
 
-# Remove haste user and data
-sudo userdel -r $app
+# Delete system user dedicace for this app
+ynh_system_user_delete $app
 
 # Remove init script
 sudo systemctl disable $app.service
