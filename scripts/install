@@ -42,7 +42,7 @@ if sudo yunohost domain list | grep -q $domain	# Vérifie la liste des domaines
 then	# Si le domaine existe dans Yunohost
 	if sudo yunohost app map | grep -q $domain	# Vérifie la liste des apps par domaine
 	then 	# Si une app est installée sur ce domaine.
-		WARNING echo "An app is already installed on the domain $domain. Mypads needs a whole domain or subdomain to himself."
+		WARNING echo "An app is already installed on the domain $domain. $app needs a whole domain or subdomain to himself."
 	fi
 fi
 
@@ -68,14 +68,13 @@ ynh_app_setting_set $app port $port
 #=================================================
 # INSTALL NODEJS
 #=================================================
-version=8.0.0
 ynh_install_nodejs 8.0.0
 
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
 
-ynh_system_user_create $app /home/$app	# Créer un utilisateur système dédié à l'app
+ynh_system_user_create $app
 
 #=================================================
 # SPECIFIC SETUP
@@ -85,7 +84,7 @@ ynh_system_user_create $app /home/$app	# Créer un utilisateur système dédié 
 
 # Créer le dossier de log
 sudo mkdir -p /var/log/$app
-sudo touch /var/log/$app/osjs.log
+sudo touch /var/log/$app/$app.log
 install_log=/var/log/$app/installation.log
 sudo touch $install_log
 sudo chown $app -R /var/log/$app
@@ -100,7 +99,7 @@ ynh_use_logrotate
 
 final_path=/var/www/$app
 ynh_app_setting_set $app final_path $final_path
-SETUP_SOURCE	# Télécharge la source, décompresse et copie dans $final_path
+ynh_setup_source $final_path
 
 #=================================================
 # CREATE A SQL BDD
@@ -130,19 +129,15 @@ sudo chmod 755 $final_path -R
 #=================================================
 
 ynh_nginx_config
-nginxconf=/etc/nginx/conf.d/$domain.d/$app.conf
-ynh_replace_string "__PORT__" "$port" "/etc/nginx/conf.d/$domain.d/$app.conf"
-ynh_replace_string "ROOT_PATH" "/var/www/$app" "/etc/nginx/conf.d/$domain.d/$app.conf"
-sudo chown root: $nginxconf
-sudo chmod 600 $nginxconf
-ynh_systemd_config
-ynh_replace_string "__NODEJS__" "$nodejs_use_version" "/etc/systemd/system/$app.service"
-ynh_replace_string "__ENV_PATH__" "$PATH" "/etc/systemd/system/$app.service"
-ynh_replace_string "__NODE__" "$nodejs_path" "/etc/systemd/system/$app.service"
-sudo sed -i "s@__DIRECTORY__@$final_path/@g" /etc/systemd/system/$app.service
-sudo sed -i "s@__APP__@$app@g" /etc/systemd/system/$app.service
+# nginxconf=/etc/nginx/conf.d/$domain.d/$app.conf
+# ynh_replace_string "__PORT__" "$port" "/etc/nginx/conf.d/$domain.d/$app.conf"
+# ynh_replace_string "ROOT_PATH" "/var/www/$app" "/etc/nginx/conf.d/$domain.d/$app.conf"
+# sudo chown root: $nginxconf
+# sudo chmod 600 $nginxconf
 
-cat /etc/systemd/system/$app.service
+ynh_replace_string "__NODE__" "$nodejs_path" "../conf/systemd.service"
+ynh_systemd_config
+
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -152,8 +147,9 @@ script_dir="$PWD"
 pushd "$final_path"
 sudo chown -R $app: $final_path
 sudo_path npm install
-sudo npm install -g bower
-sudo su $app -c "cd $final_path && bower install && bower install chainpad#^0.4.0"
+sudo_path npm install -g bower
+sudo su -l $app -s /bin/bash -c "cd $final_path && env PATH=$PATH bower install"
+# && bower install chainpad#^0.4.0
 popd
 
 #=================================================
@@ -181,7 +177,7 @@ sudo yunohost service add $app --log "/var/log/$app/cryptpad.log"
 # START ETHERPAD IN BACKGROUND
 #=================================================
 
-sudo systemctl start $app	# Démarre etherpad. Le démarrage est fait le plus tôt possible, car il est très long...
+sudo systemctl start $app
 
 #=================================================
 # SETUP SSOWAT
@@ -195,5 +191,7 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-sudo nginx -t
+
 sudo systemctl reload nginx
+
+# TODO wait for service availability

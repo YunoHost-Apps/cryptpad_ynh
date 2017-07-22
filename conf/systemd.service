@@ -1,0 +1,15 @@
+[Unit]
+Description=CryptPad is an encrypted PAD Creator
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=__FINALPATH__
+ExecStart=__NODE__ server.js
+Restart=always
+Environment=USER=__APP__ HOME=__FINALPATH__
+
+[Install]
+WantedBy=multi-user.target

@@ -248,7 +248,7 @@ ynh_use_nodejs () {
 
 	load_n_path="[[ :$PATH: == *\":$n_install_dir/bin:\"* ]] || PATH=\"$n_install_dir/bin:$PATH\""
 
-	nodejs_use_version="n $nodejs_version"
+	nodejs_use_version="n -q $nodejs_version"
 
 	# "Load" a version of node
 	eval $load_n_path; $nodejs_use_version
