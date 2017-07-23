@@ -99,8 +99,7 @@ ynh_use_logrotate
 
 final_path=/var/www/$app
 ynh_app_setting_set $app final_path $final_path
-#ynh_setup_source $final_path
-sudo git clone https://github.com/xwiki-labs/cryptpad.git $final_path
+ynh_setup_source $final_path
 
 #=================================================
 # Files owned by root, www-data can just read
@@ -140,8 +139,8 @@ popd
 #=================================================
 
 sudo mv ../conf/config.js $final_path/config.js
-ynh_replace_string "__URL__" "$path_url" "$final_path/config.js"
 ynh_replace_string "__PORT__" "$port" "$final_path/config.js"
+ynh_replace_string "__URL__" "$domain$path_url" "$final_path/config.js"
 
 #=================================================
 # INSTALL MODULES FOR CRYPTPAD
