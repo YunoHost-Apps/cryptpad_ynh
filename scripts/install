@@ -165,7 +165,7 @@ sudo systemctl start $app
 # SETUP SSOWAT
 #=================================================
 
-if [ "$is_public" = 0 ];
+if [ $is_public -eq 1 ];
 then
   ynh_app_setting_set "$app" unprotected_uris "/"
 fi
