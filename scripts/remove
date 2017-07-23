@@ -1,12 +1,12 @@
 #!/bin/bash
 
+# Exit on command errors and treat unset variables as an error
+set -u
+
 # Source app helpers
 source _common.sh
 source /usr/share/yunohost/helpers
 
-# Exit on command errors and treat unset variables as an error
-set -u
-set -eu
 app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve app settings

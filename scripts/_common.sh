@@ -1,6 +1,11 @@
 #!/bin/bash
 
 #=================================================
+# COMMON VARIABLES
+#=================================================
+NODEJS_VERSION="8.0.0"
+
+#=================================================
 #=================================================
 # TESTING
 #=================================================
@@ -156,34 +161,65 @@ ALL_QUIET () {	# Redirige la sortie standard et d'erreur dans /dev/null
 # BACKUP
 #=================================================
 
-BACKUP_FAIL_UPGRADE () {
-	WARNING echo "Upgrade failed."
+# Restore a previous backup if the upgrade process failed
+#
+# usage:
+# ynh_backup_before_upgrade
+# ynh_clean_setup () {
+# 	ynh_backup_after_failed_upgrade
+# }
+# ynh_abort_if_errors
+#
+ynh_backup_after_failed_upgrade () {
+	echo "Upgrade failed." >&2
 	app_bck=${app//_/-}	# Replace all '_' by '-'
-	if sudo yunohost backup list | grep -q $app_bck-pre-upgrade$backup_number; then	# Vérifie l'existence de l'archive avant de supprimer l'application et de restaurer
-		sudo yunohost app remove $app	# Supprime l'application avant de la restaurer.
-		sudo yunohost backup restore --ignore-hooks $app_bck-pre-upgrade$backup_number --apps $app --force	# Restore the backup if upgrade failed
+    # Check if a existing backup can be found before remove and restore the application.
+	if sudo yunohost backup list | grep -q $app_bck-pre-upgrade$backup_number
+    then
+    	# Remove the application then restore it
+		sudo yunohost app remove $app
+        # Restore the backup if the upgrade failed
+		sudo yunohost backup restore --ignore-hooks $app_bck-pre-upgrade$backup_number --apps $app --force
 		ynh_die "The app was restored to the way it was before the failed upgrade."
 	fi
 }
 
-BACKUP_BEFORE_UPGRADE () {	# Backup the current version of the app, restore it if the upgrade fails
+# Make a backup in case of failed upgrade
+#
+# usage:
+# ynh_backup_before_upgrade
+# ynh_clean_setup () {
+# 	ynh_backup_after_failed_upgrade
+# }
+# ynh_abort_if_errors
+#
+ynh_backup_before_upgrade () {
 	backup_number=1
 	old_backup_number=2
 	app_bck=${app//_/-}	# Replace all '_' by '-'
-	if sudo yunohost backup list | grep -q $app_bck-pre-upgrade1; then	# Vérifie l'existence d'une archive déjà numéroté à 1.
-		backup_number=2	# Et passe le numéro de l'archive à 2
+    # Check if a backup already exist with the prefix 1.
+	if sudo yunohost backup list | grep -q $app_bck-pre-upgrade1
+    then
+        # Prefix become 2 to preserve the previous backup
+		backup_number=2
 		old_backup_number=1
 	fi
 
-	sudo yunohost backup create --ignore-hooks --apps $app --name $app_bck-pre-upgrade$backup_number	# Créer un backup différent de celui existant.
-	if [ "$?" -eq 0 ]; then	# Si le backup est un succès, supprime l'archive précédente.
-		if sudo yunohost backup list | grep -q $app_bck-pre-upgrade$old_backup_number; then	# Vérifie l'existence de l'ancienne archive avant de la supprimer, pour éviter une erreur.
-			QUIET sudo yunohost backup delete $app_bck-pre-upgrade$old_backup_number
+	# Create another backup
+	sudo yunohost backup create --ignore-hooks --apps $app --name $app_bck-pre-upgrade$backup_number
+	if [ "$?" -eq 0 ]
+    then
+       	# If the backup succedded, remove the previous backup
+		if sudo yunohost backup list | grep -q $app_bck-pre-upgrade$old_backup_number
+        then
+            # Remove the previous backup only if it exists
+			sudo yunohost backup delete $app_bck-pre-upgrade$old_backup_number > /dev/null
 		fi
-	else	# Si le backup a échoué
+	else
 		ynh_die "Backup failed, the upgrade process was aborted."
 	fi
 }
+
 
 HUMAN_SIZE () {	# Transforme une taille en Ko en une taille lisible pour un humain
 	human=$(numfmt --to=iec --from-unit=1K $1)
