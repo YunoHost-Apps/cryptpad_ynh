@@ -102,22 +102,6 @@ ynh_app_setting_set $app final_path $final_path
 ynh_setup_source $final_path
 
 #=================================================
-# CREATE A SQL BDD
-#=================================================
-
-#pushd $final_path
-# Setting up the database
-#dbname=$app
-#dbuser=$app
-
-# Generate random password
-#dbpass=$(ynh_string_random)
-##### dbpass
-#ynh_psql_create_db "$dbname" "$dbuser" "$dbpass"
-#popd
-
-
-#=================================================
 # Files owned by root, www-data can just read
 #=================================================
 
@@ -129,11 +113,10 @@ sudo chmod 755 $final_path -R
 #=================================================
 
 ynh_nginx_config
-# nginxconf=/etc/nginx/conf.d/$domain.d/$app.conf
-# ynh_replace_string "__PORT__" "$port" "/etc/nginx/conf.d/$domain.d/$app.conf"
-# ynh_replace_string "ROOT_PATH" "/var/www/$app" "/etc/nginx/conf.d/$domain.d/$app.conf"
-# sudo chown root: $nginxconf
-# sudo chmod 600 $nginxconf
+
+#=================================================
+# ADD SYSTEMD SERVICE
+#=================================================
 
 ynh_replace_string "__NODE__" "$nodejs_path" "../conf/systemd.service"
 ynh_systemd_config
@@ -149,7 +132,6 @@ sudo chown -R $app: $final_path
 sudo_path npm install
 sudo_path npm install -g bower
 sudo su -l $app -s /bin/bash -c "cd $final_path && env PATH=$PATH bower install"
-# && bower install chainpad#^0.4.0
 popd
 
 #=================================================
