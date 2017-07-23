@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Exit on command errors and treat unset variables as an error
+set -eu
 #=================================================
 # GENERIC STARTING
 #=================================================
@@ -10,60 +12,37 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# MANAGE FAILURE OF THE SCRIPT
+# LOAD SETTINGS
 #=================================================
-
-ynh_clean_setup () {
-# Nettoyage des résidus d'installation non pris en charge par le script remove.
-	if test -n "$PID_TAIL"
-	then
-		SUPPRESS_WARNING kill -s 15 $PID_TAIL	# Arrête l'exécution de tail.
-		sudo rm -f "$tempfile"
-	fi
-	echo ""
-}
-ynh_abort_if_errors	# Active trap pour arrêter le script si une erreur est détectée.
-
-#=================================================
-# RETRIEVE ARGUMENTS FROM THE MANIFEST
-#=================================================
-
-domain=$YNH_APP_ARG_DOMAIN
-is_public=$YNH_APP_ARG_IS_PUBLIC
-path_url=$YNH_APP_ARG_PATH
-
+# Set app specific variables
 app=$YNH_APP_INSTANCE_NAME
 
+# Check destination directory
+DESTDIR="/var/www/$app"
+[[ ! -d $DESTDIR ]] && ynh_die \
+"The destination directory '$DESTDIR' does not exist.\
+ The app is not correctly installed, you should remove it first."
+
+# Retrieve arguments
+domain=$(ynh_app_setting_get "$app" domain)
+path_url=$(ynh_normalize_url_path "$(ynh_app_setting_get "$app" path_url)")
+final_path=$(ynh_app_setting_get "$app" final_path)
+is_public=$(ynh_app_setting_get "$app" is_public)
+port=$(ynh_app_setting_get "$app" port)
+
 #=================================================
-# CHECK IF THE APP CAN BE INSTALLED WITH THIS ARGS
+# MANAGE SCRIPT FAILURE
 #=================================================
 
-if sudo yunohost domain list | grep -q $domain	# Vérifie la liste des domaines
-then	# Si le domaine existe dans Yunohost
-	if sudo yunohost app map | grep -q $domain	# Vérifie la liste des apps par domaine
-	then 	# Si une app est installée sur ce domaine.
-		WARNING echo "An app is already installed on the domain $domain. cryptpad needs a whole domain or subdomain to himself."
-	fi
+# Use prior backup and restore on error only if backup feature
+# exists on installed instance
+if [ -f "/etc/yunohost/apps/$app/scripts/backup" ] ; then
+  ynh_backup_before_upgrade # Backup the current version of the app
+  ynh_clean_setup () {
+      ynh_backup_after_failed_upgrade
+  }
+  ynh_abort_if_errors	# Stop script if an error is detected
 fi
-
-CHECK_DOMAINPATH	# Vérifie la disponibilité du path et du domaine.
-CHECK_FINALPATH	# Vérifie que le dossier de destination n'est pas déjà utilisé.
-
-#=================================================
-# STORE SETTINGS FROM MANIFEST
-#=================================================
-
-ynh_app_setting_set $app domain "$domain"
-ynh_app_setting_set $app is_public "$is_public"
-ynh_app_setting_set $app path_url "$path_url"
-#=================================================
-# STANDARD MODIFICATIONS
-#=================================================
-# FIND AND OPEN A PORT
-#=================================================
-
-port=$(ynh_find_port 3000)	# Cherche un port libre.
-ynh_app_setting_set $app port $port
 
 #=================================================
 # INSTALL NODEJS
@@ -82,7 +61,7 @@ ynh_system_user_create $app
 # HANDLE LOG FILES AND LOGROTATE
 #=================================================
 
-# Créer le dossier de log
+# Cr�er le dossier de log
 sudo mkdir -p /var/log/$app
 sudo touch /var/log/$app/$app.log
 install_log=/var/log/$app/installation.log
@@ -173,7 +152,5 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-
+sudo systemctl restart php5-fpm
 sudo systemctl reload nginx
-
-# TODO wait for service availability

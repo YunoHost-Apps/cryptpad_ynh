@@ -1,34 +1,31 @@
 #!/bin/bash
 
-# Source app helpers
-source /usr/share/yunohost/helpers
-
 # Exit on command errors and treat unset variables as an error
 set -u
+
+# Source app helpers
+source _common.sh
+source /usr/share/yunohost/helpers
 
 app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve app settings
 domain=$(ynh_app_setting_get $app domain)
 
-sudo systemctl stop $app.service
+# Stop and remove service
+ynh_remove_systemd_config
 
 # Remove sources
-ynh_secure_remove /var/www/$app
+ynh_secure_remove "/var/www/$app"
 
 # Remove nginx configuration file
-[[ -n $domain ]] && sudo rm -f /etc/nginx/conf.d/${domain}.d/${app}.conf
+ynh_remove_nginx_config
 
-# Delete system user dedicace for this app
+# Remove user and data
 ynh_system_user_delete $app
-
-# Remove init script
-sudo systemctl disable $app.service
-sudo rm -f /etc/systemd/system/$app.service
-sudo systemctl daemon-reload
 
 # Remove monitor
 sudo yunohost service remove $app
 
-# Reload nginx service
-sudo systemctl reload nginx.service
+# Remove Nodejs
+ynh_remove_nodejs

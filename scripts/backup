@@ -1,0 +1,52 @@
+#!/bin/bash
+
+# Exit on command errors and treat unset variables as an error
+set -eu
+
+# TODO remove later
+# Workaround for bug https://dev.yunohost.org/issues/953
+# Useful for package_check tests (only when restoring just after backuping)
+if [ ! -e /usr/bin/archivemount ] ; then
+  sudo cp /bin/false /usr/bin/archivemount
+fi
+
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+if [ ! -e _common.sh ]; then
+	# Fetch helpers file if not in current directory
+	sudo cp ../settings/scripts/_common.sh ./_common.sh
+	sudo chmod a+rx _common.sh
+fi
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
+
+app=$YNH_APP_INSTANCE_NAME
+domain=$(ynh_app_setting_get $app domain)
+final_path=$(ynh_app_setting_get $app final_path)
+
+#=================================================
+# STANDARD BACKUP STEPS
+#=================================================
+# BACKUP APP MAIN DIR
+#=================================================
+
+CHECK_SIZE "$final_path"
+ynh_backup "$final_path" "sources"
+
+#=================================================
+# BACKUP NGINX CONFIGURATION
+#=================================================
+
+ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf" "nginx.conf"
+
+#=================================================
+# BACKUP SYSTEMD CONFIGURATION
+#=================================================
+
+ynh_backup "/etc/systemd/system/$app.service" "systemd.service"
