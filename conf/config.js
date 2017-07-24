@@ -32,7 +32,7 @@ module.exports = {
          *  it is recommended that you configure these fields to match the
          *  domain which will serve your cryptpad instance.
          */
-        "connect-src 'self' ws://__URL__cryptpad_websocket ws://* wss://*",
+        "connect-src 'self' ws://* wss://*",
         "child-src 'self' *",
 
         // data: is used by codemirror
