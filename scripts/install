@@ -56,6 +56,7 @@ CHECK_FINALPATH	# Vérifie que le dossier de destination n'est pas déjà utilis
 ynh_app_setting_set $app domain "$domain"
 ynh_app_setting_set $app is_public "$is_public"
 ynh_app_setting_set $app path_url "$path_url"
+
 #=================================================
 # STANDARD MODIFICATIONS
 #=================================================
@@ -68,6 +69,7 @@ ynh_app_setting_set $app port $port
 #=================================================
 # INSTALL NODEJS
 #=================================================
+
 ynh_install_nodejs $NODEJS_VERSION
 
 #=================================================
@@ -114,7 +116,9 @@ sudo chmod 755 $final_path -R
 
 ynh_nginx_config
 
+#=================================================
 # NODEJS Version
+#=================================================
 
 ynh_use_nodejs
 
@@ -123,7 +127,7 @@ ynh_use_nodejs
 #=================================================
 
 ynh_replace_string "__NODE__" "$nodejs_path" "../conf/systemd.service"
-ynh_replace_string "__NODEJS__" "n -q $NODEJS_VERSION" "../conf/systemd.service"
+ynh_replace_string "__NODEJS__" "$nodejs_use_version" "../conf/systemd.service"
 ynh_replace_string "__ENV_PATH__" "$PATH" "../conf/systemd.service"
 ynh_systemd_config
 
