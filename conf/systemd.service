@@ -9,9 +9,9 @@ User=__APP__
 Group=__APP__
 ExecStartPre=__NODEJS__
 WorkingDirectory=__FINALPATH__
+Environment="PATH=__ENV_PATH__"
 ExecStart=__NODE__ server.js
 Restart=always
-Environment=USER=__APP__ HOME=__FINALPATH__
 
 [Install]
 WantedBy=multi-user.target
