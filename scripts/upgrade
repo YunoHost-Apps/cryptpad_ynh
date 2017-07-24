@@ -61,7 +61,7 @@ ynh_system_user_create $app
 # HANDLE LOG FILES AND LOGROTATE
 #=================================================
 
-# Créer le dossier de log
+# CrÃ©er le dossier de log
 sudo mkdir -p /var/log/$app
 sudo touch /var/log/$app/$app.log
 install_log=/var/log/$app/installation.log
@@ -98,6 +98,8 @@ ynh_nginx_config
 #=================================================
 
 ynh_replace_string "__NODE__" "$nodejs_path" "../conf/systemd.service"
+ynh_replace_string "__NODEJS__" "$nodejs_use_version" "../conf/systemd.service"
+ynh_replace_string "__ENV_PATH__" "$PATH" "../conf/systemd.service"
 ynh_systemd_config
 
 
