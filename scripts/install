@@ -114,6 +114,10 @@ sudo chmod 755 $final_path -R
 
 ynh_nginx_config
 
+# NODEJS Version
+
+ynh_use_nodejs
+
 #=================================================
 # ADD SYSTEMD SERVICE
 #=================================================
