@@ -10,7 +10,7 @@ Group=__APP__
 ExecStartPre=__NODEJS__
 WorkingDirectory=__FINALPATH__
 Environment="PATH=__ENV_PATH__"
-ExecStart=/opt/node_n/n/versions/node/8.0.0/bin/node server.js
+ExecStart=__NODE__ server.js
 Restart=always
 
 [Install]
