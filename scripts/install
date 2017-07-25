@@ -147,8 +147,9 @@ ynh_replace_string "__URL__" "$domain$path_url" "$final_path/config.js"
 # SET FILES OWNERSHIP
 #=================================================
 
-chown -R root: $final_path
-chown -R $app: $final_path/datastore
+sudo chown -R root: $final_path
+sudo mkdir $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
+sudo chown -R $app: $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
 
 #=================================================
 # INSTALL MODULES FOR CRYPTPAD
