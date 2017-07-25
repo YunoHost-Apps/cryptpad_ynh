@@ -23,7 +23,7 @@ module.exports = {
     contentSecurity: [
         "default-src 'none'",
         "style-src 'unsafe-inline' 'self'",
-        "script-src 'self'",
+        "script-src 'self' 'unsafe-eval'",
         "font-src 'self'",
 
         /*  child-src is used to restrict iframes to a set of allowed domains.
