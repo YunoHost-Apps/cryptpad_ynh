@@ -331,7 +331,7 @@ ynh_install_nodejs () {
 	sudo env "PATH=$PATH" n $nodejs_version
 
 	# Use the real installed version. Sometimes slightly different
-	nodejs_version=$(node --version | cut -c2-)
+	# nodejs_version=$(node --version | cut -c2-)
 
 	# Store the ID of this app and the version of node requested for it
 	echo "$YNH_APP_ID:$nodejs_version" | sudo tee --append "$n_install_dir/ynh_app_version"
