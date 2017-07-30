@@ -116,7 +116,7 @@ CHECK_USER () {	# Vérifie la validité de l'user admin
 }
 
 CHECK_DOMAINPATH () {	# Vérifie la disponibilité du path et du domaine.
-	if sudo yunohost app --help | grep --quiet url-available
+	if sudo yunohost domain --help | grep --quiet url-available
 	then
 		# Check availability of a web path
 		ynh_webpath_available $domain $path_url
@@ -602,17 +602,27 @@ ynh_remove_app_dependencies () {
 
 # Use logrotate to manage the logfile
 #
-# usage: ynh_use_logrotate [logfile]
+# usage: ynh_use_logrotate [logfile] [--non-append]
 # | arg: logfile - absolute path of logfile
+# | option: --non-append - Replace the config file instead of appending this new config.
 #
 # If no argument provided, a standard directory will be use. /var/log/${app}
 # You can provide a path with the directory only or with the logfile.
 # /parentdir/logdir/
 # /parentdir/logdir/logfile.log
 #
-# It's possible to use this helper several times, each config will added to same logrotate config file.
+# It's possible to use this helper several times, each config will be added to the same logrotate config file.
+# Unless you use the option --non-append
 ynh_use_logrotate () {
-	if [ "$#" -gt 0 ]; then
+	local customtee="tee -a"
+	if [ $# -gt 0 ] && [ "$1" == "--non-append" ]; then
+		customtee="tee"
+		# Destroy this argument for the next command.
+		shift
+	elif [ $# -gt 1 ] && [ "$2" == "--non-append" ]; then
+		customtee="tee"
+	fi
+	if [ $# -gt 0 ]; then
 		if [ "$(echo ${1##*.})" == "log" ]; then	# Keep only the extension to check if it's a logfile
 			logfile=$1	# In this case, focus logrotate on the logfile
 		else
@@ -642,7 +652,7 @@ $logfile {
 }
 EOF
 	sudo mkdir -p $(dirname "$logfile")	# Create the log directory, if not exist
-	cat ${app}-logrotate | sudo tee -a /etc/logrotate.d/$app > /dev/null	# Append this config to the others for this app. If a config file already exist
+	cat ${app}-logrotate | sudo $customtee /etc/logrotate.d/$app > /dev/null	# Append this config to the existing config file, or replace the whole config file (depending on $customtee)
 }
 
 # Remove the app's logrotate config.

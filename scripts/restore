@@ -30,7 +30,11 @@ final_path=$(ynh_app_setting_get $app final_path)
 # CHECK IF THE APP CAN BE RESTORED
 #=================================================
 
-CHECK_DOMAINPATH	# Check domain and path availability
+yunohost app checkurl "${domain}${path_url}" -a "$app" \
+	|| ynh_die "Path not available: ${domain}${path_url}"
+test ! -d $final_path \
+|| ynh_die "There is already a directory: $final_path "
+
 CHECK_FINALPATH # Check if destination directory is not already in use
 
 #=================================================
@@ -40,6 +44,12 @@ CHECK_FINALPATH # Check if destination directory is not already in use
 #=================================================
 
 sudo cp -a ./nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
+
+#=================================================
+# RESTORE LOGROTATE CONFIGURATION
+#=================================================
+
+sudo cp -a ./logrotate /etc/logrotate.d/$app
 
 #=================================================
 # RESTORE APP MAIN DIR

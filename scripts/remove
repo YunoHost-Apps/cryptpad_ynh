@@ -15,6 +15,9 @@ domain=$(ynh_app_setting_get $app domain)
 # Stop and remove service
 ynh_remove_systemd_config
 
+# Remove logrotate configuration
+ynh_remove_logrotate
+
 # Remove sources
 ynh_secure_remove "/var/www/$app"
 

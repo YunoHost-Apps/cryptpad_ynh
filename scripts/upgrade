@@ -61,16 +61,8 @@ ynh_system_user_create $app
 # HANDLE LOG FILES AND LOGROTATE
 #=================================================
 
-# Créer le dossier de log
-sudo mkdir -p /var/log/$app
-sudo touch /var/log/$app/$app.log
-install_log=/var/log/$app/installation.log
-sudo touch $install_log
-sudo chown $app -R /var/log/$app
-sudo chown admin -R $install_log
-
-# Configuration de logrotate
-ynh_use_logrotate
+# Setup logrotate
+ynh_use_logrotate /var/log/${app}/*.log --non-append
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE

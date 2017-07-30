@@ -3,13 +3,6 @@
 # Exit on command errors and treat unset variables as an error
 set -eu
 
-# TODO remove later
-# Workaround for bug https://dev.yunohost.org/issues/953
-# Useful for package_check tests (only when restoring just after backuping)
-if [ ! -e /usr/bin/archivemount ] ; then
-  sudo cp /bin/false /usr/bin/archivemount
-fi
-
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
@@ -44,6 +37,11 @@ ynh_backup "$final_path" "sources"
 #=================================================
 
 ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf" "nginx.conf"
+
+#=================================================
+# BACKUP LOGROTATE CONFIGURATION
+#=================================================
+ynh_backup "/etc/logrotate.d/$app" "logrotate"
 
 #=================================================
 # BACKUP SYSTEMD CONFIGURATION

@@ -10,7 +10,7 @@ Group=__APP__
 ExecStartPre=__NODEJS__
 WorkingDirectory=__FINALPATH__
 Environment="PATH=__ENV_PATH__"
-ExecStart=__NODE__ server.js
+ExecStart=/bin/bash -c 'exec __NODE__ server.js  | tee /var/log/__APP__/__APP__.log'
 Restart=always
 
 [Install]
