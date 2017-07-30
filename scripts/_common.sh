@@ -3,7 +3,7 @@
 #=================================================
 # COMMON VARIABLES
 #=================================================
-NODEJS_VERSION="8.2.1"
+NODEJS_VERSION="8.0.0"
 
 #=================================================
 #=================================================
@@ -255,10 +255,6 @@ IS_PACKAGE_CHECK () {	# Détermine une exécution en conteneur (Non testé)
 	return $(uname -n | grep -c 'pchecker_lxc')
 }
 
-#=================================================
-# NODEJS
-#=================================================
-
 sudo_path () {
 	sudo env "PATH=$PATH" $@
 }
@@ -266,8 +262,6 @@ sudo_path () {
 # INFOS
 # n (Node version management) utilise la variable PATH pour stocker le path de la version de node à utiliser.
 # C'est ainsi qu'il change de version
-# En attendant une généralisation de root, il est possible d'utiliser sudo avec le helper temporaire sudo_path
-# Il permet d'utiliser sudo en gardant le $PATH modifié
 # ynh_install_nodejs installe la version de nodejs demandée en argument, avec n
 # ynh_use_nodejs active une version de nodejs dans le script courant
 # 3 variables sont mises à disposition, et 2 sont stockées dans la config de l'app
@@ -279,32 +273,31 @@ sudo_path () {
 # Dans ce cas, c'est $PATH qui contient le chemin de la version de node. Il doit être propagé sur les autres shell si nécessaire.
 
 n_install_dir="/opt/node_n"
+node_version_path="/usr/local/n/versions/node"
 ynh_use_nodejs () {
 	nodejs_version=$(ynh_app_setting_get $app nodejs_version)
 
 	load_n_path="[[ :$PATH: == *\":$n_install_dir/bin:\"* ]] || PATH=\"$n_install_dir/bin:$PATH\""
 
-	nodejs_use_version="n -q $nodejs_version"
+	nodejs_use_version="$n_install_dir/bin/n -q $nodejs_version"
 
 	# "Load" a version of node
 	eval $load_n_path; $nodejs_use_version
-	eval $load_n_path; sudo env "PATH=$PATH" $nodejs_use_version
 
 	# Get the absolute path of this version of node
 	nodejs_path="$(n bin $nodejs_version)"
 
 	# Make an alias for node use
 	ynh_node_exec="eval $load_n_path; n use $nodejs_version"
-	sudo_ynh_node_exec="eval $load_n_path; sudo env \"PATH=$PATH\" n use $nodejs_version"
 }
 
 ynh_install_nodejs () {
 	# Use n, https://github.com/tj/n to manage the nodejs versions
-	local nodejs_version="$1"
+	nodejs_version="$1"
 	local n_install_script="https://git.io/n-install"
 
 	# Create $n_install_dir
-	sudo mkdir -p "$n_install_dir"
+	mkdir -p "$n_install_dir"
 
 	# Load n path in PATH
 	CLEAR_PATH="$n_install_dir/bin:$PATH"
@@ -312,32 +305,39 @@ ynh_install_nodejs () {
 	PATH=$(echo $CLEAR_PATH | sed 's@/usr/local/bin:@@')
 
 	# Move an existing node binary, to avoid to block n.
-	test -x /usr/bin/node && sudo mv /usr/bin/node /usr/bin/node_n
-	test -x /usr/bin/npm && sudo mv /usr/bin/npm /usr/bin/npm_n
+	test -x /usr/bin/node && mv /usr/bin/node /usr/bin/node_n
+	test -x /usr/bin/npm && mv /usr/bin/npm /usr/bin/npm_n
 
 	# If n is not previously setup, install it
 	n --version > /dev/null 2>&1 || \
 	( echo "Installation of N - Node.js version management" >&2; \
-	curl -sL $n_install_script | sudo env "PATH=$PATH" N_PREFIX="$n_install_dir" bash -s -- -y $nodejs_version )
+	curl -sL $n_install_script | N_PREFIX="$n_install_dir" bash -s -- -y - )
 
 	# Restore /usr/local/bin in PATH
 	PATH=$CLEAR_PATH
 
 	# And replace the old node binary.
-	test -x /usr/bin/node_n && sudo mv /usr/bin/node_n /usr/bin/node
-	test -x /usr/bin/npm_n && sudo mv /usr/bin/npm_n /usr/bin/npm
+	test -x /usr/bin/node_n && mv /usr/bin/node_n /usr/bin/node
+	test -x /usr/bin/npm_n && mv /usr/bin/npm_n /usr/bin/npm
 
-	# Install the requested version of nodejs (except for the first installation of n, which installed the requested version of node.)
-	sudo env "PATH=$PATH" n $nodejs_version
+	# Install the requested version of nodejs
+	n $nodejs_version
 
-	# Use the real installed version. Sometimes slightly different
-	# nodejs_version=$(node --version | cut -c2-)
+	# Find the last "real" version for this major version of node.
+	real_nodejs_version=$(find $node_version_path/$nodejs_version* -maxdepth 0 | sort --version-sort | tail --lines=1)
+	real_nodejs_version=$(basename $real_nodejs_version)
+
+	# Create a symbolic link for this major version
+	ln --symbolic --force --no-target-directory $node_version_path/$real_nodejs_version $node_version_path/$nodejs_version
 
 	# Store the ID of this app and the version of node requested for it
-	echo "$YNH_APP_ID:$nodejs_version" | sudo tee --append "$n_install_dir/ynh_app_version"
+	echo "$YNH_APP_ID:$nodejs_version" | tee --append "$n_install_dir/ynh_app_version"
 
 	# Store nodejs_version into the config of this app
 	ynh_app_setting_set $app nodejs_version $nodejs_version
+
+	# Build the update script and set the cronjob
+	ynh_cron_upgrade_node
 
 	ynh_use_nodejs
 }
@@ -346,7 +346,7 @@ ynh_remove_nodejs () {
 	ynh_use_nodejs
 
 	# Remove the line for this app
-	sudo sed --in-place "/$YNH_APP_ID:$nodejs_version/d" "$n_install_dir/ynh_app_version"
+	sed --in-place "/$YNH_APP_ID:$nodejs_version/d" "$n_install_dir/ynh_app_version"
 
 	# If none another app uses this version of nodejs, remove it.
 	if ! grep --quiet "$nodejs_version" "$n_install_dir/ynh_app_version"
@@ -358,8 +358,56 @@ ynh_remove_nodejs () {
 	if [ ! -s "$n_install_dir/ynh_app_version" ]
 	then
 		ynh_secure_remove "$n_install_dir"
-		sudo sed --in-place "/N_PREFIX/d" /root/.bashrc
+		ynh_secure_remove "/usr/local/n"
+		sed --in-place "/N_PREFIX/d" /root/.bashrc
 	fi
+}
+
+ynh_cron_upgrade_node () {
+	# Build the update script
+	cat > "$n_install_dir/node_update.sh" << EOF
+#!/bin/bash
+
+version_path="$node_version_path"
+n_install_dir="$n_install_dir"
+
+# Log the date
+date
+
+# List all real installed version of node
+all_real_version="\$(find \$version_path/* -maxdepth 0 -type d | sed "s@\$version_path/@@g")"
+
+# Keep only the major version number of each line
+all_real_version=\$(echo "\$all_real_version" | sed 's/\..*\$//')
+
+# Remove double entries
+all_real_version=\$(echo "\$all_real_version" | sort --unique)
+
+# Read each major version
+while read version
+do
+	echo "Update of the version \$version"
+	sudo \$n_install_dir/bin/n \$version
+
+	# Find the last "real" version for this major version of node.
+	real_nodejs_version=\$(find \$version_path/\$version* -maxdepth 0 | sort --version-sort | tail --lines=1)
+	real_nodejs_version=\$(basename \$real_nodejs_version)
+
+	# Update the symbolic link for this version
+	sudo ln --symbolic --force --no-target-directory \$version_path/\$real_nodejs_version \$version_path/\$version
+done <<< "\$(echo "\$all_real_version")"
+EOF
+
+	chmod +x "$n_install_dir/node_update.sh"
+
+	# Build the cronjob
+	cat > "/etc/cron.daily/node_update" << EOF
+#!/bin/bash
+
+$n_install_dir/node_update.sh >> $n_install_dir/node_update.log
+EOF
+
+	chmod +x "/etc/cron.daily/node_update"
 }
 
 #=================================================
