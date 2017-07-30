@@ -13,15 +13,6 @@ source /usr/share/yunohost/helpers
 # MANAGE FAILURE OF THE SCRIPT
 #=================================================
 
-ynh_clean_setup () {
-# Nettoyage des résidus d'installation non pris en charge par le script remove.
-	if test -n "$PID_TAIL"
-	then
-		SUPPRESS_WARNING kill -s 15 $PID_TAIL	# Arrête l'exécution de tail.
-		sudo rm -f "$tempfile"
-	fi
-	echo ""
-}
 ynh_abort_if_errors	# Active trap pour arrêter le script si une erreur est détectée.
 
 #=================================================
@@ -46,6 +37,7 @@ then	# Si le domaine existe dans Yunohost
 	fi
 fi
 
+path_url=$(ynh_normalize_url_path $path_url)	# Check and normalize path
 CHECK_DOMAINPATH	# Vérifie la disponibilité du path et du domaine.
 CHECK_FINALPATH	# Vérifie que le dossier de destination n'est pas déjà utilisé.
 
@@ -87,12 +79,9 @@ ynh_system_user_create $app
 # Créer le dossier de log
 sudo mkdir -p /var/log/$app
 sudo touch /var/log/$app/$app.log
-install_log=/var/log/$app/installation.log
-sudo touch $install_log
 sudo chown $app -R /var/log/$app
-sudo chown admin -R $install_log
 
-# Configuration de logrotate
+# Setup logrotate
 ynh_use_logrotate
 
 #=================================================
@@ -184,5 +173,3 @@ fi
 #=================================================
 
 sudo systemctl reload nginx
-
-# TODO wait for service availability
