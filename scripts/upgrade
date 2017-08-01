@@ -108,9 +108,23 @@ popd
 # CONFIGURE SERVER.JS	
 #=================================================
 
-sudo mv ../conf/config.js $final_path/config.js
-ynh_replace_string "__URL__" "$path_url" "$final_path/config.js"
-ynh_replace_string "__PORT__" "$port" "$final_path/config.js"
+# Backup configuration file if changed
+ynh_backup_if_checksum_is_different "$final_path/config.js"
+
+# Copy default configuration file
+sudo mv "$final_path/config.example.js" "$final_path/config.js"
+
+# Set service port
+ynh_replace_string "httpPort: 3000" "httpPort: $port" "$final_path/config.js"
+# Tune CSP to allow for YunoHost tile
+ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config.js"
+# Remove donate button
+ynh_replace_string "removeDonateButton: false" "removeDonateButton: true" "$final_path/config.js"
+# Disable analytics unsolicited communications
+ynh_replace_string "adminEmail: 'i.did.not.read.my.config@cryptpad.fr'" "adminEmail: false" "$final_path/config.js"
+
+# Store file checksum to detected user modifications on upgrade
+ynh_store_file_checksum "$final_path/config.js"
 
 #=================================================
 # SET FILES OWNERSHIP
