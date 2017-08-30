@@ -20,3 +20,8 @@ https://cryptpad.fr/
 - Package status:  
   - [Last weekly report](https://forum.yunohost.org/t/rapport-hebdomadaire-dintegration-continue/2297)
   - [Last continuous integration test](https://ci-apps.yunohost.org/jenkins/job/cryptpad%20%28Community%29/lastBuild/consoleFull)
+
+
+Tricks :
+
+- To increase space for user in cryptpad, you can set up it in the config.js file in the root folder (/var/www/cryptpad/config.js), and then restart the cryptpad service (`sudo service cryptpad restart`).
