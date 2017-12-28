@@ -8,7 +8,7 @@
     },
     "version": "1.15.0",
     "url": "https://cryptpad.fr/",
-    "license": "GPLv3",
+    "license": "GPL-3.0-or-later",
     "maintainer": {
         "name": "frju365",
         "email": "win10@tutanota.com",
