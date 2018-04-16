@@ -41,38 +41,6 @@ ynh_remove_fpm_config () {
 	sudo systemctl reload php5-fpm
 }
 
-ynh_nginx_config () {
-	finalnginxconf="/etc/nginx/conf.d/$domain.d/$app.conf"
-	ynh_backup_if_checksum_is_different "$finalnginxconf" 1
-	sudo cp ../conf/nginx.conf "$finalnginxconf"
-
-	# To avoid a break by set -u, use a void substitution ${var:-}. If the variable is not set, it's simply set with an empty variable.
-	# Substitute in a nginx config file only if the variable is not empty
-	if test -n "${path_url:-}"; then
-		ynh_replace_string "__PATH__" "$path_url" "$finalnginxconf"
-	fi
-	if test -n "${domain:-}"; then
-		ynh_replace_string "__DOMAIN__" "$domain" "$finalnginxconf"
-	fi
-	if test -n "${port:-}"; then
-		ynh_replace_string "__PORT__" "$port" "$finalnginxconf"
-	fi
-	if test -n "${app:-}"; then
-		ynh_replace_string "__NAME__" "$app" "$finalnginxconf"
-	fi
-	if test -n "${final_path:-}"; then
-		ynh_replace_string "__FINALPATH__" "$final_path" "$finalnginxconf"
-	fi
-	ynh_store_file_checksum "$finalnginxconf"
-
-	sudo systemctl reload nginx
-}
-
-ynh_remove_nginx_config () {
-	ynh_secure_remove "/etc/nginx/conf.d/$domain.d/$app.conf"
-	sudo systemctl reload nginx
-}
-
 ynh_systemd_config () {
 	finalsystemdconf="/etc/systemd/system/$app.service"
 	ynh_backup_if_checksum_is_different "$finalsystemdconf" 1
@@ -275,11 +243,27 @@ sudo_path () {
 # Dans ce cas, c'est $PATH qui contient le chemin de la version de node. Il doit être propagé sur les autres shell si nécessaire.
 
 n_install_dir="/opt/node_n"
-node_version_path="/usr/local/n/versions/node"
+node_version_path="/opt/node_n/n/versions/node"
+# N_PREFIX est le dossier de n, il doit être chargé dans les variables d'environnement pour n.
+export N_PREFIX="$n_install_dir"
+
+ynh_install_n () {
+	echo "Installation of N - Node.js version management" >&2
+	# Build an app.src for n
+	mkdir -p "../conf"
+	echo "SOURCE_URL=https://github.com/tj/n/archive/v2.1.7.tar.gz
+SOURCE_SUM=2ba3c9d4dd3c7e38885b37e02337906a1ee91febe6d5c9159d89a9050f2eea8f" > "../conf/n.src"
+	# Download and extract n
+	ynh_setup_source "$n_install_dir/git" n
+	# Install n
+	(cd "$n_install_dir/git"
+	PREFIX=$N_PREFIX make install 2>&1)
+}
+
 ynh_use_nodejs () {
 	nodejs_version=$(ynh_app_setting_get $app nodejs_version)
 
-	load_n_path="[[ :$PATH: == *\":$n_install_dir/bin:\"* ]] || PATH=\"$n_install_dir/bin:$PATH\""
+	load_n_path="[[ :$PATH: == *\":$n_install_dir/bin:\"* ]] || PATH=\"$n_install_dir/bin:$PATH\"; N_PREFIX="$n_install_dir""
 
 	nodejs_use_version="$n_install_dir/bin/n -q $nodejs_version"
 
@@ -311,9 +295,13 @@ ynh_install_nodejs () {
 	test -x /usr/bin/npm && mv /usr/bin/npm /usr/bin/npm_n
 
 	# If n is not previously setup, install it
-	n --version > /dev/null 2>&1 || \
-	( echo "Installation of N - Node.js version management" >&2; \
-	curl -sL $n_install_script | N_PREFIX="$n_install_dir" bash -s -- -y - )
+	if ! test n --version > /dev/null 2>&1
+	then
+		ynh_install_n
+	fi
+
+	# Modify the default N_PREFIX in n script
+	ynh_replace_string "^N_PREFIX=\${N_PREFIX-.*}$" "N_PREFIX=\${N_PREFIX-$N_PREFIX}" "$n_install_dir/bin/n"
 
 	# Restore /usr/local/bin in PATH
 	PATH=$CLEAR_PATH
@@ -329,8 +317,11 @@ ynh_install_nodejs () {
 	real_nodejs_version=$(find $node_version_path/$nodejs_version* -maxdepth 0 | sort --version-sort | tail --lines=1)
 	real_nodejs_version=$(basename $real_nodejs_version)
 
-	# Create a symbolic link for this major version
-	ln --symbolic --force --no-target-directory $node_version_path/$real_nodejs_version $node_version_path/$nodejs_version
+	# Create a symbolic link for this major version. If the file doesn't already exist
+	if [ ! -e "$node_version_path/$nodejs_version" ]
+	then
+		ln --symbolic --force --no-target-directory $node_version_path/$real_nodejs_version $node_version_path/$nodejs_version
+	fi
 
 	# Store the ID of this app and the version of node requested for it
 	echo "$YNH_APP_ID:$nodejs_version" | tee --append "$n_install_dir/ynh_app_version"
@@ -369,32 +360,24 @@ ynh_cron_upgrade_node () {
 	# Build the update script
 	cat > "$n_install_dir/node_update.sh" << EOF
 #!/bin/bash
-
 version_path="$node_version_path"
 n_install_dir="$n_install_dir"
-
 # Log the date
 date
-
 # List all real installed version of node
 all_real_version="\$(find \$version_path/* -maxdepth 0 -type d | sed "s@\$version_path/@@g")"
-
 # Keep only the major version number of each line
 all_real_version=\$(echo "\$all_real_version" | sed 's/\..*\$//')
-
 # Remove double entries
 all_real_version=\$(echo "\$all_real_version" | sort --unique)
-
 # Read each major version
 while read version
 do
 	echo "Update of the version \$version"
 	sudo \$n_install_dir/bin/n \$version
-
 	# Find the last "real" version for this major version of node.
 	real_nodejs_version=\$(find \$version_path/\$version* -maxdepth 0 | sort --version-sort | tail --lines=1)
 	real_nodejs_version=\$(basename \$real_nodejs_version)
-
 	# Update the symbolic link for this version
 	sudo ln --symbolic --force --no-target-directory \$version_path/\$real_nodejs_version \$version_path/\$version
 done <<< "\$(echo "\$all_real_version")"
@@ -405,7 +388,6 @@ EOF
 	# Build the cronjob
 	cat > "/etc/cron.daily/node_update" << EOF
 #!/bin/bash
-
 $n_install_dir/node_update.sh >> $n_install_dir/node_update.log
 EOF
 
