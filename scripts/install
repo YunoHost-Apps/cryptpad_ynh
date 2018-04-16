@@ -29,17 +29,16 @@ app=$YNH_APP_INSTANCE_NAME
 # CHECK IF THE APP CAN BE INSTALLED WITH THIS ARGS
 #=================================================
 
-if sudo yunohost domain list | grep -q $domain	# Vérifie la liste des domaines
-then	# Si le domaine existe dans Yunohost
-	if sudo yunohost app map | grep -q $domain	# Vérifie la liste des apps par domaine
-	then 	# Si une app est installée sur ce domaine.
-		WARNING echo "An app is already installed on the domain $domain. cryptpad needs a whole domain or subdomain to himself."
-	fi
-fi
+final_path=/var/www/$app
+test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
-path_url=$(ynh_normalize_url_path $path_url)	# Check and normalize path
-CHECK_DOMAINPATH	# Vérifie la disponibilité du path et du domaine.
-CHECK_FINALPATH	# Vérifie que le dossier de destination n'est pas déjà utilisé.
+# Normalize the url path syntax
+path_url=$(ynh_normalize_url_path $path_url)
+
+# Check web path availability
+ynh_webpath_available $domain $path_url
+# Register (book) web path
+ynh_webpath_register $app $domain $path_url
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
@@ -77,24 +76,24 @@ ynh_system_user_create $app
 #=================================================
 
 # Créer le dossier de log
-sudo mkdir -p /var/log/$app
-sudo touch /var/log/$app/$app.log
-sudo chown $app -R /var/log/$app
+mkdir -p /var/log/$app
+touch /var/log/$app/$app.log
+chown $app -R /var/log/$app
 
 # Setup logrotate
 ynh_use_logrotate
+
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 
-final_path=/var/www/$app
 ynh_app_setting_set $app final_path $final_path
-ynh_setup_source $final_path
+ynh_setup_source "$final_path"	# Download, check integrity and uncompress the source from app.src
 
 # Set files ownership during installation
-sudo chown $app: $final_path -R
-sudo chmod 755 $final_path -R
+chown $app: $final_path -R
+chmod 755 $final_path -R
 
 #=================================================
 # Modify Nginx configuration file and copy it to Nginx conf directory
@@ -118,9 +117,9 @@ ynh_systemd_config
 
 script_dir="$PWD"
 pushd "$final_path"
-sudo chown -R $app: $final_path
-sudo_path npm install
-sudo_path npm install -g bower
+chown -R $app: $final_path
+npm install
+npm install -g bower
 sudo su -l $app -s /bin/bash -c "cd $final_path && env PATH=$PATH bower install"
 popd
 
@@ -129,7 +128,7 @@ popd
 #=================================================
 
 # Copy default configuration file
-sudo mv "$final_path/config.example.js" "$final_path/config.js"
+mv "$final_path/config.example.js" "$final_path/config.js"
 
 # Set service port
 ynh_replace_string "httpPort: 3000" "httpPort: $port" "$final_path/config.js"
@@ -147,9 +146,9 @@ ynh_store_file_checksum "$final_path/config.js"
 # SET FILES OWNERSHIP
 #=================================================
 
-sudo chown -R root: $final_path
-sudo mkdir $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
-sudo chown -R $app: $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
+chown -R root: $final_path
+mkdir $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
+chown -R $app: $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
 
 #=================================================
 # INSTALL MODULES FOR CRYPTPAD
@@ -162,13 +161,13 @@ sudo chown -R $app: $final_path/datastore $final_path/pins $final_path/blob $fin
 #=================================================
 
 # Ajoute le service au monitoring de Yunohost.
-sudo yunohost service add $app --log "/var/log/$app/$app.log"
+yunohost service add $app --log "/var/log/$app/$app.log"
 
 #=================================================
 # START CRYPTPAD IN BACKGROUND
 #=================================================
 
-sudo systemctl start $app
+systemctl start $app
 
 #=================================================
 # SETUP SSOWAT
