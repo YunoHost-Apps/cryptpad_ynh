@@ -96,10 +96,15 @@ chown $app: $final_path -R
 chmod 755 $final_path -R
 
 #=================================================
-# Modify Nginx configuration file and copy it to Nginx conf directory
+# NGINX CONFIGURATION
 #=================================================
 
-ynh_nginx_config
+if [ "$path_url" != "/" ]
+then
+	ynh_replace_string "^#sub_path_only" "" "../conf/nginx.conf"
+fi
+ynh_replace_string "__PATH__/" "${path_url%/}/" "../conf/nginx.conf"
+ynh_add_nginx_config
 
 #=================================================
 # ADD SYSTEMD SERVICE
@@ -108,7 +113,7 @@ ynh_nginx_config
 ynh_replace_string "__NODE__" "$nodejs_path" "../conf/systemd.service"
 ynh_replace_string "__NODEJS__" "$nodejs_use_version" "../conf/systemd.service"
 ynh_replace_string "__ENV_PATH__" "$PATH" "../conf/systemd.service"
-ynh_systemd_config
+ynh_add_systemd_config
 
 
 #=================================================
