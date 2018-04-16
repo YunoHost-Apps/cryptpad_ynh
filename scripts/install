@@ -189,4 +189,5 @@ sleep 30
 # RELOAD NGINX
 #=================================================
 
-sudo systemctl reload nginx
+systemctl reload nginx
+systemctl cryptpad status
