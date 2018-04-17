@@ -10,7 +10,7 @@ Group=__APP__
 ExecStartPre=__NODEJS__
 WorkingDirectory=__FINALPATH__
 Environment="PATH=__ENV_PATH__"
-ExecStart=__NODE__ __FINALPATH__server.js
+ExecStart=__NODE__ __FINALPATH__/server.js
 Restart=always
 
 [Install]
