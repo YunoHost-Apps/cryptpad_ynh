@@ -194,4 +194,4 @@ sleep 30
 #=================================================
 
 systemctl reload nginx
-systemctl cryptpad status
+systemctl status cryptpad
