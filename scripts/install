@@ -125,7 +125,7 @@ pushd "$final_path"
 chown -R $app:$app $final_path
 npm install
 npm install -g bower
-sudo su -l $app -s /bin/bash -c "cd $final_path && env PATH=$PATH bower install"
+exec_login_as $app cd $final_path && env PATH=$PATH bower install
 popd
 
 #=================================================
