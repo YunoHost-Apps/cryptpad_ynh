@@ -1,20 +1,28 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -eu
-
+#=================================================
+# GENERIC START
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
 if [ ! -e _common.sh ]; then
-	# Fetch helpers file if not in current directory
-	sudo cp ../settings/scripts/_common.sh ./_common.sh
-	sudo chmod a+rx _common.sh
+	# Get the _common.sh file if it's not in the current directory
+	cp ../settings/scripts/_common.sh ./_common.sh
+	chmod a+rx _common.sh
 fi
 source _common.sh
 source /usr/share/yunohost/helpers
 
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+ynh_clean_setup () {
+# Nettoyage des résidus d'installation non pris en charge par le script remove.
+	ynh_clean_check_starting
+}
+# Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
 #=================================================
@@ -32,62 +40,69 @@ final_path=$(ynh_app_setting_get $app final_path)
 # CHECK IF THE APP CAN BE RESTORED
 #=================================================
 
-yunohost app checkurl "${domain}${path_url}" -a "$app" \
+ynh_webpath_available $domain $path_url \
 	|| ynh_die "Path not available: ${domain}${path_url}"
 test ! -d $final_path \
 || ynh_die "There is already a directory: $final_path "
 
-CHECK_FINALPATH # Check if destination directory is not already in use
-
 #=================================================
 # STANDARD RESTORE STEPS
 #=================================================
-# RESTORE NGINX CONFIGURATION
+# RESTORE OF THE NGINX CONFIGURATION
 #=================================================
 
-sudo cp -a ./nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
+ynh_restore_file "/etc/nginx/conf.d/$domain.d/$app.conf"
 
 #=================================================
-# RESTORE LOGROTATE CONFIGURATION
+# RESTORE OF THE MAIN DIR OF THE APP
 #=================================================
 
-sudo cp -a ./logrotate /etc/logrotate.d/$app
+ynh_restore_file "$final_path"
 
 #=================================================
-# RESTORE APP MAIN DIR
+# RECREATE THE DEDICATED USER
 #=================================================
 
-sudo cp -a ./sources/. $final_path
+ynh_system_user_create $app $final_path	# Recreate the dedicated user, if it doesn't exist
 
 #=================================================
-# RECREATE OF THE DEDICATED USER
+# SPECIFIC RESTORE
+#=================================================
+# HANDLE LOG FILES AND LOGROTATE
 #=================================================
 
-ynh_system_user_create $app	# Recreate the dedicated user, if not existing
+mkdir -p /var/log/$app
+touch /var/log/$app/etherpad.log
+install_log=/var/log/$app/installation.log
+touch $install_log
+chown $app -R /var/log/$app
+chown admin -R $install_log
 
-#=================================================
-# RESTORE USER RIGHTS
-#=================================================
-
-sudo chown -R $app: $final_path
+# Restore logrotate configuration
+ynh_restore_file "/etc/logrotate.d/$app"
 
 #=================================================
 # INSTALL NODEJS
 #=================================================
-ynh_install_nodejs $NODEJS_VERSION
+
+ynh_install_nodejs $nodejs_version
 
 #=================================================
-# RESTORE SYSTEMD CONFIGURATION
+# ENABLE SERVICE IN ADMIN PANEL
 #=================================================
-sudo cp -a ./systemd.service "/etc/systemd/system/$app.service"
-sudo systemctl enable $app
-sudo systemctl daemon-reload
-sudo systemctl start $app
-  
+
+yunohost service add $app --log "/var/log/$app/etherpad.log"
+
 #=================================================
-# GENERIC FINALIZATION
+# RESTORE SYSTEMD
+#=================================================
+
+ynh_restore_file "/etc/systemd/system/$app.service"
+## Démarrage auto du service
+systemctl enable $app.service
+
 #=================================================
 # RELOAD NGINX
 #=================================================
 
-sudo systemctl reload nginx
+systemctl reload nginx
