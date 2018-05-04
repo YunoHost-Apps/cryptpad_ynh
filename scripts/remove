@@ -1,34 +1,69 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -u
+#=================================================
+# GENERIC STARTING
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
 
-# Source app helpers
 source _common.sh
 source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
 
 app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve app settings
 domain=$(ynh_app_setting_get $app domain)
 
-# Stop and remove service
+#=================================================
+# STANDARD REMOVE
+#=================================================
+# STOP AND REMOVE SERVICE
+#=================================================
+
 ynh_remove_systemd_config
 
-# Remove logrotate configuration
-ynh_remove_logrotate
+#=================================================
+# DISABLE SERVICE IN ADMIN PANEL
+#=================================================
 
-# Remove sources
-ynh_secure_remove "/var/www/$app"
+if yunohost service status | grep -q $app	# Check if service is declared in YunoHost
+then
+	ynh_print_info "Remove $app service" >&2
+	yunohost service remove $app
+fi
 
-# Remove nginx configuration file
-ynh_remove_nginx_config
+#=================================================
+# REMOVE NODEJS
+#=================================================
 
-# Remove user and data
-ynh_system_user_delete $app
-
-# Remove monitor
-sudo yunohost service remove $app
-
-# Remove Nodejs
 ynh_remove_nodejs
+
+#=================================================
+# REMOVE THE MAIN DIR OF THE APP
+#=================================================
+
+ynh_secure_remove "/var/www/$app"	# Remove the app directory securely
+
+#=================================================
+# REMOVE THE NGINX CONFIGURATION
+#=================================================
+
+ynh_remove_nginx_config	# Remove the dedicated nginx config
+
+#=================================================
+# REMOVE THE LOGROTATE CONFIG
+#=================================================
+
+ynh_remove_logrotate	# Remove the app-specific logrotate config
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# REMOVE DEDICATED USER
+#=================================================
+
+ynh_system_user_delete $app
