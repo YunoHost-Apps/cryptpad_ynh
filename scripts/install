@@ -54,67 +54,69 @@ ynh_app_setting_set $app path_url "$path_url"
 # FIND AND OPEN A PORT
 #=================================================
 
-port=$(ynh_find_port 3000)	# Cherche un port libre.
+# Find a free port
+port=$(ynh_find_port 3000)
+# Open this port
+yunohost firewall allow --no-upnp TCP $port 2>&1
 ynh_app_setting_set $app port $port
 
 #=================================================
 # INSTALL NODEJS
 #=================================================
 
-ynh_install_nodejs $nodejs_version
+ynh_install_nodejs $node_version
 
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
 
+# Create a system user
 ynh_system_user_create $app
 
 #=================================================
 # SPECIFIC SETUP
 #=================================================
-# HANDLE LOG FILES AND LOGROTATE
-#=================================================
-
-# Créer le dossier de log
-mkdir -p /var/log/$app
-touch /var/log/$app/$app.log
-chown $app -R /var/log/$app
-
-# Setup logrotate
-ynh_use_logrotate
-
-
-#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 
 ynh_app_setting_set $app final_path $final_path
-ynh_setup_source "$final_path"	# Download, check integrity and uncompress the source from app.src
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source "$final_path"
 
-# Set files ownership during installation
-chown $app:$app $final_path -R
-chmod 755 $final_path -R
+#=================================================
+# Files owned by root, www-data can just read
+#=================================================
+
+sudo chown $app:$app $final_path -R
+sudo chmod 755 $final_path -R
 
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
 
-if [ "$path_url" != "/" ]
-then
-	ynh_replace_string "^#sub_path_only" "" "../conf/nginx.conf"
-fi
-ynh_replace_string "__PATH__/" "${path_url%/}/" "../conf/nginx.conf"
+# Create a dedicated nginx config
 ynh_add_nginx_config
 
 #=================================================
-# ADD SYSTEMD SERVICE
+# SETUP SYSTEMD
 #=================================================
 
-ynh_replace_string "__NODE__" "$nodejs_path" "../conf/systemd.service"
-ynh_replace_string "__NODEJS__" "$nodejs_use_version" "../conf/systemd.service"
-ynh_replace_string "__ENV_PATH__" "$PATH" "../conf/systemd.service"
+# Create a dedicated systemd config
 ynh_add_systemd_config
+ynh_replace_string "__NODEJS__" "$nodejs_use_version" "/etc/systemd/system/$app.service"
+ynh_replace_string "__ENV_PATH__" "$PATH" "/etc/systemd/system/$app.service"
+ynh_replace_string "__NODE__" "$nodejs_path" "/etc/systemd/system/$app.service"
 
+#=================================================
+# Créer le dossier de log
+#=================================================
+
+sudo mkdir -p /var/log/$app
+sudo touch /var/log/$app/osjs.log
+install_log=/var/log/$app/installation.log
+sudo touch $install_log
+sudo chown $app -R /var/log/$app
+sudo chown admin -R $install_log
 
 #=================================================
 # INSTALL CRYPTPAD
