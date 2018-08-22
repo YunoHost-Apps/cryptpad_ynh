@@ -7,10 +7,9 @@ After=network.target
 Type=simple
 User=__APP__
 Group=__APP__
-ExecStartPre=__NODEJS__
 WorkingDirectory=__FINALPATH__
 Environment="PATH=__ENV_PATH__"
-ExecStart=__NODE__ __FINALPATH__/server.js | tee /var/log/cryptpad/cryptpad.log 
+ExecStart=__NODE__ server | tee /var/log/cryptpad/cryptpad.log 
 Restart=always
 
 [Install]
