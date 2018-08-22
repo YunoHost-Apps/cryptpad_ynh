@@ -1,7 +1,6 @@
 [Unit]
 Description=CryptPad service
-After=syslog.target
-After=network.target
+After=syslog.target network.target
 
 [Service]
 Type=simple
