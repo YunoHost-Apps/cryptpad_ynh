@@ -64,7 +64,7 @@ ynh_app_setting_set $app port $port
 # INSTALL NODEJS
 #=================================================
 
-ynh_install_nodejs $node_version
+ynh_install_nodejs $nodejs_version
 
 #=================================================
 # CREATE DEDICATED USER
