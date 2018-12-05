@@ -6,16 +6,16 @@
         "en": "Encrypted Pad",
 	"fr": "Créateur de pad chiffré."
     },
-    "version": "2.5.0",
+    "version": "2.13.0",
     "url": "https://cryptpad.fr/",
     "license": "AGPL-3.0-or-later",
     "maintainer": {
         "name": "frju365",
         "email": "win10@tutanota.com",
-        "url": "https://github.com/frju365/cryptpad_ynh"
+        "url": "https://frju365.yunohost.support"
     },
     "requirements": {
-        "yunohost": ">> 2.4.0"
+        "yunohost": ">= 3.0.0"
     },
     "multi_instance": false,
     "services": [
