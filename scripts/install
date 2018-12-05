@@ -140,7 +140,7 @@ mv "$final_path/config.example.js" "$final_path/config.js"
 # Set service port
 ynh_replace_string "httpPort: 3000" "httpPort: $port" "$final_path/config.js"
 # Tune CSP to allow for YunoHost tile
-ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config.js"
+#ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config.js"
 # Remove donate button
 ynh_replace_string "removeDonateButton: false" "removeDonateButton: true" "$final_path/config.js"
 # Disable analytics unsolicited communications
