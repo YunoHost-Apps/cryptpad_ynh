@@ -98,10 +98,10 @@ ynh_systemd_config
 
 script_dir="$PWD"
 pushd "$final_path"
-sudo chown -R $app: $final_path
-sudo_path npm install
-sudo_path npm install -g bower
-sudo su -l $app -s /bin/bash -c "cd $final_path && env PATH=$PATH bower install"
+chown -R $app: $final_path
+npm install
+npm install -g bower
+exec_login_as $app cd $final_path && env PATH=$PATH bower install
 popd
 
 #=================================================
