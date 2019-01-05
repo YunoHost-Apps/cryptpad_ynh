@@ -14,9 +14,10 @@ source /usr/share/yunohost/helpers
 #=================================================
 
 app=$YNH_APP_INSTANCE_NAME
-
+port=$(ynh_app_setting_get $app port)
 # Retrieve app settings
 domain=$(ynh_app_setting_get $app domain)
+final_path=$(ynh_app_setting_get $app final_path)
 
 #=================================================
 # STANDARD REMOVE
@@ -24,15 +25,17 @@ domain=$(ynh_app_setting_get $app domain)
 # STOP AND REMOVE SERVICE
 #=================================================
 
+# Remove the dedicated systemd config
 ynh_remove_systemd_config
 
 #=================================================
-# DISABLE SERVICE IN ADMIN PANEL
+# REMOVE SERVICE FROM ADMIN PANEL
 #=================================================
 
-if yunohost service status | grep -q $app	# Check if service is declared in YunoHost
+# Remove a service from the admin panel, added by `yunohost service add`
+if yunohost service status | grep -q $app
 then
-	ynh_print_info "Remove $app service" >&2
+	echo "Remove $app service"
 	yunohost service remove $app
 fi
 
@@ -43,10 +46,18 @@ fi
 ynh_remove_nodejs
 
 #=================================================
-# REMOVE THE MAIN DIR OF THE APP
+# REMOVE APP MAIN DIR
 #=================================================
 
-ynh_secure_remove "/var/www/$app"	# Remove the app directory securely
+# Remove the app directory securely
+ynh_secure_remove "$final_path"
+
+#=================================================
+# REMOVE NGINX CONFIGURATION
+#=================================================
+
+# Remove the dedicated nginx config
+ynh_remove_nginx_config
 
 #=================================================
 # REMOVE THE NGINX CONFIGURATION
