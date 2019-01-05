@@ -167,7 +167,7 @@ then
   ynh_app_setting_set "$app" unprotected_uris "/"
 fi
 
-ynh_check_starting "loading rpc module..." "/var/log/$app/cryptpad.log" "120"
+ynh_check_starting "loading rpc module..." "/var/log/$app/cryptpad.log" "15"
 #=================================================
 # RELOAD NGINX
 #=================================================
