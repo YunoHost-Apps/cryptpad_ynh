@@ -60,16 +60,11 @@ ynh_secure_remove "$final_path"
 ynh_remove_nginx_config
 
 #=================================================
-# REMOVE THE NGINX CONFIGURATION
-#=================================================
-
-ynh_remove_nginx_config	# Remove the dedicated nginx config
-
-#=================================================
 # REMOVE THE LOGROTATE CONFIG
 #=================================================
 
 ynh_remove_logrotate	# Remove the app-specific logrotate config
+ynh_secure_remove "/var/log/$app/"
 
 #=================================================
 # GENERIC FINALIZATION
