@@ -84,13 +84,6 @@ ynh_app_setting_set $app final_path $final_path
 ynh_setup_source "$final_path"
 
 #=================================================
-# Files owned by root, www-data can just read
-#=================================================
-
-sudo chown $app:$app $final_path -R
-sudo chmod 755 $final_path -R
-
-#=================================================
 # NGINX CONFIGURATION
 #=================================================
 
@@ -124,8 +117,19 @@ sudo chown admin -R $install_log
 
 script_dir="$PWD"
 pushd "$final_path"
-chown -R $app:$app $final_path
 npm install
+
+#=================================================
+# Files owned by root, www-data can just read
+#=================================================
+
+sudo chown $app:$app $final_path -R
+sudo chmod 755 $final_path -R
+
+#=================================================
+# Bower
+#=================================================
+
 npm install -g bower
 exec_login_as $app cd $final_path && env PATH=$PATH bower install
 popd
