@@ -138,8 +138,8 @@ ynh_replace_string "httpPort: 3000" "httpPort: $port" "$final_path/config.js"
 # Remove donate button
 ynh_replace_string "removeDonateButton: false" "removeDonateButton: true" "$final_path/config.js"
 # Disable analytics unsolicited communications
-ynh_replace_string "adminEmail: 'i.did.not.read.my.config@cryptpad.fr'" "adminEmail: $admin_email" "$final_path/config.js"
-
+ynh_replace_string "adminEmail: 'i.did.not.read.my.config@cryptpad.fr'" "adminEmail: '$admin_email'" "$final_path/config.js"
+cp $final_path/config.js $final_path/config.example
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config.js"
 
