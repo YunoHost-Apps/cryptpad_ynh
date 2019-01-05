@@ -145,11 +145,11 @@ cp $final_path/config.js $final_path/config.example
 ynh_store_file_checksum "$final_path/config.js"
 
 #=================================================
-# START CRYPTPAD IN BACKGROUND
+# Set some permissions
 #=================================================
 
+chown $app:$app $final_path -R
 chown $app:$app /var/log/$app/cryptpad.log
-systemctl start $app
 
 #=================================================
 # ENABLE SERVICE IN ADMIN PANEL
