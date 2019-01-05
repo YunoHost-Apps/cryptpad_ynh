@@ -145,14 +145,6 @@ cp $final_path/config.js $final_path/config.example
 ynh_store_file_checksum "$final_path/config.js"
 
 #=================================================
-# SET FILES OWNERSHIP
-#=================================================
-
-chown -R root: $final_path
-mkdir $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
-chown -R $app:$app $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
-
-#=================================================
 # START CRYPTPAD IN BACKGROUND
 #=================================================
 
