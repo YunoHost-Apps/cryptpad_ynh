@@ -43,7 +43,7 @@
                 "default": "/"
             },
 	    {
-                "name": "path",
+                "name": "email",
 		"type": "email",
                 "ask": {
                     "en": "Choose an email for the admin user.",
