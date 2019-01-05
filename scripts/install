@@ -118,20 +118,8 @@ sudo chown admin -R $install_log
 script_dir="$PWD"
 pushd "$final_path"
 npm install
-
-#=================================================
-# Files owned by root, www-data can just read
-#=================================================
-
-sudo chown $app:$app $final_path -R
-sudo chmod 755 $final_path -R
-
-#=================================================
-# Bower
-#=================================================
-
 npm install -g bower
-exec_login_as $app cd $final_path && env PATH=$PATH bower install
+bower install --allow-root
 popd
 
 #=================================================
@@ -159,7 +147,7 @@ ynh_store_file_checksum "$final_path/config.js"
 
 chown -R root: $final_path
 mkdir $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
-chown -R $app: $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
+chown -R $app:$app $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
 
 #=================================================
 # INSTALL MODULES FOR CRYPTPAD
