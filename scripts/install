@@ -182,11 +182,10 @@ fi
 # App need to sleep
 #=================================================
 
-sleep 30
+sleep 10
 
 #=================================================
 # RELOAD NGINX
 #=================================================
 
 systemctl reload nginx
-systemctl status cryptpad
