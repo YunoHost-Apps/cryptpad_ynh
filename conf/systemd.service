@@ -8,7 +8,7 @@ User=__APP__
 Group=__APP__
 WorkingDirectory=__FINALPATH__
 Environment=NODE_ENV=production
-ExecStart=__NODE__ server | tee /var/log/cryptpad/cryptpad.log
+ExecStart=__NODE__/node server | tee /var/log/cryptpad/cryptpad.log
 Restart=always
 
 [Install]
