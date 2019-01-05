@@ -107,7 +107,7 @@ systemctl daemon-reload
 #=================================================
 
 sudo mkdir -p /var/log/$app
-sudo touch /var/log/$app/osjs.log
+sudo touch /var/log/$app/cryptpad.log
 install_log=/var/log/$app/installation.log
 sudo touch $install_log
 sudo chown $app -R /var/log/$app
@@ -152,10 +152,10 @@ mkdir $final_path/datastore $final_path/pins $final_path/blob $final_path/blobst
 chown -R $app:$app $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
 
 #=================================================
-# INSTALL MODULES FOR CRYPTPAD
+# START CRYPTPAD IN BACKGROUND
 #=================================================
 
-#npm install cryptpad-level-store;
+systemctl start $app
 
 #=================================================
 # ENABLE SERVICE IN ADMIN PANEL
@@ -163,12 +163,6 @@ chown -R $app:$app $final_path/datastore $final_path/pins $final_path/blob $fina
 
 # Ajoute le service au monitoring de Yunohost.
 yunohost service add $app --log "/var/log/$app/$app.log"
-
-#=================================================
-# START CRYPTPAD IN BACKGROUND
-#=================================================
-
-systemctl start $app
 
 #=================================================
 # SETUP SSOWAT
@@ -179,12 +173,7 @@ then
   ynh_app_setting_set "$app" unprotected_uris "/"
 fi
 
-#=================================================
-# App need to sleep
-#=================================================
-
-sleep 10
-
+ynh_check_starting "loading rpc module..." "/var/log/$app/cryptpad.log" "120"
 #=================================================
 # RELOAD NGINX
 #=================================================
