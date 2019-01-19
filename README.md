@@ -1,6 +1,7 @@
 Cryptad for Yunohost
 ------------------------
 
+[![Integration level](https://dash.yunohost.org/integration/cryptpad.svg)](https://ci-apps.yunohost.org/jenkins/job/cryptpad%20%28Community%29/lastBuild/consoleFull)  
 [![Install Cryptpad with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=cryptpad)
 
 **Shipped version:** 2.13.0
