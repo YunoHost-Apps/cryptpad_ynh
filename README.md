@@ -1,7 +1,8 @@
 Cryptad for Yunohost
 ------------------------
 
-[![Install Cryptpad with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=cryptpad)
+[![Integration level](https://dash.yunohost.org/integration/cryptpad.svg)](https://dash.yunohost.org/appci/app/cryptpad)  
+[![Install Cryptad with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=cryptpad)
 
 **Shipped version:** 2.13.0
 
