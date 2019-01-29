@@ -6,7 +6,7 @@
         "en": "Encrypted Pad",
 	"fr": "Créateur de pad chiffré."
     },
-    "version": "2.13.0",
+    "version": "2.16.0",
     "url": "https://cryptpad.fr/",
     "license": "AGPL-3.0-or-later",
     "maintainer": {
