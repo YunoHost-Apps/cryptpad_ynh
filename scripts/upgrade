@@ -47,7 +47,7 @@ fi
 #=================================================
 # INSTALL NODEJS
 #=================================================
-ynh_install_nodejs $NODEJS_VERSION
+ynh_install_nodejs $nodejs_version
 
 #=================================================
 # CREATE DEDICATED USER
