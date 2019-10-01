@@ -124,7 +124,7 @@ chown admin: -R $install_log
 #=================================================
 
 # Copy default configuration file
-mv "$final_path/config.example.js" "$final_path/config.js"
+mv "../conf/config.js" "$final_path/config.js"
 ynh_replace_string "_domain = 'http://localhost:3000/'" "_domain = 'https://$domain$path_url'" "$final_path/config.js"
 # Set service port
 ynh_replace_string "__PORT__" "$port" "$final_path/config.js"

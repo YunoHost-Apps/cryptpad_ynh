@@ -4,7 +4,7 @@
     "packaging_format": 1,
     "description": {
         "en": "Encrypted Pad",
-	"fr": "Créateur de pad chiffré."
+        "fr": "Créateur de pad chiffré."
     },
     "version": "2.16.0",
     "url": "https://cryptpad.fr/",
@@ -25,26 +25,26 @@
         "install" : [
             {
                 "name": "domain",
-		            "type": "domain",
+                "type": "domain",
                 "ask": {
                     "en": "Choose a domain name for CryptPad",
                     "fr": "Choisissez un nom de domaine pour CryptPad"
                 },
                 "example": "example.com"
             },
-	    {
+            {
                 "name": "path",
-		            "type": "path",
+                "type": "path",
                 "ask": {
                     "en": "Choose a path for CryptPad, only / is allowed.",
                     "fr": "Choisissez un chemin pour CryptPad, seul / est autorisé."
                 },
                 "example": "/",
                 "default": "/"
-	    },
-	    {
+            },
+            {
                 "name": "email",
-		"type": "email",
+                "type": "email",
                 "ask": {
                     "en": "Choose an email for the admin user.",
                     "fr": "Choisissez une adresse mail pour l'administrateur"
