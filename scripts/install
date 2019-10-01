@@ -61,6 +61,12 @@ port=$(ynh_find_port 4000)
 yunohost firewall allow --no-upnp TCP $port 2>&1
 ynh_app_setting_set $app port $port
 
+porti=$(ynh_find_port 5000)
+# Open this port
+yunohost firewall allow --no-upnp TCP $porti 2>&1
+ynh_app_setting_set $app porti $porti
+
+
 #=================================================
 # INSTALL NODEJS
 #=================================================
@@ -113,6 +119,25 @@ touch $install_log
 chown $app: -R /var/log/$app
 chown admin: -R $install_log
 
+#=================================================
+# CONFIGURE SERVER.JS	
+#=================================================
+
+# Copy default configuration file
+mv "$final_path/config.example.js" "$final_path/config.js"
+ynh_replace_string "_domain = 'http://localhost:3000/'" "_domain = 'https://$domain$path_url'" "$final_path/config.js"
+# Set service port
+ynh_replace_string "__PORT__" "$port" "$final_path/config.js"
+ynh_replace_string "__PORT__" "$porti" "$final_path/config.js"
+# Tune CSP to allow for YunoHost tile
+#ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config.js"
+# Remove donate button
+ynh_replace_string "removeDonateButton: false" "removeDonateButton: true" "$final_path/config.js"
+# Disable analytics unsolicited communications
+ynh_replace_string "__ADMIN_EMAIL_" "$admin_email" "$final_path/config.js"
+cp $final_path/config.js $final_path/config.example
+# Store file checksum to detected user modifications on upgrade
+ynh_store_file_checksum "$final_path/config.js"
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -124,25 +149,6 @@ npm install --allow-root
 npm install -g bower --allow-root
 bower install --allow-root
 popd
-
-#=================================================
-# CONFIGURE SERVER.JS	
-#=================================================
-
-# Copy default configuration file
-mv "$final_path/config.example.js" "$final_path/config.js"
-ynh_replace_string "_domain = 'http://localhost:3000/'" "_domain = 'https://$domain$path_url'" "$final_path/config.js"
-# Set service port
-ynh_replace_string "httpPort: 3000" "httpPort: $port" "$final_path/config.js"
-# Tune CSP to allow for YunoHost tile
-#ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config.js"
-# Remove donate button
-ynh_replace_string "removeDonateButton: false" "removeDonateButton: true" "$final_path/config.js"
-# Disable analytics unsolicited communications
-ynh_replace_string "adminEmail: 'i.did.not.read.my.config@cryptpad.fr'" "adminEmail: '$admin_email'" "$final_path/config.js"
-cp $final_path/config.js $final_path/config.example
-# Store file checksum to detected user modifications on upgrade
-ynh_store_file_checksum "$final_path/config.js"
 
 #=================================================
 # Set some permissions
