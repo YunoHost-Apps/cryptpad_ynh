@@ -80,7 +80,7 @@ sudo chmod 755 $final_path -R
 # Modify Nginx configuration file and copy it to Nginx conf directory
 #=================================================
 
-ynh_nginx_config
+ynh_add_nginx_config
 
 #=================================================
 # ADD SYSTEMD SERVICE
