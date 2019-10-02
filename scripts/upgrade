@@ -39,7 +39,7 @@ port=$(ynh_app_setting_get "$app" port)
 if [ -f "/etc/yunohost/apps/$app/scripts/backup" ] ; then
   ynh_backup_before_upgrade # Backup the current version of the app
   ynh_clean_setup () {
-      ynh_backup_after_failed_upgrade
+      ynh_restore_upgradebackup
   }
   ynh_abort_if_errors	# Stop script if an error is detected
 fi
@@ -80,16 +80,16 @@ sudo chmod 755 $final_path -R
 # Modify Nginx configuration file and copy it to Nginx conf directory
 #=================================================
 
-ynh_nginx_config
+ynh_add_nginx_config
 
 #=================================================
 # ADD SYSTEMD SERVICE
 #=================================================
 
 ynh_replace_string "__NODE__" "$nodejs_path" "../conf/systemd.service"
-ynh_replace_string "__NODEJS__" "$nodejs_use_version" "../conf/systemd.service"
+ynh_replace_string "__NODEJS__" "$nodejs_version" "../conf/systemd.service"
 ynh_replace_string "__ENV_PATH__" "$PATH" "../conf/systemd.service"
-ynh_systemd_config
+ynh_add_systemd_config
 
 
 #=================================================
