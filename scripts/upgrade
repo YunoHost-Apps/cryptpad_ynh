@@ -39,7 +39,7 @@ port=$(ynh_app_setting_get "$app" port)
 if [ -f "/etc/yunohost/apps/$app/scripts/backup" ] ; then
   ynh_backup_before_upgrade # Backup the current version of the app
   ynh_clean_setup () {
-      ynh_backup_after_failed_upgrade
+      ynh_restore_upgradebackup
   }
   ynh_abort_if_errors	# Stop script if an error is detected
 fi
