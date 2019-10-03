@@ -91,19 +91,6 @@ ynh_replace_string "__NODEJS__" "$nodejs_version" "../conf/systemd.service"
 ynh_replace_string "__ENV_PATH__" "$PATH" "../conf/systemd.service"
 ynh_add_systemd_config
 
-
-#=================================================
-# INSTALL CRYPTPAD
-#=================================================
-
-script_dir="$PWD"
-pushd "$final_path"
-chown -R $app: $final_path
-npm install
-npm install -g bower
-exec_login_as $app cd $final_path && env PATH=$PATH bower install
-popd
-
 #=================================================
 # CONFIGURE SERVER.JS	
 #=================================================
@@ -126,6 +113,18 @@ ynh_replace_string "__ADMIN_EMAIL_" "$admin_email" "$final_path/config.js"
 
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config.js"
+
+#=================================================
+# INSTALL CRYPTPAD
+#=================================================
+
+script_dir="$PWD"
+pushd "$final_path"
+chown -R $app: $final_path
+npm install
+npm install -g bower
+exec_login_as $app cd $final_path && env PATH=$PATH bower install
+popd
 
 #=================================================
 # SET FILES OWNERSHIP
