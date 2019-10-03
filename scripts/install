@@ -151,17 +151,6 @@ bower install --allow-root
 popd
 
 #=================================================
-# INSTALL CRYPTPAD
-#=================================================
-
-script_dir="$PWD"
-pushd "$final_path"
-npm install --allow-root
-npm install -g bower --allow-root
-bower install --allow-root
-popd
-
-#=================================================
 # Set some permissions
 #=================================================
 
