@@ -131,24 +131,13 @@ ynh_replace_string "__PORT__" "$port" "$final_path/config/config.js"
 ynh_replace_string "__PORTI__" "$porti" "$final_path/config/config.js"
 
 # Tune CSP to allow for YunoHost tile
-#ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config.js"
+#ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config/config.js"
 # Remove donate button
 ynh_replace_string "removeDonateButton: false" "removeDonateButton: true" "$final_path/config/config.js"
 # Disable analytics unsolicited communications
 ynh_replace_string "__ADMIN_EMAIL_" "$admin_email" "$final_path/config/config.js"
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"
-
-#=================================================
-# INSTALL CRYPTPAD
-#=================================================
-
-script_dir="$PWD"
-pushd "$final_path"
-npm install --allow-root
-npm install -g bower --allow-root
-bower install --allow-root
-popd
 
 #=================================================
 # INSTALL CRYPTPAD
