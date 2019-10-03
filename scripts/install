@@ -131,7 +131,7 @@ ynh_replace_string "__PORT__" "$port" "$final_path/config/config.js"
 ynh_replace_string "__PORTI__" "$porti" "$final_path/config/config.js"
 
 # Tune CSP to allow for YunoHost tile
-#ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config.js"
+#ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config/config.js"
 # Remove donate button
 ynh_replace_string "removeDonateButton: false" "removeDonateButton: true" "$final_path/config/config.js"
 # Disable analytics unsolicited communications
