@@ -8,7 +8,7 @@ User=__APP__
 Group=__APP__
 WorkingDirectory=__FINALPATH__
 Environment=NODE_ENV=production
-ExecStart=__YNH_NPM__ server.js | tee /var/log/__APP__/cryptpad.log
+ExecStart=/usr/bin/yarn server.js | tee /var/log/__APP__/cryptpad.log
 Restart=always
 
 [Install]

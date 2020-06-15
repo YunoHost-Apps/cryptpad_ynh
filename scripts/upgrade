@@ -161,12 +161,6 @@ then
 fi
 
 #=================================================
-# RELOAD PHP
-#=================================================
-systemctl restart php5-fpm
-
-
-#=================================================
 # RELOAD NGINX
 #=================================================
 ynh_script_progression --message="Reloading nginx web server..." --time --weight=1
