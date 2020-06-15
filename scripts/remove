@@ -44,7 +44,7 @@ ynh_remove_systemd_config
 #=================================================
 # REMOVE NODEJS
 #=================================================
-ynh_script_progression --message="Removing dependencies..." --time --weight=4
+ynh_script_progression --message="Removing dependencies..." --weight=4
 
 ynh_remove_nodejs
 

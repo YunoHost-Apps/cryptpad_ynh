@@ -9,7 +9,7 @@
 If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/install) to learn how to install it.*
 
 ## Overview
-Cryptpad is a Zero Knowledge realtime collaborative editor.
+CryptPad is a Zero Knowledge realtime collaborative editor. You can share access to a document simply by sharing the link.
 
 **Shipped version:** 3.18.1
 
@@ -34,8 +34,8 @@ Cryptpad is a Zero Knowledge realtime collaborative editor.
 
 #### Multi-user support
 
-* Are LDAP and HTTP auth supported?
-* Can the app be used by multiple users?
+* Are LDAP and HTTP auth supported? **No**
+* Can the app be used by multiple users? **No**
 
 #### Supported architectures
 
@@ -44,12 +44,12 @@ Cryptpad is a Zero Knowledge realtime collaborative editor.
 
 ## Limitations
 
-* Installation possible only on a domain root (Cryptpad limitation)
+* Installation possible only on a root domain (CryptPad limitation)
 * Can't login via SSO (due to this [Cryptpad limitation](https://github.com/xwiki-labs/cryptpad/issues/116))
 
 ## Additional information
 
-* To increase space for user in cryptpad, you can set up it in the config.js file in the root folder (/var/www/cryptpad/config.js), and then restart the cryptpad service (`sudo service cryptpad restart`).
+* To increase space for user in cryptpad, you can set up it in the config.js file in the root folder (`/var/www/cryptpad/config.js`), and then restart the cryptpad service (`sudo service cryptpad restart`).
 
 ## Links
 

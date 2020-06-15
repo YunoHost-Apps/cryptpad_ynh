@@ -9,7 +9,7 @@
 Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/#/install) pour apprendre comment l'installer.*
 
 ## Vue d'ensemble
-CryptPad est un éditeur chiffré collaboratif en temps réel.
+CryptPad est un éditeur de documents chiffrés collaboratifs en temps réel. Vous pouvez partager l'accès à un document simplement en partageant le lien. 
 
 **Version incluse :** 3.18.1
 
