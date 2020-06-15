@@ -71,7 +71,11 @@ ynh_app_setting_set $app porti $porti
 # INSTALL NODEJS
 #=================================================
 
-ynh_install_nodejs $nodejs_version
+# Install Nodejs
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+
+# Install Yarn
+ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
 
 #=================================================
 # CREATE DEDICATED USER
@@ -145,8 +149,8 @@ ynh_store_file_checksum "$final_path/config/config.js"
 
 script_dir="$PWD"
 pushd "$final_path"
-npm install --allow-root
-npm install -g bower --allow-root
+yarn install --allow-root
+yarn install -g bower --allow-root
 bower install --allow-root
 popd
 
@@ -174,8 +178,16 @@ then
 fi
 
 ynh_check_starting "loading rpc module..." "/var/log/$app/cryptpad.log" "15"
+
 #=================================================
 # RELOAD NGINX
 #=================================================
+ynh_script_progression --message="Reloading nginx web server..." --time --weight=1
 
-systemctl reload nginx
+ynh_systemd_action --service_name=nginx --action=reload
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Installation of $app completed" --time --last

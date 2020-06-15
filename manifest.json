@@ -6,7 +6,7 @@
         "en": "Encrypted Pad",
         "fr": "Créateur de pad chiffré."
     },
-    "version": "2.16.0",
+    "version": "3.18.1~ynh1",
     "url": "https://cryptpad.fr/",
     "license": "AGPL-3.0-or-later",
     "maintainer": {
@@ -15,7 +15,7 @@
         "url": "https://frju365.yunohost.support"
     },
     "requirements": {
-        "yunohost": ">= 3.0.0"
+        "yunohost": ">= 3.5.0"
     },
     "multi_instance": false,
     "services": [
@@ -56,7 +56,7 @@
                 "type": "boolean",
                 "ask": {
                     "en": "Is it a public site? ",
-                    "fr": "Est-ce un site publique ? "
+                    "fr": "Est-ce un site publique ?"
                 },
                 "default": true
             }
