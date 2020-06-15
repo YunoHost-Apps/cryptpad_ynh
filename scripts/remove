@@ -14,8 +14,8 @@ source /usr/share/yunohost/helpers
 #=================================================
 
 app=$YNH_APP_INSTANCE_NAME
+
 port=$(ynh_app_setting_get $app port)
-# Retrieve app settings
 domain=$(ynh_app_setting_get $app domain)
 final_path=$(ynh_app_setting_get $app final_path)
 

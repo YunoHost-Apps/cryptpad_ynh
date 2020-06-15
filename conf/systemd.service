@@ -4,11 +4,13 @@ After=syslog.target network.target
 
 [Service]
 Type=simple
-User=__APP__
-Group=__APP__
-WorkingDirectory=__FINALPATH__
-Environment=NODE_ENV=production
-ExecStart=/usr/bin/yarn server.js | tee /var/log/__APP__/cryptpad.log
+User="__APP__"
+Group="__APP__"
+WorkingDirectory="__FINALPATH__"
+Environment="PATH=__ENV_PATH__"
+Environment="NODE_ENV=production"
+ExecStart=/usr/bin/yarn start
+#| tee /var/log/__APP__/cryptpad.log
 Restart=always
 
 [Install]

@@ -154,10 +154,13 @@ systemctl start $app
 #=================================================
 # SETUP SSOWAT
 #=================================================
+ynh_script_progression --message="Upgrading SSOwat configuration..." --time --weight=1
 
-if [ $is_public -eq 1 ];
+# Make app public if necessary
+if [ $is_public -eq 1 ]
 then
-  ynh_app_setting_set "$app" unprotected_uris "/"
+	# unprotected_uris allows SSO credentials to be passed anyway
+	ynh_app_setting_set --app=$app --key=unprotected_uris --value="/"
 fi
 
 #=================================================
