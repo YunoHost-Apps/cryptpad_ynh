@@ -9,7 +9,7 @@
 If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/install) to learn how to install it.*
 
 ## Overview
-Quick description of this app.
+Cryptpad is a Zero Knowledge realtime collaborative editor.
 
 **Shipped version:** 3.18.1
 

@@ -82,6 +82,7 @@ module.exports = {
     // This is for deployment in production, CryptPad uses a separate origin (domain) to host the
     // cross-domain iframe. It can simply host the same content as CryptPad.
     // httpSafeOrigin: "https://some-other-domain.xyz",
+    httpSafeOrigin: "__DOMAIN__",
 
     httpUnsafeOrigin: domain,
 
