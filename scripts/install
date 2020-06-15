@@ -146,10 +146,8 @@ ynh_replace_string --match_string="__PORTI__" --replace_string="$porti" --target
 # Tune CSP to allow for YunoHost tile
 #ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config/config.js"
 
-# Remove donate button
-#ynh_replace_string --match_string="removeDonateButton: false" --replace_string="removeDonateButton: true"  --target_file="$final_path/config/config.js"
 # Disable analytics unsolicited communications
-ynh_replace_string --match_string="__ADMIN_EMAIL_"            --replace_string="$admin_email"              --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__ADMIN_EMAIL_" --replace_string="$admin_email" --target_file="$final_path/config/config.js"
 
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"
@@ -157,6 +155,7 @@ ynh_store_file_checksum "$final_path/config/config.js"
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
+ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
 
 pushd "$final_path" || ynh_die
 
@@ -170,13 +169,14 @@ popd || ynh_die
 #=================================================
 # Set some permissions
 #=================================================
+ynh_script_progression --message="Securing files and directories..." --weight=1
 
 chown -R $app:$app $final_path
-#chown $app:$app /var/log/$app/cryptpad.log
 
 #=================================================
-# ENABLE SERVICE IN ADMIN PANEL
+# INTEGRATE SERVICE IN ADMIN PANEL
 #=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
 # Ajoute le service au monitoring de Yunohost.
 yunohost service add $app --log "/var/log/$app/$app.log"

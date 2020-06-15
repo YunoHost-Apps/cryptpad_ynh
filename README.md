@@ -1,11 +1,11 @@
-# Cryptpad for YunoHost
+# CryptPad for YunoHost
 
 [![Integration level](https://dash.yunohost.org/integration/cryptpad.svg)](https://dash.yunohost.org/appci/app/cryptpad) ![](https://ci-apps.yunohost.org/ci/badges/cryptpad.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/cryptpad.maintain.svg)  
-[![Install cryptpad with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=cryptpad)
+[![Install CryptPad with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=cryptpad)
 
 *[Lire ce readme en français.](./README_fr.md)*
 
-> *This package allows you to install cryptpad quickly and simply on a YunoHost server.  
+> *This package allows you to install CryptPad quickly and simply on a YunoHost server.  
 If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/install) to learn how to install it.*
 
 ## Overview
@@ -23,7 +23,7 @@ Quick description of this app.
 
 ## Configuration
 
-How to configure this app: From an admin panel, a plain file with SSH, or any other way.
+* How to configure this app: From an admin panel, a plain file with SSH, or any other way.
 
 ## Documentation
 
@@ -34,8 +34,8 @@ How to configure this app: From an admin panel, a plain file with SSH, or any ot
 
 #### Multi-user support
 
-Are LDAP and HTTP auth supported?
-Can the app be used by multiple users?
+* Are LDAP and HTTP auth supported?
+* Can the app be used by multiple users?
 
 #### Supported architectures
 
