@@ -3,8 +3,8 @@
     "id": "cryptpad",
     "packaging_format": 1,
     "description": {
-        "en": "Encrypted Pad",
-        "fr": "Créateur de pad chiffré."
+        "en": "Zero Knowledge realtime collaborative editor",
+        "fr": "Éditeur chiffré collaboratif en temps réel."
     },
     "version": "3.18.1~ynh1",
     "url": "https://cryptpad.fr/",
@@ -15,7 +15,7 @@
         "url": "https://frju365.yunohost.support"
     },
     "requirements": {
-        "yunohost": ">= 3.5.0"
+        "yunohost": ">= 3.8.1"
     },
     "multi_instance": false,
     "services": [
@@ -55,7 +55,7 @@
                 "name": "is_public",
                 "type": "boolean",
                 "ask": {
-                    "en": "Is it a public site? ",
+                    "en": "Is it a public site?",
                     "fr": "Est-ce un site publique ?"
                 },
                 "default": true

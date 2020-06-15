@@ -1,28 +1,73 @@
-Cryptad for Yunohost
-------------------------
+# CryptPad for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/cryptpad.svg)](https://dash.yunohost.org/appci/app/cryptpad)  
-[![Install Cryptad with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=cryptpad)
+[![Integration level](https://dash.yunohost.org/integration/cryptpad.svg)](https://dash.yunohost.org/appci/app/cryptpad) ![](https://ci-apps.yunohost.org/ci/badges/cryptpad.status.svg) ![](https://ci-apps.yunohost.org/ci/badges/cryptpad.maintain.svg)  
+[![Install CryptPad with YunoHost](https://install-app.yunohost.org/install-with-yunohost.png)](https://install-app.yunohost.org/?app=cryptpad)
 
-**Shipped version:** 3.2.0
+*[Lire ce readme en français.](./README_fr.md)*
+
+> *This package allows you to install CryptPad quickly and simply on a YunoHost server.  
+If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/install) to learn how to install it.*
+
+## Overview
+CryptPad is a Zero Knowledge realtime collaborative editor. You can share access to a document simply by sharing the link.
+
+**Shipped version:** 3.18.1
+
+## Screenshots
+
+![](https://github.com/xwiki-labs/cryptpad/raw/master/screenshot.png)
 
 ## Demo
-https://cryptpad.fr/
 
-## Known limitations / Limitations connues
-- Installation possible only on a domain root (Cryptpad limitation)
-- Can't login via SSO (due to this [Cryptpad limitation](https://github.com/xwiki-labs/cryptpad/issues/116))
+* [Official demo](https://cryptpad.fr/)
 
+## Configuration
 
-## Links / Liens
-- Package URL/URL du Paquet: https://github.com/YunoHost-Apps/cryptpad_ynh
-- Official Website/Site Officiel: https://cryptpad.fr/
-- Github: https://github.com/xwiki-labs/cryptpad
-- Package status:  
-  - [Last weekly report](https://forum.yunohost.org/t/rapport-hebdomadaire-dintegration-continue/2297)
-  - [Last continuous integration test](https://ci-apps.yunohost.org/jenkins/job/cryptpad%20%28Community%29/lastBuild/consoleFull)
+* How to configure this app: From an admin panel, a plain file with SSH.
 
+## Documentation
 
-## Tricks :
+* Official documentation: https://cryptpad.fr/what-is-cryptpad.html
+* YunoHost documentation: If specific documentation is needed, feel free to contribute.
 
-- To increase space for user in cryptpad, you can set up it in the config.js file in the root folder (/var/www/cryptpad/config.js), and then restart the cryptpad service (`sudo service cryptpad restart`).
+## YunoHost specific features
+
+#### Multi-user support
+
+* Are LDAP and HTTP auth supported? **No**
+* Can the app be used by multiple users? **Yes**
+
+#### Supported architectures
+
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/cryptpad%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/cryptpad%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/cryptpad/)
+
+## Limitations
+
+* Installation possible only on a root domain (CryptPad limitation)
+* Can't login via SSO (due to this [Cryptpad limitation](https://github.com/xwiki-labs/cryptpad/issues/116))
+
+## Additional information
+
+* To increase space for CryptPad users, you can modify `/var/www/cryptpad/config.js`, and restart the CryptPad service with `sudo service cryptpad restart`.
+
+## Links
+
+ * Report a bug: https://github.com/YunoHost-Apps/cryptpad_ynh/issues
+ * App website: https://cryptpad.fr/
+ * Upstream app repository: https://github.com/xwiki-labs/cryptpad
+ * YunoHost website: https://yunohost.org/
+
+---
+
+Developer info
+----------------
+
+Please send your pull request to the [testing branch](https://github.com/YunoHost-Apps/cryptpad_ynh/tree/testing).
+
+To try the testing branch, please proceed like that.
+```
+sudo yunohost app install https://github.com/YunoHost-Apps/cryptpad_ynh/tree/testing --debug
+or
+sudo yunohost app upgrade cryptpad -u https://github.com/YunoHost-Apps/cryptpad_ynh/tree/testing --debug
+```
