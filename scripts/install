@@ -108,13 +108,15 @@ ynh_add_nginx_config
 #=================================================
 # SETUP SYSTEMD
 #=================================================
+ynh_script_progression --message="Configuring a systemd service..." --weight=1
 
-# Create a dedicated systemd config
+ynh_replace_string --match_string="__APP__"       --replace_string="$app"         --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__FINALPATH__" --replace_string="$final_path"  --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__ENV_PATH__"  --replace_string="$PATH"        --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__NODE__"      --replace_string="$nodejs_path" --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"     --target_file="../conf/systemd.service"
+
 ynh_add_systemd_config
-ynh_replace_string "__NODEJS__" "$nodejs_version" "/etc/systemd/system/$app.service"
-ynh_replace_string "__ENV_PATH__" "$PATH" "/etc/systemd/system/$app.service"
-ynh_replace_string "__NODE__" "$nodejs_path" "/etc/systemd/system/$app.service"
-systemctl daemon-reload
 
 #=================================================
 # Créer le dossier de log
@@ -164,7 +166,7 @@ popd || ynh_die
 # Set some permissions
 #=================================================
 
-chown $app:$app $final_path -R
+chown -R $app:$app $final_path
 chown $app:$app /var/log/$app/cryptpad.log
 
 #=================================================
@@ -177,13 +179,14 @@ yunohost service add $app --log "/var/log/$app/$app.log"
 #=================================================
 # SETUP SSOWAT
 #=================================================
+ynh_script_progression --message="Configuring SSOwat..." --weight=1
 
-if [ $is_public -eq 1 ];
+# Make app public if necessary
+if [ $is_public -eq 1 ]
 then
-  ynh_app_setting_set "$app" unprotected_uris "/"
+	# unprotected_uris allows SSO credentials to be passed anyway.
+	ynh_app_setting_set --app=$app --key=unprotected_uris --value="/"
 fi
-
-#ynh_check_starting "loading rpc module..." "/var/log/$app/cryptpad.log" "15"
 
 #=================================================
 # RELOAD NGINX
