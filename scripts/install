@@ -66,7 +66,7 @@ port=$(ynh_find_port --port=4000)
 ynh_app_setting_set --app=$app --key=port --value=$port
 
 # Find an available port
-port=$(ynh_find_port --port=5000)
+porti=$(ynh_find_port --port=5000)
 ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 
