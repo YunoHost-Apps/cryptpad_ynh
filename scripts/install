@@ -138,7 +138,7 @@ ynh_add_systemd_config
 
 # Copy default configuration file
 mv "../conf/config.js" "$final_path/config/config.js"
-ynh_replace_string --match_string="_domain = 'http://localhost:3000/'" --replace_string="_domain = 'https://$domain$path_url'" --target_file="$final_path/config/config.js"
+#ynh_replace_string --match_string="_domain = 'http://localhost:4000/'" --replace_string="_domain = 'https://$domain$path_url'" --target_file="$final_path/config/config.js"
 # Set service port
 ynh_replace_string --match_string="__PORT__"  --replace_string="$port"  --target_file="$final_path/config/config.js"
 ynh_replace_string --match_string="__PORTI__" --replace_string="$porti" --target_file="$final_path/config/config.js"
@@ -147,7 +147,7 @@ ynh_replace_string --match_string="__PORTI__" --replace_string="$porti" --target
 #ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config/config.js"
 
 # Remove donate button
-ynh_replace_string --match_string="removeDonateButton: false" --replace_string="removeDonateButton: true"  --target_file="$final_path/config/config.js"
+#ynh_replace_string --match_string="removeDonateButton: false" --replace_string="removeDonateButton: true"  --target_file="$final_path/config/config.js"
 # Disable analytics unsolicited communications
 ynh_replace_string --match_string="__ADMIN_EMAIL_"            --replace_string="$admin_email"              --target_file="$final_path/config/config.js"
 

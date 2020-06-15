@@ -2,7 +2,7 @@
 /*
     globals module
 */
-var _domain = 'http://localhost:__PORT__/';
+var _domain = 'http://127.0.0.1:__PORT__/';
 
 // You can `kill -USR2` the node process and it will write out a heap dump.
 // If your system doesn't support dumping, comment this out and install with
@@ -157,7 +157,7 @@ module.exports = {
      *  If you chose C, set 'removeDonateButton' to true
      */
     allowSubscriptions: false,
-    removeDonateButton: false,
+    removeDonateButton: true,
 
     /*
      *  By default, CryptPad also contacts our accounts server once a day to check for changes in
