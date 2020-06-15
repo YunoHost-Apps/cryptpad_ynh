@@ -147,12 +147,14 @@ ynh_store_file_checksum "$final_path/config/config.js"
 # INSTALL CRYPTPAD
 #=================================================
 
-script_dir="$PWD"
-pushd "$final_path"
-yarn install --allow-root
-yarn install -g bower --allow-root
-bower install --allow-root
-popd
+pushd "$final_path" || ynh_die
+
+	ynh_use_nodejs
+	yarn install --allow-root
+	yarn global add bower
+	bower install --allow-root
+	
+popd || ynh_die
 
 #=================================================
 # Set some permissions
