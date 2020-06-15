@@ -39,8 +39,8 @@
                     "en": "Choose a path for CryptPad, only / is allowed.",
                     "fr": "Choisissez un chemin pour CryptPad, seul / est autorisé."
                 },
-                "example": "/cryptpad",
-                "default": "/cryptpad"
+                "example": "/",
+                "default": "/"
             },
             {
                 "name": "email",

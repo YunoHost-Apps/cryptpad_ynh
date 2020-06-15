@@ -69,7 +69,7 @@ ynh_remove_nginx_config
 ynh_script_progression --message="Removing logrotate configuration..." --time --weight=1
 
 ynh_remove_logrotate	# Remove the app-specific logrotate config
-ynh_secure_remove "/var/log/$app/"
+#ynh_secure_remove "/var/log/$app/"
 
 #=================================================
 # GENERIC FINALIZATION

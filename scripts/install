@@ -25,7 +25,7 @@ ynh_abort_if_errors
 
 domain=$YNH_APP_ARG_DOMAIN
 is_public=$YNH_APP_ARG_IS_PUBLIC
-path_url=$YNH_APP_ARG_PATH
+path_url="/"
 admin_email=$YNH_APP_ARG_EMAIL
 
 app=$YNH_APP_INSTANCE_NAME
@@ -69,7 +69,6 @@ porti=$(ynh_find_port 5000)
 # Open this port
 yunohost firewall allow --no-upnp TCP $porti 2>&1
 ynh_app_setting_set --app=$app --key=porti --value=$porti
-
 
 #=================================================
 # INSTALL NODEJS & YARN
@@ -173,7 +172,7 @@ popd || ynh_die
 #=================================================
 
 chown -R $app:$app $final_path
-chown $app:$app /var/log/$app/cryptpad.log
+#chown $app:$app /var/log/$app/cryptpad.log
 
 #=================================================
 # ENABLE SERVICE IN ADMIN PANEL
