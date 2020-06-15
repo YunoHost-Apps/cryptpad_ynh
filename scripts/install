@@ -33,17 +33,18 @@ app=$YNH_APP_INSTANCE_NAME
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THIS ARGS
 #=================================================
+ynh_script_progression --message="Validating installation parameters..." --weight=1
 
 final_path=/var/www/$app
 test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
 # Normalize the url path syntax
-path_url=$(ynh_normalize_url_path $path_url)
+#path_url=$(ynh_normalize_url_path $path_url)
 
 # Check web path availability
-ynh_webpath_available $domain $path_url
+#ynh_webpath_available $domain $path_url
 # Register (book) web path
-ynh_webpath_register $app $domain $path_url
+ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
@@ -58,17 +59,27 @@ ynh_app_setting_set --app=$app --key=path_url --value=$path_url
 #=================================================
 # FIND AND OPEN A PORT
 #=================================================
+ynh_script_progression --message="Configuring firewall..." --weight=1
 
-# Find a free port
-port=$(ynh_find_port 4000)
-# Open this port
-yunohost firewall allow --no-upnp TCP $port 2>&1
+# Find an available port
+port=$(ynh_find_port --port=4000)
 ynh_app_setting_set --app=$app --key=port --value=$port
 
-porti=$(ynh_find_port 5000)
-# Open this port
-yunohost firewall allow --no-upnp TCP $porti 2>&1
+# Find an available port
+port=$(ynh_find_port --port=5000)
 ynh_app_setting_set --app=$app --key=porti --value=$porti
+
+
+# # Find a free port
+# port=$(ynh_find_port 4000)
+# # Open this port
+# yunohost firewall allow --no-upnp TCP $port 2>&1
+# ynh_app_setting_set --app=$app --key=port --value=$port
+
+# porti=$(ynh_find_port 5000)
+# # Open this port
+# yunohost firewall allow --no-upnp TCP $porti 2>&1
+# ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 #=================================================
 # INSTALL NODEJS & YARN
@@ -93,10 +104,6 @@ ynh_system_user_create --username=$app
 #=================================================
 ynh_script_progression --message="Setting up source files..." --time --weight=1
 
-### `ynh_setup_source` is used to install an app from a zip or tar.gz file,
-### downloaded from an upstream source, like a git repository.
-### `ynh_setup_source` use the file conf/app.src
-
 ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$final_path"
@@ -104,6 +111,7 @@ ynh_setup_source --dest_dir="$final_path"
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
+ynh_script_progression --message="Configuring nginx web server..." --weight=1
 
 # Create a dedicated nginx config
 ynh_add_nginx_config
@@ -133,20 +141,14 @@ ynh_add_systemd_config
 #chown admin: -R $install_log
 
 #=================================================
-# CONFIGURE SERVER.JS	
+# CONFIGURE CONFIG.JS	
 #=================================================
 
 # Copy default configuration file
 mv "../conf/config.js" "$final_path/config/config.js"
-#ynh_replace_string --match_string="_domain = 'http://localhost:4000/'" --replace_string="_domain = 'https://$domain$path_url'" --target_file="$final_path/config/config.js"
-# Set service port
-ynh_replace_string --match_string="__PORT__"  --replace_string="$port"  --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__PORTI__" --replace_string="$porti" --target_file="$final_path/config/config.js"
 
-# Tune CSP to allow for YunoHost tile
-#ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config/config.js"
-
-# Disable analytics unsolicited communications
+ynh_replace_string --match_string="__PORT__"       --replace_string="$port"        --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti"       --target_file="$final_path/config/config.js"
 ynh_replace_string --match_string="__ADMIN_EMAIL_" --replace_string="$admin_email" --target_file="$final_path/config/config.js"
 
 # Store file checksum to detected user modifications on upgrade
@@ -160,7 +162,7 @@ ynh_script_progression --message="Building $app... (this will take some time and
 pushd "$final_path" || ynh_die
 
 	ynh_use_nodejs
-	yarn install --allow-root
+	ynh_exec_warn_less yarn install --allow-root
 	yarn global add bower
 	bower install --allow-root
 
