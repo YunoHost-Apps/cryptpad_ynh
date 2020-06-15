@@ -67,9 +67,9 @@ ynh_remove_nginx_config
 #=================================================
 # REMOVE THE LOGROTATE CONFIG
 #=================================================
-ynh_script_progression --message="Removing logrotate configuration..." --weight=1
+#ynh_script_progression --message="Removing logrotate configuration..." --weight=1
 
-ynh_remove_logrotate	# Remove the app-specific logrotate config
+#ynh_remove_logrotate	# Remove the app-specific logrotate config
 
 #=================================================
 # GENERIC FINALIZATION

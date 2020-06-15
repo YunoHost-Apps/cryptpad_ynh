@@ -23,11 +23,11 @@ CryptPad is a Zero Knowledge realtime collaborative editor. You can share access
 
 ## Configuration
 
-* How to configure this app: From an admin panel, a plain file with SSH, or any other way.
+* How to configure this app: From an admin panel, a plain file with SSH.
 
 ## Documentation
 
-* Official documentation: Link to the official documentation of this app
+* Official documentation: https://cryptpad.fr/what-is-cryptpad.html
 * YunoHost documentation: If specific documentation is needed, feel free to contribute.
 
 ## YunoHost specific features
@@ -35,7 +35,7 @@ CryptPad is a Zero Knowledge realtime collaborative editor. You can share access
 #### Multi-user support
 
 * Are LDAP and HTTP auth supported? **No**
-* Can the app be used by multiple users? **No**
+* Can the app be used by multiple users? **Yes**
 
 #### Supported architectures
 
@@ -49,7 +49,7 @@ CryptPad is a Zero Knowledge realtime collaborative editor. You can share access
 
 ## Additional information
 
-* To increase space for user in cryptpad, you can set up it in the config.js file in the root folder (`/var/www/cryptpad/config.js`), and then restart the cryptpad service (`sudo service cryptpad restart`).
+* To increase space for CryptPad users, you can modify `/var/www/cryptpad/config.js`), and restart the CryptPad service with `sudo service cryptpad restart`.
 
 ## Links
 

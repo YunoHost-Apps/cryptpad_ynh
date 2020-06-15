@@ -154,10 +154,10 @@ popd || ynh_die
 #=================================================
 # SETUP LOGROTATE
 #=================================================
-ynh_script_progression --message="Upgrading logrotate configuration..." --weight=1
+#ynh_script_progression --message="Upgrading logrotate configuration..." --weight=1
 
 # Use logrotate to manage app-specific logfile(s)
-ynh_use_logrotate --non-append
+#ynh_use_logrotate --non-append
 
 #=================================================
 # SETUP SYSTEMD
