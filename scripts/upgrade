@@ -27,11 +27,12 @@ DESTDIR="/var/www/$app"
 ynh_script_progression --message="Loading installation settings..." --weight=1
 
 # Retrieve arguments
-domain=$(ynh_app_setting_get "$app" domain)
-path_url=$(ynh_normalize_url_path "$(ynh_app_setting_get "$app" path_url)")
-final_path=$(ynh_app_setting_get "$app" final_path)
-is_public=$(ynh_app_setting_get "$app" is_public)
-port=$(ynh_app_setting_get "$app" port)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+path_url=$(ynh_app_setting_get --app=$app --key=path_url)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
+port=$(ynh_app_setting_get --app=$app --key=port)
+porti=$(ynh_app_setting_get --app=$app --key=porti)
 
 #=================================================
 # CHECK VERSION
