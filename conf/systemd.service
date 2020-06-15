@@ -4,12 +4,12 @@ After=syslog.target network.target
 
 [Service]
 Type=simple
-User="__APP__"
-Group="__APP__"
-WorkingDirectory="__FINALPATH__"
-Environment="PATH=__ENV_PATH__"
-Environment="NODE_ENV=production"
-ExecStart=/usr/bin/yarn start
+User=__APP__
+Group=__APP__
+WorkingDirectory=__FINALPATH__
+Environment="PATH=__ENV_PATH__
+Environment=NODE_ENV=production
+ExecStart=__YNH_NPM__ start
 #| tee /var/log/__APP__/cryptpad.log
 Restart=always
 

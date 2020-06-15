@@ -126,12 +126,12 @@ ynh_add_systemd_config
 # Créer le dossier de log
 #=================================================
 
-mkdir -p /var/log/$app
-touch /var/log/$app/cryptpad.log
-install_log=/var/log/$app/installation.log
-touch $install_log
-chown $app: -R /var/log/$app
-chown admin: -R $install_log
+#mkdir -p /var/log/$app
+#touch /var/log/$app/cryptpad.log
+#install_log=/var/log/$app/installation.log
+#touch $install_log
+#chown $app: -R /var/log/$app
+#chown admin: -R $install_log
 
 #=================================================
 # CONFIGURE SERVER.JS	
@@ -139,17 +139,19 @@ chown admin: -R $install_log
 
 # Copy default configuration file
 mv "../conf/config.js" "$final_path/config/config.js"
-ynh_replace_string "_domain = 'http://localhost:3000/'" "_domain = 'https://$domain$path_url'" "$final_path/config/config.js"
+ynh_replace_string --match_string="_domain = 'http://localhost:3000/'" --replace_string="_domain = 'https://$domain$path_url'" --target_file="$final_path/config/config.js"
 # Set service port
-ynh_replace_string "__PORT__" "$port" "$final_path/config/config.js"
-ynh_replace_string "__PORTI__" "$porti" "$final_path/config/config.js"
+ynh_replace_string --match_string="__PORT__"  --replace_string="$port"  --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORTI__" --replace_string="$porti" --target_file="$final_path/config/config.js"
 
 # Tune CSP to allow for YunoHost tile
 #ynh_replace_string "\"script-src 'self'\"" "\"script-src 'self' 'unsafe-eval'\"" "$final_path/config/config.js"
+
 # Remove donate button
-ynh_replace_string "removeDonateButton: false" "removeDonateButton: true" "$final_path/config/config.js"
+ynh_replace_string --match_string="removeDonateButton: false" --replace_string="removeDonateButton: true"  --target_file="$final_path/config/config.js"
 # Disable analytics unsolicited communications
-ynh_replace_string "__ADMIN_EMAIL_" "$admin_email" "$final_path/config/config.js"
+ynh_replace_string --match_string="__ADMIN_EMAIL_"            --replace_string="$admin_email"              --target_file="$final_path/config/config.js"
+
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"
 
@@ -197,7 +199,7 @@ ynh_script_progression --message="Configuring SSOwat..." --weight=1
 if [ $is_public -eq 1 ]
 then
 	# unprotected_uris allows SSO credentials to be passed anyway.
-	ynh_app_setting_set --app=$app --key=unprotected_uris --value="/"
+	ynh_permission_update --permission "main" --add visitors
 fi
 
 #=================================================
