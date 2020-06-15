@@ -6,12 +6,8 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-if [ ! -e _common.sh ]; then
-	# Get the _common.sh file if it's not in the current directory
-	cp ../settings/scripts/_common.sh ./_common.sh
-	chmod a+rx _common.sh
-fi
-source _common.sh
+#Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
+source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -19,8 +15,8 @@ source /usr/share/yunohost/helpers
 #=================================================
 
 ynh_clean_setup () {
-# Nettoyage des résidus d'installation non pris en charge par le script remove.
-	ynh_clean_check_starting
+	#### Remove this function if there's nothing to clean before calling the remove script.
+	true
 }
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors

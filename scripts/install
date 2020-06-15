@@ -153,7 +153,7 @@ pushd "$final_path" || ynh_die
 	yarn install --allow-root
 	yarn global add bower
 	bower install --allow-root
-	
+
 popd || ynh_die
 
 #=================================================
@@ -179,7 +179,7 @@ then
   ynh_app_setting_set "$app" unprotected_uris "/"
 fi
 
-ynh_check_starting "loading rpc module..." "/var/log/$app/cryptpad.log" "15"
+#ynh_check_starting "loading rpc module..." "/var/log/$app/cryptpad.log" "15"
 
 #=================================================
 # RELOAD NGINX

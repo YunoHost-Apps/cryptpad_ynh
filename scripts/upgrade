@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Exit on command errors and treat unset variables as an error
-set -eu
 #=================================================
 # GENERIC STARTING
 #=================================================
@@ -131,8 +129,8 @@ popd
 # SET FILES OWNERSHIP
 #=================================================
 
-sudo chown -R root: $final_path
-sudo chown -R $app: $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
+chown -R root: $final_path
+chown -R $app: $final_path/datastore $final_path/pins $final_path/blob $final_path/blobstage
 
 #=================================================
 # INSTALL MODULES FOR CRYPTPAD
@@ -145,13 +143,13 @@ sudo chown -R $app: $final_path/datastore $final_path/pins $final_path/blob $fin
 #=================================================
 
 # Ajoute le service au monitoring de Yunohost.
-sudo yunohost service add $app --log "/var/log/$app/$app.log"
+yunohost service add $app --log "/var/log/$app/$app.log"
 
 #=================================================
 # START CRYPTPAD IN BACKGROUND
 #=================================================
 
-sudo systemctl start $app
+systemctl start $app
 
 #=================================================
 # SETUP SSOWAT
@@ -163,7 +161,20 @@ then
 fi
 
 #=================================================
+# RELOAD PHP
+#=================================================
+systemctl restart php5-fpm
+
+
+#=================================================
 # RELOAD NGINX
 #=================================================
-sudo systemctl restart php5-fpm
-sudo systemctl reload nginx
+ynh_script_progression --message="Reloading nginx web server..." --time --weight=1
+
+ynh_systemd_action --service_name=nginx --action=reload
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Upgrade of $app completed" --time --last
