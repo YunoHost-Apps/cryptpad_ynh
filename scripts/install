@@ -54,6 +54,7 @@ ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 ynh_app_setting_set --app=$app --key=path_url --value=$path_url
 
+
 #=================================================
 # STANDARD MODIFICATIONS
 #=================================================
