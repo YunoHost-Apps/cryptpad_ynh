@@ -26,7 +26,7 @@ ynh_abort_if_errors
 domain=$YNH_APP_ARG_DOMAIN
 is_public=$YNH_APP_ARG_IS_PUBLIC
 path_url="/"
-admin_email=$YNH_APP_ARG_EMAIL
+admin=$YNH_APP_ARG_ADMIN
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -53,7 +53,9 @@ ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 ynh_app_setting_set --app=$app --key=path_url --value=$path_url
+ynh_app_setting_set --app=$app --key=admin --value=$admin
 
+admin_mail=$(ynh_user_get_info --app=$admin --key=mail)
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -69,18 +71,6 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 # Find an available port
 porti=$(ynh_find_port --port=5000)
 ynh_app_setting_set --app=$app --key=porti --value=$porti
-
-
-# # Find a free port
-# port=$(ynh_find_port 4000)
-# # Open this port
-# yunohost firewall allow --no-upnp TCP $port 2>&1
-# ynh_app_setting_set --app=$app --key=port --value=$port
-
-# porti=$(ynh_find_port 5000)
-# # Open this port
-# yunohost firewall allow --no-upnp TCP $porti 2>&1
-# ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 #=================================================
 # INSTALL NODEJS & YARN
@@ -149,9 +139,9 @@ ynh_add_systemd_config
 # Copy default configuration file
 mv "../conf/config.js" "$final_path/config/config.js"
 
-ynh_replace_string --match_string="__PORT__"       --replace_string="$port"        --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti"       --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__ADMIN_EMAIL_" --replace_string="$admin_email" --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORT__"       --replace_string="$port"       --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti"      --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$admin_mail" --target_file="$final_path/config/config.js"
 
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"

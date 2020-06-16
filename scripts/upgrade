@@ -26,14 +26,18 @@ DESTDIR="/var/www/$app"
 #=================================================
 ynh_script_progression --message="Loading installation settings..." --weight=1
 
+app=$YNH_APP_INSTANCE_NAME
+
 # Retrieve arguments
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path_url)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
-admin_email=$(ynh_app_setting_get --app=$app --key=admin_email)
+admin=$(ynh_app_setting_get --app=$app --key=admin)
 port=$(ynh_app_setting_get --app=$app --key=port)
 porti=$(ynh_app_setting_get --app=$app --key=porti)
+
+admin_mail=$(ynh_user_get_info --app=$admin --key=mail)
 
 #=================================================
 # CHECK VERSION
@@ -132,9 +136,9 @@ ynh_backup_if_checksum_is_different "$final_path/config/config.js"
 # Copy default configuration file
 mv "../conf/config.js" "$final_path/config/config.js"
 
-ynh_replace_string --match_string="__PORT__"       --replace_string="$port"        --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti"       --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__ADMIN_EMAIL_" --replace_string="$admin_email" --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORT__"       --replace_string="$port"       --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti"      --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$admin_mail" --target_file="$final_path/config/config.js"
 
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"

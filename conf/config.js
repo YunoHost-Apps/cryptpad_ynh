@@ -167,7 +167,7 @@ module.exports = {
      *  never sell it or send you marketing mail. If you want to block this check-in and remain
      *  completely invisible, set this and allowSubscriptions both to false.
      */
-    adminEmail: '__ADMIN_EMAIL__',
+    adminEmail: '__ADMIN_MAIL__',
 
     /*  Sales coming from your server will be identified by your domain
      *
