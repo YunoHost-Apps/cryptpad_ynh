@@ -173,8 +173,7 @@ ynh_add_systemd_config
 #=================================================
 
 # Set permissions on app files
-chown -R root $final_path
-chown -R $app $final_path/datastore
+chown -R $app:$app $final_path
 
 #=================================================
 # START SYSTEMD SERVICE

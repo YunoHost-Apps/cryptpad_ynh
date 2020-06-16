@@ -147,8 +147,7 @@ popd || ynh_die
 #=================================================
 ynh_script_progression --message="Securing files and directories..." --weight=1
 
-chown -R root $final_path
-chown -R $app $final_path/datastore
+chown -R $app:$app $final_path
 
 #=================================================
 # INTEGRATE SERVICE IN ADMIN PANEL
