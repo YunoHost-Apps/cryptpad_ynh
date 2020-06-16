@@ -68,13 +68,6 @@ ynh_system_user_create --username=$app
 #=================================================
 # RESTORE USER RIGHTS
 #=================================================
-
-# Restore permissions on app files
-chown -R $app:$app $final_path
-
-#=================================================
-# RESTORE USER RIGHTS
-#=================================================
 ynh_script_progression --message="Reinstalling dependencies..." --weight=5
 
 # Restore permissions on app files
