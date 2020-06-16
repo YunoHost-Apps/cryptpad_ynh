@@ -49,7 +49,7 @@ CryptPad is a Zero Knowledge realtime collaborative editor. You can share access
 
 ## Additional information
 
-* To increase space for CryptPad users, you can modify `/var/www/cryptpad/config.js`), and restart the CryptPad service with `sudo service cryptpad restart`.
+* To increase space for CryptPad users, you can modify `/var/www/cryptpad/config.js`, and restart the CryptPad service with `sudo service cryptpad restart`.
 
 ## Links
 
