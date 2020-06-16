@@ -38,11 +38,6 @@ ynh_script_progression --message="Validating installation parameters..." --weigh
 final_path=/var/www/$app
 test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
-# Normalize the url path syntax
-#path_url=$(ynh_normalize_url_path $path_url)
-
-# Check web path availability
-#ynh_webpath_available $domain $path_url
 # Register (book) web path
 ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 
@@ -69,18 +64,6 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 # Find an available port
 porti=$(ynh_find_port --port=5000)
 ynh_app_setting_set --app=$app --key=porti --value=$porti
-
-
-# # Find a free port
-# port=$(ynh_find_port 4000)
-# # Open this port
-# yunohost firewall allow --no-upnp TCP $port 2>&1
-# ynh_app_setting_set --app=$app --key=port --value=$port
-
-# porti=$(ynh_find_port 5000)
-# # Open this port
-# yunohost firewall allow --no-upnp TCP $porti 2>&1
-# ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 #=================================================
 # INSTALL NODEJS & YARN
