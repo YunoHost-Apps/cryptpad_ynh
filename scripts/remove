@@ -44,7 +44,7 @@ ynh_remove_systemd_config
 #=================================================
 # REMOVE NODEJS
 #=================================================
-ynh_script_progression --message="Removing dependencies..." --weight=4
+ynh_script_progression --message="Removing dependencies..." --weight=3
 
 ynh_remove_nodejs
 
@@ -63,13 +63,6 @@ ynh_script_progression --message="Removing nginx web server configuration..." --
 
 # Remove the dedicated nginx config
 ynh_remove_nginx_config
-
-#=================================================
-# REMOVE THE LOGROTATE CONFIG
-#=================================================
-#ynh_script_progression --message="Removing logrotate configuration..." --weight=1
-
-#ynh_remove_logrotate	# Remove the app-specific logrotate config
 
 #=================================================
 # GENERIC FINALIZATION
