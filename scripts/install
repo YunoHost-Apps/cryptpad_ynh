@@ -109,21 +109,10 @@ ynh_script_progression --message="Configuring a systemd service..." --weight=1
 ynh_replace_string --match_string="__APP__"       --replace_string="$app"         --target_file="../conf/systemd.service"
 ynh_replace_string --match_string="__FINALPATH__" --replace_string="$final_path"  --target_file="../conf/systemd.service"
 ynh_replace_string --match_string="__ENV_PATH__"  --replace_string="$PATH"        --target_file="../conf/systemd.service"
-#ynh_replace_string --match_string="__NODE__"      --replace_string="$nodejs_path" --target_file="../conf/systemd.service"
-ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"     --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__NODE__"      --replace_string="$nodejs_path" --target_file="../conf/systemd.service"
+#ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"     --target_file="../conf/systemd.service"
 
 ynh_add_systemd_config
-
-#=================================================
-# Créer le dossier de log
-#=================================================
-
-#mkdir -p /var/log/$app
-#touch /var/log/$app/cryptpad.log
-#install_log=/var/log/$app/installation.log
-#touch $install_log
-#chown $app: -R /var/log/$app
-#chown admin: -R $install_log
 
 #=================================================
 # CONFIGURE CONFIG.JS	
@@ -158,7 +147,8 @@ popd || ynh_die
 #=================================================
 ynh_script_progression --message="Securing files and directories..." --weight=1
 
-chown -R $app:$app $final_path
+chown -R root $final_path
+chown -R $app $final_path/datastore
 
 #=================================================
 # INTEGRATE SERVICE IN ADMIN PANEL

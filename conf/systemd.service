@@ -1,5 +1,5 @@
 [Unit]
-Description=CryptPad service
+Description=Zero Knowledge realtime collaborative editor.
 After=syslog.target network.target
 
 [Service]
@@ -10,6 +10,7 @@ WorkingDirectory=__FINALPATH__
 Environment=PATH=__ENV_PATH__
 Environment=NODE_ENV=production
 ExecStart=__YNH_NPM__ start
+
 Restart=always
 
 [Install]
