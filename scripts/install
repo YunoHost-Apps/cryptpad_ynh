@@ -48,7 +48,7 @@ ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 ynh_app_setting_set --app=$app --key=path_url --value=$path_url
-
+ynh_app_setting_set --app=$app --key=admin_email --value=$admin_email
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -58,11 +58,11 @@ ynh_app_setting_set --app=$app --key=path_url --value=$path_url
 ynh_script_progression --message="Configuring firewall..." --weight=1
 
 # Find an available port
-port=$(ynh_find_port --port=4000)
+port=$(ynh_find_port --port=3000)
 ynh_app_setting_set --app=$app --key=port --value=$port
 
 # Find an available port
-porti=$(ynh_find_port --port=5000)
+porti=$(ynh_find_port --port=$(($port + 1)))
 ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 #=================================================
