@@ -27,7 +27,7 @@ Comment configurer cette application : via le panneau d'administration ainsi que
 
 ## Documentation
 
-* Official documentation : Link to the official documentation of this app
+* Official documentation : https://cryptpad.fr/what-is-cryptpad.html
 * YunoHost documentation : If specific documentation is needed, feel free to contribute.
 
 ## YunoHost specific features
@@ -44,8 +44,8 @@ Comment configurer cette application : via le panneau d'administration ainsi que
 
 ## Limitations
 
-* Installation possible only on a domain root (Cryptpad limitation)
-* Can't login via SSO (due to this [Cryptpad limitation](https://github.com/xwiki-labs/cryptpad/issues/116))
+* Nécessite un sous-domaine / domaine dédié. (limitation de CryptPad)
+* Impossible de se connecter via SSO (cf [limitation de CryptPad](https://github.com/xwiki-labs/cryptpad/issues/116))
 
 ## Informations additionnelles
 

@@ -66,22 +66,6 @@ ynh_script_progression --message="Recreating the dedicated system user..." --wei
 ynh_system_user_create --username=$app
 
 #=================================================
-# SPECIFIC RESTORE
-#=================================================
-# HANDLE LOG FILES AND LOGROTATE
-#=================================================
-
-#mkdir -p /var/log/$app
-#touch /var/log/$app/etherpad.log
-#install_log=/var/log/$app/installation.log
-#touch $install_log
-#chown $app -R /var/log/$app
-#chown admin -R $install_log
-
-# Restore logrotate configuration
-#ynh_restore_file "/etc/logrotate.d/$app"
-
-#=================================================
 # RESTORE USER RIGHTS
 #=================================================
 
