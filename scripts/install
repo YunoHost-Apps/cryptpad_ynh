@@ -48,7 +48,7 @@ ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 ynh_app_setting_set --app=$app --key=path_url --value=$path_url
-
+ynh_app_setting_set --app=$app --key=admin_email --value=$admin_email
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -58,11 +58,11 @@ ynh_app_setting_set --app=$app --key=path_url --value=$path_url
 ynh_script_progression --message="Configuring firewall..." --weight=1
 
 # Find an available port
-port=$(ynh_find_port --port=4000)
+port=$(ynh_find_port --port=3000)
 ynh_app_setting_set --app=$app --key=port --value=$port
 
 # Find an available port
-porti=$(ynh_find_port --port=5000)
+porti=$(ynh_find_port --port=$(($port + 1)))
 ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 #=================================================
@@ -115,26 +115,15 @@ ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"   
 ynh_add_systemd_config
 
 #=================================================
-# Créer le dossier de log
-#=================================================
-
-#mkdir -p /var/log/$app
-#touch /var/log/$app/cryptpad.log
-#install_log=/var/log/$app/installation.log
-#touch $install_log
-#chown $app: -R /var/log/$app
-#chown admin: -R $install_log
-
-#=================================================
 # CONFIGURE CONFIG.JS	
 #=================================================
 
 # Copy default configuration file
 mv "../conf/config.js" "$final_path/config/config.js"
 
-ynh_replace_string --match_string="__PORT__"       --replace_string="$port"        --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti"       --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__ADMIN_EMAIL_" --replace_string="$admin_email" --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORT__"        --replace_string="$port"        --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORTI__"       --replace_string="$porti"       --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__ADMIN_EMAIL__" --replace_string="$admin_email" --target_file="$final_path/config/config.js"
 
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"

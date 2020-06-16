@@ -1,5 +1,5 @@
 [Unit]
-Description=CryptPad service
+Description=Zero Knowledge realtime collaborative editor.
 After=syslog.target network.target
 
 [Service]
