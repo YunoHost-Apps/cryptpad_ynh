@@ -151,7 +151,7 @@ pushd "$final_path" || ynh_die
 	ynh_use_nodejs
 	ynh_exec_warn_less yarn install #--allow-root
 	yarn global add bower
-	bower install #--allow-root
+	bower install --allow-root
 
 popd || ynh_die
 
