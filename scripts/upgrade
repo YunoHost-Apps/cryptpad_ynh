@@ -158,8 +158,8 @@ popd || ynh_die
 #=================================================
 ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
-#ynh_replace_string --match_string="__APP__"       --replace_string="$app"         --target_file="../conf/systemd.service"
-#ynh_replace_string --match_string="__FINALPATH__" --replace_string="$final_path"  --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__APP__"       --replace_string="$app"         --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__FINALPATH__" --replace_string="$final_path"  --target_file="../conf/systemd.service"
 ynh_replace_string --match_string="__ENV_PATH__"  --replace_string="$PATH"        --target_file="../conf/systemd.service"
 #ynh_replace_string --match_string="__NODE__"      --replace_string="$nodejs_path" --target_file="../conf/systemd.service"
 ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"     --target_file="../conf/systemd.service"
