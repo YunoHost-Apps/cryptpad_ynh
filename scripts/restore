@@ -68,7 +68,6 @@ ynh_system_user_create --username=$app
 #=================================================
 # RESTORE USER RIGHTS
 #=================================================
-ynh_script_progression --message="Reinstalling dependencies..." --weight=5
 
 # Restore permissions on app files
 chown -R $app:$app $final_path
@@ -95,7 +94,6 @@ systemctl enable $app.service
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
-ynh_script_progression --message="Restoring the systemd configuration..." --weight=1
 
 yunohost service add $app --description "Zero Knowledge realtime collaborative editor" --log "/var/log/$app/$app.log"
 
