@@ -11,7 +11,7 @@ Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/#/install
 ## Vue d'ensemble
 CryptPad est un éditeur de documents chiffrés collaboratifs en temps réel. Vous pouvez partager l'accès à un document simplement en partageant le lien. 
 
-**Version incluse :** 3.18.1
+**Version incluse :** 3.19.0
 
 ## Captures d'écran
 
@@ -30,7 +30,7 @@ Comment configurer cette application : via le panneau d'administration ainsi que
 * Official documentation : https://cryptpad.fr/what-is-cryptpad.html
 * YunoHost documentation : If specific documentation is needed, feel free to contribute.
 
-## YunoHost specific features
+## Caractéristiques spécifiques YunoHost
 
 #### Support multi-utilisateur
 
@@ -56,7 +56,7 @@ Comment configurer cette application : via le panneau d'administration ainsi que
 * Signaler un bug : https://github.com/YunoHost-Apps/cryptpad_ynh/issues
 * Site de l'application : https://cryptpad.fr/
 * Dépôt de l'application principale : https://github.com/xwiki-labs/cryptpad
-* Site web YunoHost: https://yunohost.org/
+* Site web YunoHost : https://yunohost.org/
 
 ---
 

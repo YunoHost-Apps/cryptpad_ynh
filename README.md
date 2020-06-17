@@ -11,7 +11,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 ## Overview
 CryptPad is a Zero Knowledge realtime collaborative editor. You can share access to a document simply by sharing the link.
 
-**Shipped version:** 3.18.1
+**Shipped version:** 3.19.0
 
 ## Screenshots
 
@@ -45,7 +45,7 @@ CryptPad is a Zero Knowledge realtime collaborative editor. You can share access
 ## Limitations
 
 * Installation possible only on a root domain (CryptPad limitation)
-* Can't login via SSO (due to this [Cryptpad limitation](https://github.com/xwiki-labs/cryptpad/issues/116))
+* Can't login via SSO (due to this [CryptPad limitation](https://github.com/xwiki-labs/cryptpad/issues/116))
 
 ## Additional information
 
