@@ -6,12 +6,8 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-if [ ! -e _common.sh ]; then
-	# Get the _common.sh file if it's not in the current directory
-	cp ../settings/scripts/_common.sh ./_common.sh
-	chmod a+rx _common.sh
-fi
-source _common.sh
+#Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
+source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -19,7 +15,6 @@ source /usr/share/yunohost/helpers
 #=================================================
 
 ynh_clean_setup () {
-# Nettoyage des résidus d'installation non pris en charge par le script remove.
 	ynh_clean_check_starting
 }
 # Exit if an error occurs during the execution of the script
@@ -28,81 +23,98 @@ ynh_abort_if_errors
 #=================================================
 # LOAD SETTINGS
 #=================================================
+ynh_script_progression --message="Loading installation settings..." --weight=1
 
 app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get $app domain)
-path_url=$(ynh_app_setting_get $app path)
-is_public=$(ynh_app_setting_get $app is_public)
-final_path=$(ynh_app_setting_get $app final_path)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+path_url=$(ynh_app_setting_get --app=$app --key=path)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
 #=================================================
+ynh_script_progression --message="Validating restoration parameters..." --weight=1
 
-ynh_webpath_available $domain $path_url \
-	|| ynh_die "Path not available: ${domain}${path_url}"
+ynh_webpath_available --domain=$domain --path_url=$path_url \
+	|| ynh_die --message="Path not available: ${domain}${path_url}"
 test ! -d $final_path \
-|| ynh_die "There is already a directory: $final_path "
+	|| ynh_die --message="There is already a directory: $final_path "
 
 #=================================================
-# STANDARD RESTORE STEPS
+# STANDARD RESTORATION STEPS
 #=================================================
-# RESTORE OF THE NGINX CONFIGURATION
-#=================================================
-
-ynh_restore_file "/etc/nginx/conf.d/$domain.d/$app.conf"
-
-#=================================================
-# RESTORE OF THE MAIN DIR OF THE APP
+# RESTORE THE NGINX CONFIGURATION
 #=================================================
 
-ynh_restore_file "$final_path"
+ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
+
+#=================================================
+# RESTORE THE APP MAIN DIR
+#=================================================
+ynh_script_progression --message="Restoring the app main directory..." --weight=6
+
+ynh_restore_file --origin_path="$final_path"
 
 #=================================================
 # RECREATE THE DEDICATED USER
 #=================================================
+ynh_script_progression --message="Recreating the dedicated system user..." --weight=1
 
-ynh_system_user_create $app $final_path	# Recreate the dedicated user, if it doesn't exist
-
-#=================================================
-# SPECIFIC RESTORE
-#=================================================
-# HANDLE LOG FILES AND LOGROTATE
-#=================================================
-
-mkdir -p /var/log/$app
-touch /var/log/$app/etherpad.log
-install_log=/var/log/$app/installation.log
-touch $install_log
-chown $app -R /var/log/$app
-chown admin -R $install_log
-
-# Restore logrotate configuration
-ynh_restore_file "/etc/logrotate.d/$app"
+# Create the dedicated user (if not existing)
+ynh_system_user_create --username=$app
 
 #=================================================
-# INSTALL NODEJS
+# RESTORE USER RIGHTS
 #=================================================
 
-ynh_install_nodejs $nodejs_version
+# Restore permissions on app files
+chown -R $app:$app $final_path
 
 #=================================================
-# ENABLE SERVICE IN ADMIN PANEL
+# REINSTALL DEPENDENCIES
 #=================================================
+ynh_script_progression --message="Reinstalling dependencies..." --weight=7
 
-yunohost service add $app --log "/var/log/$app/etherpad.log"
+# Install Nodejs
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+
+# Install Yarn
+ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
 
 #=================================================
 # RESTORE SYSTEMD
 #=================================================
+ynh_script_progression --message="Restoring the systemd configuration..." --weight=1
 
-ynh_restore_file "/etc/systemd/system/$app.service"
-## Démarrage auto du service
+ynh_restore_file --origin_path="/etc/systemd/system/$app.service"
 systemctl enable $app.service
 
 #=================================================
-# RELOAD NGINX
+# INTEGRATE SERVICE IN YUNOHOST
 #=================================================
 
-systemctl reload nginx
+yunohost service add $app --description "Zero Knowledge realtime collaborative editor" --log "/var/log/$app/$app.log"
+
+#=================================================
+# START SYSTEMD SERVICE
+#=================================================
+ynh_script_progression --message="Starting a systemd service..." --weight=1
+
+ynh_systemd_action --service_name=$app --action="start"  --log_path="systemd" --line_match="server available"
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# RELOAD NGINX
+#=================================================
+ynh_script_progression --message="Reloading nginx web server..." --weight=1
+
+ynh_systemd_action --service_name=nginx --action=reload
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Restoration completed for $app" --last

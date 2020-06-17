@@ -3,10 +3,10 @@
     "id": "cryptpad",
     "packaging_format": 1,
     "description": {
-        "en": "Encrypted Pad",
-        "fr": "Créateur de pad chiffré."
+        "en": "Zero Knowledge realtime collaborative editor",
+        "fr": "Éditeur chiffré collaboratif en temps réel."
     },
-    "version": "2.16.0",
+    "version": "3.18.1~ynh1",
     "url": "https://cryptpad.fr/",
     "license": "AGPL-3.0-or-later",
     "maintainer": {
@@ -15,7 +15,7 @@
         "url": "https://frju365.yunohost.support"
     },
     "requirements": {
-        "yunohost": ">= 3.0.0"
+        "yunohost": ">= 3.8.1"
     },
     "multi_instance": false,
     "services": [
@@ -30,33 +30,33 @@
                     "en": "Choose a domain name for CryptPad",
                     "fr": "Choisissez un nom de domaine pour CryptPad"
                 },
-                "example": "example.com"
+                "example": "cryptpad.example.com"
             },
             {
                 "name": "path",
                 "type": "path",
                 "ask": {
-                    "en": "Choose a path for CryptPad, only / is allowed.",
-                    "fr": "Choisissez un chemin pour CryptPad, seul / est autorisé."
+                    "en": "Choose a path for CryptPad, requires a dedicated sub-domain/domain.",
+                    "fr": "Choisissez un chemin pour CryptPad, nécessite un sous-domaine/domaine dédié."
                 },
                 "example": "/",
                 "default": "/"
             },
-            {
-                "name": "email",
-                "type": "email",
+             {
+                "name": "admin",
+                "type": "user",
                 "ask": {
-                    "en": "Choose an email for the admin user.",
-                    "fr": "Choisissez une adresse mail pour l'administrateur"
+                    "en": "Choose an admin user",
+                    "fr": "Choisissez l’administrateur"
                 },
-                "example": "example@example.tld"
+                "example": "johndoe"
             },
             {
                 "name": "is_public",
                 "type": "boolean",
                 "ask": {
-                    "en": "Is it a public site? ",
-                    "fr": "Est-ce un site publique ? "
+                    "en": "Is it a public site?",
+                    "fr": "Est-ce un site publique ?"
                 },
                 "default": true
             }

@@ -6,18 +6,17 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-if [ ! -e _common.sh ]; then
-	# Get the _common.sh file if it's not in the current directory
-	cp ../settings/scripts/_common.sh ./_common.sh
-	chmod a+rx _common.sh
-fi
-source _common.sh
+#Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
+source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
 # MANAGE SCRIPT FAILURE
 #=================================================
 
+ynh_clean_setup () {
+	ynh_clean_check_starting
+}
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
@@ -26,31 +25,37 @@ ynh_abort_if_errors
 #=================================================
 
 app=$YNH_APP_INSTANCE_NAME
-domain=$(ynh_app_setting_get $app domain)
-final_path=$(ynh_app_setting_get $app final_path)
+
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 
 #=================================================
-# STANDARD BACKUP STEPS
+# DECLARE DATA AND CONF FILES TO BACKUP
 #=================================================
-# BACKUP APP MAIN DIR
-#=================================================
-
-CHECK_SIZE "$final_path"
-ynh_backup "$final_path" "sources"
+ynh_print_info --message="Declaring files to be backed up..."
 
 #=================================================
-# BACKUP NGINX CONFIGURATION
+# BACKUP THE APP MAIN DIR
 #=================================================
 
-ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf" "nginx.conf"
+ynh_backup --src_path="$final_path"
 
 #=================================================
-# BACKUP LOGROTATE CONFIGURATION
-#=================================================
-ynh_backup "/etc/logrotate.d/$app" "logrotate"
-
-#=================================================
-# BACKUP SYSTEMD CONFIGURATION
+# BACKUP THE NGINX CONFIGURATION
 #=================================================
 
-ynh_backup "/etc/systemd/system/$app.service" "systemd.service"
+ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
+
+#=================================================
+# SPECIFIC BACKUP
+#=================================================
+# BACKUP SYSTEMD
+#=================================================
+
+ynh_backup --src_path="/etc/systemd/system/$app.service"
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_print_info --message="Backup script completed for $app. (YunoHost will then actually copy those files to the archive)."
