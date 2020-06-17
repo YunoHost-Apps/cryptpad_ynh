@@ -111,7 +111,6 @@ ynh_script_progression --message="Configuring a systemd service..." --weight=1
 ynh_replace_string --match_string="__APP__"       --replace_string="$app"         --target_file="../conf/systemd.service"
 ynh_replace_string --match_string="__FINALPATH__" --replace_string="$final_path"  --target_file="../conf/systemd.service"
 ynh_replace_string --match_string="__ENV_PATH__"  --replace_string="$PATH"        --target_file="../conf/systemd.service"
-#ynh_replace_string --match_string="__NODE__"      --replace_string="$nodejs_path" --target_file="../conf/systemd.service"
 ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"     --target_file="../conf/systemd.service"
 
 ynh_add_systemd_config
@@ -138,7 +137,7 @@ ynh_script_progression --message="Building $app... (this will take some time and
 pushd "$final_path" || ynh_die
 
 	ynh_use_nodejs
-	ynh_exec_warn_less yarn install
+	ynh_exec_warn_less yarn install --allow-root
 	yarn global add bower
 	bower install --allow-root
 
