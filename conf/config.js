@@ -142,7 +142,7 @@ module.exports = {
     /*  CryptPad will display a point of contact for your instance on its contact page
      *  (/contact.html) if you provide it below.
      */
-    adminEmail: "__ADMIN_EMAIL__",
+    adminEmail: "__ADMIN_MAIL__",
 
     /*
      *  By default, CryptPad contacts one of our servers once a day.

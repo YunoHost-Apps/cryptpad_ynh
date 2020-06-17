@@ -42,14 +42,14 @@
                 "example": "/",
                 "default": "/"
             },
-            {
-                "name": "email",
-                "type": "email",
+             {
+                "name": "admin",
+                "type": "user",
                 "ask": {
-                    "en": "Choose an email for the admin user.",
-                    "fr": "Choisissez une adresse mail pour l'administrateur"
+                    "en": "Choose an admin user",
+                    "fr": "Choisissez l’administrateur"
                 },
-                "example": "example@example.tld"
+                "example": "johndoe"
             },
             {
                 "name": "is_public",
