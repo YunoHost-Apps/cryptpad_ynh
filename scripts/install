@@ -125,6 +125,7 @@ ynh_replace_string --match_string="__PORT__"        --replace_string="$port"    
 ynh_replace_string --match_string="__PORTI__"       --replace_string="$porti"       --target_file="$final_path/config/config.js"
 ynh_replace_string --match_string="__ADMIN_EMAIL__" --replace_string="$admin_email" --target_file="$final_path/config/config.js"
 
+
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"
 
@@ -141,6 +142,17 @@ pushd "$final_path" || ynh_die
 	bower install --allow-root
 
 popd || ynh_die
+
+#=================================================
+# INSTALL CRYPTPAD
+#=================================================
+
+script_dir="$PWD"
+pushd "$final_path"
+npm install --allow-root
+npm install -g bower --allow-root
+bower install --allow-root
+popd
 
 #=================================================
 # Set some permissions
