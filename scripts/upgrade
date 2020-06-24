@@ -31,7 +31,7 @@ path_url=$(ynh_app_setting_get --app=$app --key=path_url)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 admin=$(ynh_app_setting_get --app=$app --key=admin)
-admin_mail=$(ynh_user_get_info "$admin" 'mail')
+admin_mail=$(ynh_user_get_info '$admin' 'mail')
 port=$(ynh_app_setting_get --app=$app --key=port)
 porti=$(ynh_app_setting_get --app=$app --key=porti)
 
@@ -158,10 +158,10 @@ popd || ynh_die
 #=================================================
 ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
-ynh_replace_string --match_string="__APP__"       --replace_string="$app"         --target_file="../conf/systemd.service"
-ynh_replace_string --match_string="__FINALPATH__" --replace_string="$final_path"  --target_file="../conf/systemd.service"
-ynh_replace_string --match_string="__ENV_PATH__"  --replace_string="$PATH"        --target_file="../conf/systemd.service"
-ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"     --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__APP__"       --replace_string="$app"        --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__FINALPATH__" --replace_string="$final_path" --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__ENV_PATH__"  --replace_string="$PATH"       --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"    --target_file="../conf/systemd.service"
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
