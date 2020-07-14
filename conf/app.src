@@ -1,5 +1,5 @@
 SOURCE_URL=https://github.com/xwiki-labs/cryptpad/archive/3.20.0.tar.gz
-SOURCE_SUM=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+SOURCE_SUM=132a774e7a2384f4ead18a54e8fb4ca12bef73ba478aa12f4d49f0dea825cceb
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
