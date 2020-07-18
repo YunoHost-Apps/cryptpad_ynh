@@ -13,6 +13,7 @@ CryptPad est un éditeur de documents chiffrés collaboratifs en temps réel. C'
 
 **Version incluse :** 3.20.0
 
+
 ## Captures d'écran
 
 ![](https://github.com/xwiki-labs/cryptpad/raw/master/screenshot.png)
