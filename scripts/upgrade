@@ -139,6 +139,7 @@ ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$admin_mail
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"
 
+
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
