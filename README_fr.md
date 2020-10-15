@@ -11,7 +11,7 @@ Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/#/install
 ## Vue d'ensemble
 CryptPad est un éditeur de documents chiffrés collaboratifs en temps réel. C'est une alternative respectant la vie privée aux outils office et aux services cloud populaires. Tout le contenu stocké dans CryptPad est chiffré avant d'être envoyé, ce qui signifie que personne ne peut accéder à vos données à moins que vous ne leur donniez les clés. Vous pouvez partager l'accès à un document simplement en partageant le lien.
 
-**Version incluse :** 3.20.0
+**Version incluse :** 3.23.0
 
 ## Captures d'écran
 
@@ -60,8 +60,7 @@ Comment configurer cette application : via le panneau d'administration ainsi que
 
 ---
 
-Informations pour les développeurs
-----------------
+## Informations pour les développeurs
 
 Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/cryptpad_ynh/tree/testing).
 
