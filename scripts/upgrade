@@ -176,6 +176,14 @@ ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 chown -R $app:$app $final_path
 
 #=================================================
+# INTEGRATE SERVICE IN ADMIN PANEL
+#=================================================
+ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
+
+# Ajoute le service au monitoring de Yunohost.
+yunohost service add $app --log "/var/log/$app/$app.log"
+
+#=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
