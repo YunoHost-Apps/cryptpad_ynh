@@ -1,6 +1,6 @@
-SOURCE_URL=https://github.com/xwiki-labs/cryptpad/archive/3.24.0.tar.gz
-SOURCE_SUM=d662fa81a840db617f3892fbec193c413d502c4d83a02f5f05777e64f32c150c
+SOURCE_URL=https://github.com/xwiki-labs/cryptpad/archive/3.25.0.tar.gz
+SOURCE_SUM=8a1d57230f9448b5e2963aab19dcbb5627e1b92c2e56510348def762aa19cb13
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=cryptpad-3.24.0.tar.gz
+SOURCE_FILENAME=cryptpad-3.25.0.tar.gz
