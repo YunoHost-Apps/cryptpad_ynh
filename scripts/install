@@ -135,12 +135,10 @@ ynh_store_file_checksum "$final_path/config/config.js"
 ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
 
 pushd "$final_path" || ynh_die
-
 	ynh_use_nodejs
 	ynh_exec_warn_less yarn install --allow-root
 	yarn global add bower
 	bower install --allow-root
-
 popd || ynh_die
 
 #=================================================
@@ -151,12 +149,11 @@ ynh_script_progression --message="Securing files and directories..." --weight=1
 chown -R $app:$app $final_path
 
 #=================================================
-# INTEGRATE SERVICE IN ADMIN PANEL
+# INTEGRATE SERVICE IN YUNOHOST
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 
-# Ajoute le service au monitoring de Yunohost.
-yunohost service add $app --log "/var/log/$app/$app.log"
+yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # START SYSTEMD SERVICE

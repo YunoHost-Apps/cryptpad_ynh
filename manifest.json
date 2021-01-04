@@ -8,7 +8,7 @@
     },
     "version": "3.24.0~ynh1",
     "url": "https://cryptpad.fr/",
-    "license": "AGPL-3.0-or-later",
+    "license": "AGPL-3.0-only",
     "maintainer": {
         "name": "frju365",
         "email": "win10@tutanota.com",
@@ -57,6 +57,10 @@
                 "ask": {
                     "en": "Is it a public site?",
                     "fr": "Est-ce un site publique ?"
+                },
+                "help": {
+                    "en": "If enabled, CryptPad will be accessible by people who do not have an account. This can be changed later via the webadmin.",
+                    "fr": "Si cette case est cochée, CryptPad sera accessible aux personnes n’ayant pas de compte. Vous pourrez changer ceci plus tard via la webadmin."
                 },
                 "default": true
             }
