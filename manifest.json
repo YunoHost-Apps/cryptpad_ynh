@@ -8,7 +8,7 @@
     },
     "version": "3.24.0~ynh1",
     "url": "https://cryptpad.fr/",
-    "license": "AGPL-3.0-or-later",
+    "license": "AGPL-3.0-only",
     "maintainer": {
         "name": "frju365",
         "email": "win10@tutanota.com",
