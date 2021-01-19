@@ -23,7 +23,7 @@ CryptPad is a collaborative encrypted document editor in real time. It is a priv
 
 ## Configuration
 
-* How to configure this app: From an admin panel, a plain file with SSH.
+* How to configure this app: From the admin panel and the plain file `/var/www/cryptpad/config/config.js.`
 
 ## Documentation
 
@@ -49,7 +49,7 @@ CryptPad is a collaborative encrypted document editor in real time. It is a priv
 
 ## Additional information
 
-* To increase space for CryptPad users, you can modify `/var/www/cryptpad/config.js`, and restart the CryptPad service with `sudo service cryptpad restart`.
+* To increase space for CryptPad users, you can modify `/var/www/cryptpad/config/config.js`, and restart the CryptPad service with `sudo service cryptpad restart`.
 
 ## Links
 
