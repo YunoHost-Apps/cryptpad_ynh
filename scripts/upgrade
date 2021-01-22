@@ -86,7 +86,7 @@ then
 	#ynh_setup_source --dest_dir="$final_path"
 
 	pushd $final_path
-		bower update
+		ynh_exec_warn_less ynh_exec_as $app bower update
 	popd
 fi
 
