@@ -50,7 +50,7 @@ ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 ynh_app_setting_set --app=$app --key=path_url --value=$path_url
 ynh_app_setting_set --app=$app --key=admin --value=$admin
 
-admin_mail=$(ynh_user_get_info "$admin" 'mail')
+admin_mail=$(ynh_user_get_info "$admin" "mail")
 
 #=================================================
 # STANDARD MODIFICATIONS
