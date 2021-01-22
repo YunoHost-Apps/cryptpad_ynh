@@ -12,19 +12,9 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-# Set app specific variables
-app=$YNH_APP_INSTANCE_NAME
-
-# Check destination directory
-DESTDIR="/var/www/$app"
-[[ ! -d $DESTDIR ]] && ynh_die \
-"The destination directory '$DESTDIR' does not exist.\
- The app is not correctly installed, you should remove it first."
-
-#=================================================
-# LOAD SETTINGS
-#=================================================
 ynh_script_progression --message="Loading installation settings..." --weight=1
+
+app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path_url)
@@ -82,7 +72,7 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action=stop --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -139,7 +129,6 @@ ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$admin_mail
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"
 
-
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
@@ -171,7 +160,7 @@ ynh_add_systemd_config
 ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Set permissions on app files
-chown -R $app:$app $final_path
+chown -R $app: $final_path
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
@@ -185,7 +174,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="start" --log_path="systemd" --line_match="server available"
+ynh_systemd_action --service_name=$app --action=start --log_path="systemd" --line_match="server available"
 
 #=================================================
 # RELOAD NGINX
