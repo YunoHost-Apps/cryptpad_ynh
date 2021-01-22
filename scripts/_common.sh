@@ -29,4 +29,3 @@ ynh_exec_as() {
   else
     sudo -u "$USER" "$@"
   fi
-}
