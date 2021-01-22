@@ -86,7 +86,7 @@ then
 	#ynh_setup_source --dest_dir="$final_path"
 
 	pushd $final_path
-		ynh_exec_warn_less ynh_exec_as $app bower update
+		bower update
 	popd
 fi
 
@@ -121,17 +121,17 @@ ynh_system_user_create --username=$app
 # CONFIGURE CONFIG.JS	
 #=================================================
 
-ynh_backup_if_checksum_is_different "$final_path/config/config.js"
+# ynh_backup_if_checksum_is_different "$final_path/config/config.js"
 
-# Copy default configuration file
-mv "../conf/config.js" "$final_path/config/config.js"
+# # Copy default configuration file
+# mv "../conf/config.js" "$final_path/config/config.js"
 
-ynh_replace_string --match_string="__PORT__"       --replace_string="$port"        --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti"       --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$admin_mail" --target_file="$final_path/config/config.js"
+# ynh_replace_string --match_string="__PORT__"       --replace_string="$port"        --target_file="$final_path/config/config.js"
+# ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti"       --target_file="$final_path/config/config.js"
+# ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$admin_mail" --target_file="$final_path/config/config.js"
 
-# Store file checksum to detected user modifications on upgrade
-ynh_store_file_checksum "$final_path/config/config.js"
+# # Store file checksum to detected user modifications on upgrade
+# ynh_store_file_checksum "$final_path/config/config.js"
 
 # #=================================================
 # # INSTALL CRYPTPAD
