@@ -86,7 +86,7 @@ then
 	#ynh_setup_source --dest_dir="$final_path"
 
 	pushd $final_path
-		bower update
+		bower update --allow-root
 	popd
 fi
 
