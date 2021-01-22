@@ -146,7 +146,7 @@ popd || ynh_die
 #=================================================
 ynh_script_progression --message="Securing files and directories..." --weight=1
 
-chown -R $app:$app $final_path
+chown -R $app: $final_path
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
@@ -172,7 +172,7 @@ ynh_script_progression --message="Configuring SSOwat..." --weight=1
 if [ $is_public -eq 1 ]
 then
 	# unprotected_uris allows SSO credentials to be passed anyway.
-	ynh_permission_update --permission "main" --add visitors
+	ynh_permission_update --permission="main" --add="visitors"
 fi
 
 #=================================================

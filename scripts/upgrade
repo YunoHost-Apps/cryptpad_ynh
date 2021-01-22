@@ -83,7 +83,11 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path"
+	#ynh_setup_source --dest_dir="$final_path"
+
+	pushd $final_path
+		bower update
+	popd
 fi
 
 #=================================================
@@ -129,17 +133,17 @@ ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$admin_mail
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"
 
-#=================================================
-# INSTALL CRYPTPAD
-#=================================================
-ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
+# #=================================================
+# # INSTALL CRYPTPAD
+# #=================================================
+# ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
 
-pushd "$final_path" || ynh_die
-	ynh_use_nodejs
-	ynh_exec_warn_less yarn install  --allow-root
-	yarn global add bower
-	bower install --allow-root
-popd || ynh_die
+# pushd "$final_path" || ynh_die
+# 	ynh_use_nodejs
+# 	ynh_exec_warn_less yarn install  --allow-root
+# 	yarn global add bower
+# 	bower install --allow-root
+# popd || ynh_die
 
 #=================================================
 # SETUP SYSTEMD
