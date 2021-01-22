@@ -23,7 +23,7 @@ CryptPad est un éditeur de documents chiffrés collaboratifs en temps réel. C'
 
 ## Configuration
 
-Comment configurer cette application : via le panneau d'administration ainsi que le fichier de configuration `/var/www/cryptpad/config.js`.
+Comment configurer cette application : via le panneau d'administration ainsi que le fichier de configuration `/var/www/cryptpad/config/config.js`.
 
 ## Documentation
 
@@ -49,7 +49,7 @@ Comment configurer cette application : via le panneau d'administration ainsi que
 
 ## Informations additionnelles
 
-* Pour augmenter l'espace pour l'utilisateur dans le CryptPad, vous pouvez configurer le fichier `config.js` dans le dossier `/var/www/cryptpad/config.js`, puis redémarrez le service CryptPad `sudo service cryptpad restart`.
+* Pour augmenter l'espace pour l'utilisateur dans le CryptPad, vous pouvez configurer le fichier `config.js` dans le dossier `/var/www/cryptpad/config/config.js`, puis redémarrez le service CryptPad `sudo service cryptpad restart`.
 
 ## Liens
 
