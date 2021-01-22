@@ -27,7 +27,7 @@ CryptPad is a collaborative encrypted document editor in real time. It is a priv
 
 ## Documentation
 
-* Official documentation: https://cryptpad.fr/what-is-cryptpad.html
+* Official documentation: https://docs.cryptpad.fr/en/
 * YunoHost documentation: If specific documentation is needed, feel free to contribute.
 
 ## YunoHost specific features

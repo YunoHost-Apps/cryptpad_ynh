@@ -27,7 +27,7 @@ Comment configurer cette application : via le panneau d'administration ainsi que
 
 ## Documentation
 
-* Official documentation : https://cryptpad.fr/what-is-cryptpad.html
+* Official documentation : https://docs.cryptpad.fr/fr/
 * YunoHost documentation : If specific documentation is needed, feel free to contribute.
 
 ## Caractéristiques spécifiques YunoHost

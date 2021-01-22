@@ -2,7 +2,6 @@
 	auto_remove=1
 	; Manifest
 		domain="domain.tld"	(DOMAIN)
-		path="/path"	(PATH)
 		admin="john"	(USER)
 		is_public="1"	(PUBLIC|public=1|private=0)
 	; Checks
