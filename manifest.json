@@ -6,7 +6,7 @@
         "en": "Zero Knowledge realtime collaborative editor",
         "fr": "Éditeur chiffré collaboratif en temps réel."
     },
-    "version": "3.24.0~ynh2",
+    "version": "4.0.0~ynh1",
     "url": "https://cryptpad.fr/",
     "license": "AGPL-3.0-only",
     "maintainer": {
@@ -32,7 +32,7 @@
                 },
                 "example": "cryptpad.example.com"
             },
-             {
+            {
                 "name": "admin",
                 "type": "user",
                 "ask": {

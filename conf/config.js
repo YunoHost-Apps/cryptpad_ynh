@@ -42,7 +42,7 @@ module.exports = {
  *
  *  In a production instance this should be available ONLY over HTTPS
  *  using the default port for HTTPS (443) ie. https://cryptpad.fr
- *  In such a case this should be handled by NGINX, as documented in
+ *  In such a case this should be also handled by NGINX, as documented in
  *  cryptpad/docs/example.nginx.conf (see the $main_domain variable)
  *
  */
@@ -104,13 +104,13 @@ module.exports = {
     /*
      *  CryptPad contains an administration panel. Its access is restricted to specific
      *  users using the following list.
-     *  To give access to the admin panel to a user account, just add their user id,
-     *  which can be found on the settings page for registered users.
+     *  To give access to the admin panel to a user account, just add their public signing
+     *  key, which can be found on the settings page for registered users.
      *  Entries should be strings separated by a comma.
      */
 /*
     adminKeys: [
-        //"https://my.awesome.website/user/#/1/cryptpad-user1/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=",
+        //"[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
     ],
 */
 
@@ -142,7 +142,7 @@ module.exports = {
     /*  CryptPad will display a point of contact for your instance on its contact page
      *  (/contact.html) if you provide it below.
      */
-    adminEmail: "__ADMIN_MAIL__",
+    adminEmail: '__ADMIN_MAIL__',
 
     /*
      *  By default, CryptPad contacts one of our servers once a day.
@@ -192,6 +192,25 @@ module.exports = {
      */
     //archiveRetentionTime: 15,
 
+    /*  It's possible to configure your instance to remove data
+     *  stored on behalf of inactive accounts. Set 'accountRetentionTime'
+     *  to the number of days an account can remain idle before its
+     *  documents and other account data is removed.
+     *
+     *  Leave this value commented out to preserve all data stored
+     *  by user accounts regardless of inactivity.
+     */
+     //accountRetentionTime: 365,
+
+    /*  Starting with CryptPad 3.23.0, the server automatically runs
+     *  the script responsible for removing inactive data according to
+     *  your configured definition of inactivity. Set this value to `true`
+     *  if you prefer not to remove inactive data, or if you prefer to
+     *  do so manually using `scripts/evict-inactive.js`.
+     */
+    //disableIntegratedEviction: true,
+
+
     /*  Max Upload Size (bytes)
      *  this sets the maximum size of any one file uploaded to the server.
      *  anything larger than this size will be rejected
@@ -209,12 +228,12 @@ module.exports = {
      */
 /*
     customLimits: {
-        "https://my.awesome.website/user/#/1/cryptpad-user1/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=": {
+        "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]": {
             limit: 20 * 1024 * 1024 * 1024,
             plan: 'insider',
             note: 'storage space donated by my.awesome.website'
         },
-        "https://my.awesome.website/user/#/1/cryptpad-user2/GdflkgdlkjeworijfkldfsdflkjeEAsdlEnkbx1vVOo=": {
+        "[cryptpad-user2@my.awesome.website/GdflkgdlkjeworijfkldfsdflkjeEAsdlEnkbx1vVOo=]": {
             limit: 10 * 1024 * 1024 * 1024,
             plan: 'insider',
             note: 'storage space donated by my.awesome.website'

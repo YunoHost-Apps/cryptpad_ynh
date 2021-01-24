@@ -12,26 +12,16 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-# Set app specific variables
-app=$YNH_APP_INSTANCE_NAME
-
-# Check destination directory
-DESTDIR="/var/www/$app"
-[[ ! -d $DESTDIR ]] && ynh_die \
-"The destination directory '$DESTDIR' does not exist.\
- The app is not correctly installed, you should remove it first."
-
-#=================================================
-# LOAD SETTINGS
-#=================================================
 ynh_script_progression --message="Loading installation settings..." --weight=1
+
+app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path_url)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 admin=$(ynh_app_setting_get --app=$app --key=admin)
-admin_mail=$(ynh_user_get_info "$admin" "mail")
+email=$(ynh_user_get_info --username=$admin --key=mail)
 port=$(ynh_app_setting_get --app=$app --key=port)
 porti=$(ynh_app_setting_get --app=$app --key=porti)
 
@@ -82,7 +72,7 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action=stop --log_path="/var/log/$app/$app.log"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -132,13 +122,12 @@ ynh_backup_if_checksum_is_different "$final_path/config/config.js"
 # Copy default configuration file
 mv "../conf/config.js" "$final_path/config/config.js"
 
-ynh_replace_string --match_string="__PORT__"       --replace_string="$port"        --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti"       --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$admin_mail" --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORT__"       --replace_string="$port"  --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti" --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$email" --target_file="$final_path/config/config.js"
 
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"
-
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -146,10 +135,7 @@ ynh_store_file_checksum "$final_path/config/config.js"
 ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
 
 pushd "$final_path" || ynh_die
-	ynh_use_nodejs
-	ynh_exec_warn_less yarn install  --allow-root
-	yarn global add bower
-	bower install --allow-root
+	bower update --allow-root
 popd || ynh_die
 
 #=================================================
@@ -171,7 +157,7 @@ ynh_add_systemd_config
 ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Set permissions on app files
-chown -R $app:$app $final_path
+chown -R $app: $final_path
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
@@ -185,7 +171,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="start" --log_path="systemd" --line_match="server available"
+ynh_systemd_action --service_name=$app --action=start --log_path="systemd" --line_match="server available"
 
 #=================================================
 # RELOAD NGINX
