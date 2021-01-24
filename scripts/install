@@ -76,7 +76,7 @@ ynh_script_progression --message="Installing dependencies..." --weight=20
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 # Install Yarn
-ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
+#ynh_install_extra_app_dependencies --repo="deb https://dl.yarnpkg.com/debian/ stable main" --package="yarn" --key="https://dl.yarnpkg.com/debian/pubkey.gpg"
 
 #=================================================
 # CREATE DEDICATED USER
@@ -136,8 +136,8 @@ ynh_script_progression --message="Building CryptPad... (this will take some time
 
 pushd "$final_path" || ynh_die
 	ynh_use_nodejs
-	ynh_exec_warn_less yarn install --allow-root
-	yarn global add bower
+	ynh_exec_warn_less npm install --allow-root
+	npm install -g bower
 	bower install --allow-root
 popd || ynh_die
 
