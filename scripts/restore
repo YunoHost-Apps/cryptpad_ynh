@@ -70,7 +70,7 @@ ynh_system_user_create --username=$app
 #=================================================
 
 # Restore permissions on app files
-chown -R $app:$app $final_path
+chown -R $app: $final_path
 
 #=================================================
 # REINSTALL DEPENDENCIES
