@@ -6,7 +6,7 @@
         "en": "Zero Knowledge realtime collaborative editor",
         "fr": "Éditeur chiffré collaboratif en temps réel."
     },
-    "version": "4.0.0~ynh2",
+    "version": "4.0.0~ynh3",
     "url": "https://cryptpad.fr/",
     "license": "AGPL-3.0-only",
     "maintainer": {
@@ -29,6 +29,10 @@
                 "ask": {
                     "en": "Choose a domain name for CryptPad",
                     "fr": "Choisissez un nom de domaine pour CryptPad"
+                },
+                "help": {
+                    "en": "CryptPad needs to be installed in a dedicated domain or sub-domain.",
+                    "fr": "CryptPad doit être installé dans un domaine ou sous-domaine dédié."
                 },
                 "example": "cryptpad.example.com"
             },
