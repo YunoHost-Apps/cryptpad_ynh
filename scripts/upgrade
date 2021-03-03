@@ -19,7 +19,6 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path_url)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 admin=$(ynh_app_setting_get --app=$app --key=admin)
 email=$(ynh_user_get_info --username=$admin --key=mail)
 port=$(ynh_app_setting_get --app=$app --key=port)
@@ -175,7 +174,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action=start --log_path="systemd" --line_match="server available"
+ynh_systemd_action --service_name=$app --action=start --log_path=systemd --line_match="server available"
 
 #=================================================
 # RELOAD NGINX
