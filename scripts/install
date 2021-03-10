@@ -49,8 +49,6 @@ ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path_url --value=$path_url
 ynh_app_setting_set --app=$app --key=admin --value=$admin
 
-email=$(ynh_user_get_info --username=$admin --key=mail)
-
 #=================================================
 # STANDARD MODIFICATIONS
 #=================================================
@@ -104,8 +102,8 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Configuring a systemd service..." --weight=1
 
-ynh_replace_string --match_string="__ENV_PATH__"  --replace_string="$PATH"       --target_file="../conf/systemd.service"
-ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"    --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__ENV_PATH__" --replace_string="$PATH"    --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__YNH_NPM__"  --replace_string="$ynh_npm" --target_file="../conf/systemd.service"
 
 ynh_add_systemd_config
 
@@ -116,9 +114,11 @@ ynh_add_systemd_config
 # Copy default configuration file
 mv "../conf/config.js" "$final_path/config/config.js"
 
-ynh_replace_string --match_string="__PORT__"       --replace_string="$port"  --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti" --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$email" --target_file="$final_path/config/config.js"
+email=$(ynh_user_get_info --username=$admin --key=mail)
+
+ynh_replace_string --match_string="__PORT__"  --replace_string="$port"  --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__PORTI__" --replace_string="$porti" --target_file="$final_path/config/config.js"
+ynh_replace_string --match_string="__EMAIL__" --replace_string="$email" --target_file="$final_path/config/config.js"
 
 # Store file checksum to detected user modifications on upgrade
 ynh_store_file_checksum "$final_path/config/config.js"
@@ -155,7 +155,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 ynh_script_progression --message="Starting a systemd service..." --weight=2
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --log_path="systemd" --line_match="server available"
+ynh_systemd_action --service_name=$app --action=start --log_path=systemd --line_match="server available"
 
 #=================================================
 # SETUP SSOWAT
