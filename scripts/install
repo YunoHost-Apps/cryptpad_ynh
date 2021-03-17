@@ -112,16 +112,6 @@ ynh_add_systemd_config
 # CONFIGURE CONFIG.JS	
 #=================================================
 
-# # Copy default configuration file
-# mv "../conf/config.js" "$final_path/config/config.js"
-
-# ynh_replace_string --match_string="__PORT__"  --replace_string="$port"  --target_file="$final_path/config/config.js"
-# ynh_replace_string --match_string="__PORTI__" --replace_string="$porti" --target_file="$final_path/config/config.js"
-# ynh_replace_string --match_string="__EMAIL__" --replace_string="$email" --target_file="$final_path/config/config.js"
-
-# # Store file checksum to detected user modifications on upgrade
-# ynh_store_file_checksum "$final_path/config/config.js"
-
 ynh_add_config --template="../conf/config.js" --destination="$final_path/config/config.js"
 
 #=================================================
