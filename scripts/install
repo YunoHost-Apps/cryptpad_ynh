@@ -27,6 +27,7 @@ domain=$YNH_APP_ARG_DOMAIN
 is_public=$YNH_APP_ARG_IS_PUBLIC
 path_url="/"
 admin=$YNH_APP_ARG_ADMIN
+email=$(ynh_user_get_info --username=$admin --key=mail)
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -48,8 +49,6 @@ ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path_url --value=$path_url
 ynh_app_setting_set --app=$app --key=admin --value=$admin
-
-email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -104,8 +103,8 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Configuring a systemd service..." --weight=1
 
-ynh_replace_string --match_string="__ENV_PATH__"  --replace_string="$PATH"       --target_file="../conf/systemd.service"
-ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"    --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__ENV_PATH__" --replace_string="$PATH"    --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__YNH_NPM__"  --replace_string="$ynh_npm" --target_file="../conf/systemd.service"
 
 ynh_add_systemd_config
 
@@ -113,15 +112,17 @@ ynh_add_systemd_config
 # CONFIGURE CONFIG.JS	
 #=================================================
 
-# Copy default configuration file
-mv "../conf/config.js" "$final_path/config/config.js"
+# # Copy default configuration file
+# mv "../conf/config.js" "$final_path/config/config.js"
 
-ynh_replace_string --match_string="__PORT__"       --replace_string="$port"  --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti" --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$email" --target_file="$final_path/config/config.js"
+# ynh_replace_string --match_string="__PORT__"  --replace_string="$port"  --target_file="$final_path/config/config.js"
+# ynh_replace_string --match_string="__PORTI__" --replace_string="$porti" --target_file="$final_path/config/config.js"
+# ynh_replace_string --match_string="__EMAIL__" --replace_string="$email" --target_file="$final_path/config/config.js"
 
-# Store file checksum to detected user modifications on upgrade
-ynh_store_file_checksum "$final_path/config/config.js"
+# # Store file checksum to detected user modifications on upgrade
+# ynh_store_file_checksum "$final_path/config/config.js"
+
+ynh_add_config --template="../conf/config.js" --destination="$final_path/config/config.js"
 
 #=================================================
 # INSTALL CRYPTPAD
