@@ -72,6 +72,14 @@ ynh_script_progression --message="Stopping a systemd service..." --weight=1
 ynh_systemd_action --service_name=$app --action=stop --log_path="/var/log/$app/$app.log"
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
+
+# Create a dedicated user (if not existing)
+ynh_system_user_create --username=$app --home_dir="$final_path"
+
+#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 
@@ -98,14 +106,6 @@ ynh_script_progression --message="Upgrading dependencies..." --weight=6
 
 # Install Nodejs
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
-
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
-
-# Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app
 
 #=================================================
 # CONFIGURE CONFIG.JS	
@@ -140,6 +140,7 @@ ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Set permissions on app files
 chown -R $app: $final_path
+chmod 600 "$final_path/config/config.js"
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST

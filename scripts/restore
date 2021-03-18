@@ -50,6 +50,14 @@ test ! -d $final_path \
 ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
 #=================================================
+# RECREATE THE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Recreating the dedicated system user..." --weight=1
+
+# Create the dedicated user (if not existing)
+ynh_system_user_create --username=$app --home_dir="$final_path"
+
+#=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
 ynh_script_progression --message="Restoring CryptPad main directory..." --weight=6
@@ -57,19 +65,12 @@ ynh_script_progression --message="Restoring CryptPad main directory..." --weight
 ynh_restore_file --origin_path="$final_path"
 
 #=================================================
-# RECREATE THE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Recreating the dedicated system user..." --weight=1
-
-# Create the dedicated user (if not existing)
-ynh_system_user_create --username=$app
-
-#=================================================
 # RESTORE USER RIGHTS
 #=================================================
 
 # Restore permissions on app files
 chown -R $app: $final_path
+chmod 600 "$final_path/config/config.js"
 
 #=================================================
 # REINSTALL DEPENDENCIES
