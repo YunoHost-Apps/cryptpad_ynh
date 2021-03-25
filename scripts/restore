@@ -70,6 +70,7 @@ ynh_restore_file --origin_path="$final_path"
 
 # Restore permissions on app files
 chown -R $app: $final_path
+chmod -R o-rwx $final_path
 chmod 600 "$final_path/config/config.js"
 
 #=================================================
