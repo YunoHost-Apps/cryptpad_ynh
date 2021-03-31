@@ -12,7 +12,10 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
+		#3.24.0
 		upgrade=1    from_commit=ddbb3b36b8bcd00e573456bd9ad07b1aa5e41cb1
+		#4.2.1
+		upgrade=1    from_commit=5d014c575a90c0561384faf90172336308d72085
 		backup_restore=1
 		multi_instance=0
 		change_url=1
@@ -22,5 +25,7 @@ Notification=none
 ;;; Upgrade options
 	; commit=ddbb3b36b8bcd00e573456bd9ad07b1aa5e41cb1
 		name=update to 3.24.0
+	; commit=5d014c575a90c0561384faf90172336308d72085
+		name=update to 4.2.1
 		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr&is_public=1&password=pass&port=666&
 		
