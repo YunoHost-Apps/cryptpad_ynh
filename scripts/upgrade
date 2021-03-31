@@ -120,6 +120,7 @@ ynh_script_progression --message="Building CryptPad... (this will take some time
 
 pushd "$final_path" || ynh_die
 	ynh_exec_warn_less bower update --allow-root
+	ynh_exec_warn_less npm i
 popd || ynh_die
 
 #=================================================
