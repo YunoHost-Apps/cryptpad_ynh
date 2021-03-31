@@ -12,5 +12,11 @@ Environment=NODE_ENV=production
 ExecStart=__YNH_NPM__ start
 Restart=always
 
+PrivateDevices=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectSystem=full
+
 [Install]
 WantedBy=multi-user.target

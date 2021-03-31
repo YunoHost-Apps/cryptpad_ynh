@@ -35,15 +35,6 @@ upgrade_type=$(ynh_check_app_version_changed)
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..." --weight=2
 
-# Fix is_public as a boolean value
-if [ "$is_public" = "Yes" ]; then
-	ynh_app_setting_set --app=$app --key=is_public --value=1
-	is_public=1
-elif [ "$is_public" = "No" ]; then
-	ynh_app_setting_set --app=$app --key=is_public --value=0
-	is_public=0
-fi
-
 # If final_path doesn't exist, create it
 if [ -z "$final_path" ]; then
 	final_path=/var/www/$app
@@ -81,6 +72,14 @@ ynh_script_progression --message="Stopping a systemd service..." --weight=1
 ynh_systemd_action --service_name=$app --action=stop --log_path="/var/log/$app/$app.log"
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
+
+# Create a dedicated user (if not existing)
+ynh_system_user_create --username=$app --home_dir="$final_path"
+
+#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 
@@ -109,28 +108,10 @@ ynh_script_progression --message="Upgrading dependencies..." --weight=6
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
-
-# Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app
-
-#=================================================
 # CONFIGURE CONFIG.JS	
 #=================================================
 
-ynh_backup_if_checksum_is_different "$final_path/config/config.js"
-
-# Copy default configuration file
-mv "../conf/config.js" "$final_path/config/config.js"
-
-ynh_replace_string --match_string="__PORT__"       --replace_string="$port"  --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__PORTI__"      --replace_string="$porti" --target_file="$final_path/config/config.js"
-ynh_replace_string --match_string="__ADMIN_MAIL__" --replace_string="$email" --target_file="$final_path/config/config.js"
-
-# Store file checksum to detected user modifications on upgrade
-ynh_store_file_checksum "$final_path/config/config.js"
+ynh_add_config --template="../conf/config.js" --destination="$final_path/config/config.js"
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -146,8 +127,8 @@ popd || ynh_die
 #=================================================
 ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
-ynh_replace_string --match_string="__ENV_PATH__"  --replace_string="$PATH"       --target_file="../conf/systemd.service"
-ynh_replace_string --match_string="__YNH_NPM__"   --replace_string="$ynh_npm"    --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__ENV_PATH__" --replace_string="$PATH" --target_file="../conf/systemd.service"
+ynh_replace_string --match_string="__YNH_NPM__" --replace_string="$ynh_npm" --target_file="../conf/systemd.service"
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
@@ -159,6 +140,8 @@ ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Set permissions on app files
 chown -R $app: $final_path
+chmod -R o-rwx $final_path
+chmod 600 "$final_path/config/config.js"
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
