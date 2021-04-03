@@ -39,8 +39,8 @@ Comment configurer cette application : via le panneau d'administration ainsi que
 
 #### Architectures supportées
 
-* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/cryptpad%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/cryptpad%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/cryptpad/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/cryptpad.svg)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/cryptpad.svg)](https://ci-apps-arm.yunohost.org/ci/apps/cryptpad/)
 
 ## Limitations
 
