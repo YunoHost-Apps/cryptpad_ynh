@@ -12,10 +12,16 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
+		#3.24.0
 		upgrade=1    from_commit=ddbb3b36b8bcd00e573456bd9ad07b1aa5e41cb1
+		#4.0.0
+		upgrade=1    from_commit=4b43c2fd8731a9d08196c4d1b688922ff6b39f00
+		#4.1.0
+		upgrade=1    from_commit=b0dd9be98e3cfedec24d3910058682b36e3fedda
+		#4.2.0
+		upgrade=1    from_commit=63f434a721fdea008ff5171b18131afa8d47c140
 		backup_restore=1
 		multi_instance=0
-		port_already_use=1
 		change_url=1
 ;;; Options
 Email=
@@ -23,5 +29,11 @@ Notification=none
 ;;; Upgrade options
 	; commit=ddbb3b36b8bcd00e573456bd9ad07b1aa5e41cb1
 		name=update to 3.24.0
+	; commit=4b43c2fd8731a9d08196c4d1b688922ff6b39f00
+		name=update to 4.0.0
+	; commit=b0dd9be98e3cfedec24d3910058682b36e3fedda
+		name=update to 4.1.0
+	; commit=63f434a721fdea008ff5171b18131afa8d47c140
+		name=update to 4.2.0
 		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr&is_public=1&password=pass&port=666&
 		
