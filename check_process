@@ -20,6 +20,8 @@
 		upgrade=1    from_commit=b0dd9be98e3cfedec24d3910058682b36e3fedda
 		#4.2.0
 		upgrade=1    from_commit=63f434a721fdea008ff5171b18131afa8d47c140
+		#4.3.1
+		upgrade=1    from_commit=03c56e25d8e5ce4312bd0b9bd6bd37469f396a22
 		backup_restore=1
 		multi_instance=0
 		change_url=1
@@ -35,5 +37,7 @@ Notification=none
 		name=update to 4.1.0
 	; commit=63f434a721fdea008ff5171b18131afa8d47c140
 		name=update to 4.2.0
+	; commit=03c56e25d8e5ce4312bd0b9bd6bd37469f396a22
+		name=update to 4.3.1
 		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr&is_public=1&password=pass&port=666&
 		
