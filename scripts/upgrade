@@ -139,7 +139,6 @@ ynh_add_systemd_config
 #=================================================
 # SECURE FILES AND DIRECTORIES
 #=================================================
-ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 # Set permissions on app files
 chown -R $app: $final_path
