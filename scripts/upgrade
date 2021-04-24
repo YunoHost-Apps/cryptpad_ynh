@@ -118,10 +118,12 @@ ynh_add_config --template="../conf/config.js" --destination="$final_path/config/
 #=================================================
 ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
 
-pushd "$final_path" || ynh_die
+pushd "$final_path" 
+	ynh_exec_warn_less npm install --allow-root
+	ynh_exec_warn_less npm install -g bower
 	ynh_exec_warn_less bower update --allow-root
 	ynh_exec_warn_less npm i
-popd || ynh_die
+popd
 
 #=================================================
 # SETUP SYSTEMD
