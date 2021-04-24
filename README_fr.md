@@ -6,7 +6,7 @@
 *[Read this readme in english.](./README.md)* 
 
 > *Ce package vous permet d'installer CryptPad rapidement et simplement sur un serveur YunoHost.  
-Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/#/install) pour apprendre comment l'installer.*
+Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/install) pour apprendre comment l'installer.*
 
 ## Vue d'ensemble
 CryptPad est un éditeur de documents chiffrés collaboratifs en temps réel. C'est une alternative respectant la vie privée aux outils office et aux services cloud populaires. Tout le contenu stocké dans CryptPad est chiffré avant d'être envoyé, ce qui signifie que personne ne peut accéder à vos données à moins que vous ne leur donniez les clés. Vous pouvez partager l'accès à un document simplement en partageant le lien.
