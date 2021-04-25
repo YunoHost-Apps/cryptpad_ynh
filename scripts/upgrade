@@ -87,8 +87,20 @@ if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
 
+	# Create a temporary directory
+	tmpdir="$(mktemp -d)"
+
+	# Backup the config file in the temp dir
+	cp -a "$final_path/config/config.js" "$tmpdir/config.js"
+
 	# Download, check integrity, uncompress and patch the source from app.src
 	ynh_setup_source --dest_dir="$final_path"
+
+	# Copy the admin saved settings from tmp directory to final path	
+	cp -a "$tmpdir/config.js" "$final_path/config/config.js" 
+
+	# Remove the tmp directory securely
+	ynh_secure_remove --file="$tmpdir"
 fi
 
 #=================================================
@@ -111,17 +123,19 @@ ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 # CONFIGURE CONFIG.JS	
 #=================================================
 
-ynh_add_config --template="../conf/config.js" --destination="$final_path/config/config.js"
+#ynh_add_config --template="../conf/config.js" --destination="$final_path/config/config.js"
 
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
 ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
 
-pushd "$final_path" || ynh_die
+pushd "$final_path" 
+	ynh_exec_warn_less npm install --allow-root
+	ynh_exec_warn_less npm install -g bower
 	ynh_exec_warn_less bower update --allow-root
 	ynh_exec_warn_less npm i
-popd || ynh_die
+popd
 
 #=================================================
 # SETUP SYSTEMD
