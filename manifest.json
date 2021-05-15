@@ -15,7 +15,7 @@
         "url": "https://frju365.yunohost.support"
     },
     "requirements": {
-        "yunohost": ">= 4.1.7"
+        "yunohost": ">= 4.2.4"
     },
     "multi_instance": false,
     "services": [
