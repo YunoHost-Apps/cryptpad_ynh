@@ -8,6 +8,14 @@
     },
     "version": "4.5.0~ynh2",
     "url": "https://cryptpad.fr/",
+    "upstream": {
+        "license": "AGPL-3.0-only",
+        "website": "https://cryptpad.fr/",
+        "demo": "https://cryptpad.fr/",
+        "admindoc": "https://docs.cryptpad.fr/en/",
+        "userdoc": "https://yunohost.org/apps",
+        "code": "https://github.com/xwiki-labs/cryptpad"
+    },
     "license": "AGPL-3.0-only",
     "maintainer": {
         "name": "frju365",

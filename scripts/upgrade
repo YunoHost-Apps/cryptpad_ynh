@@ -89,6 +89,7 @@ then
 
 	# Download, check integrity, uncompress and patch the source from app.src
 	ynh_setup_source --dest_dir="$final_path" --keep="$final_path/config/config.js"
+	chmod 600 "$final_path/config/config.js"
 fi
 
 #=================================================
@@ -141,9 +142,9 @@ ynh_add_systemd_config
 #=================================================
 
 # Set permissions on app files
-chown -R $app: $final_path
-chmod -R o-rwx $final_path
-chmod 600 "$final_path/config/config.js"
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:$app "$final_path"
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
