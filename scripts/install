@@ -132,13 +132,6 @@ pushd "$final_path" || ynh_die
 popd || ynh_die
 
 #=================================================
-# Set some permissions
-#=================================================
-ynh_script_progression --message="Securing files and directories..." --weight=1
-
-
-
-#=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
