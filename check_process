@@ -12,8 +12,6 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
-		#4.0.0
-		upgrade=1    from_commit=4b43c2fd8731a9d08196c4d1b688922ff6b39f00
 		#4.1.0
 		upgrade=1    from_commit=b0dd9be98e3cfedec24d3910058682b36e3fedda
 		#4.2.1
@@ -27,8 +25,6 @@
 Email=
 Notification=none
 ;;; Upgrade options
-	; commit=4b43c2fd8731a9d08196c4d1b688922ff6b39f00
-		name=update to 4.0.0
 	; commit=b0dd9be98e3cfedec24d3910058682b36e3fedda
 		name=update to 4.1.0
 	; commit=63f434a721fdea008ff5171b18131afa8d47c140
