@@ -122,6 +122,11 @@ module.exports = {
     ],
 */
 
+    /*  CryptPad will display a point of contact for your instance on its contact page
+     *  (/contact.html) if you provide it below.
+     */
+    adminEmail: '__EMAIL__',
+    
     /* =====================
      *        STORAGE
      * ===================== */
