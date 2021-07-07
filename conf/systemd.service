@@ -11,7 +11,7 @@ Environment=PATH=__ENV_PATH__
 Environment=NODE_ENV=production
 ExecStart=__YNH_NPM__ start
 Restart=always
-
+LimitNOFILE=1000000
 PrivateDevices=true
 ProtectControlGroups=true
 ProtectHome=true
