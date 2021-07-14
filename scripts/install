@@ -90,6 +90,10 @@ ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$final_path"
 
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:$app "$final_path"
+
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
@@ -113,6 +117,7 @@ ynh_add_systemd_config
 #=================================================
 
 ynh_add_config --template="../conf/config.js" --destination="$final_path/config/config.js"
+chmod 600 "$final_path/config/config.js"
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -125,15 +130,6 @@ pushd "$final_path" || ynh_die
 	ynh_exec_warn_less npm install -g bower
 	ynh_exec_warn_less bower install --allow-root
 popd || ynh_die
-
-#=================================================
-# Set some permissions
-#=================================================
-ynh_script_progression --message="Securing files and directories..." --weight=1
-
-chown -R $app:$app $final_path
-chmod -R o-rwx $final_path
-chmod 600 "$final_path/config/config.js"
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
