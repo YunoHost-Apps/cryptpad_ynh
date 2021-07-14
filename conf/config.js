@@ -54,7 +54,7 @@ module.exports = {
  *  and it may have unintended consequences in practice.
  *
  */
-    httpUnsafeOrigin: 'https://__DOMAIN__',
+    httpUnsafeOrigin: 'https://127.0.0.1:__PORT__',
 
 /*  httpSafeOrigin is the URL that is used for the 'sandbox' described above.
  *  If you're testing or developing with CryptPad on your local machine then
@@ -72,7 +72,7 @@ module.exports = {
  *
  *  CUSTOMIZE AND UNCOMMENT THIS FOR PRODUCTION INSTALLATIONS.
  */
-    // httpSafeOrigin: "https://some-other-domain.xyz",
+    httpSafeOrigin: "https://__DOMAIN__",
 
 /*  httpAddress specifies the address on which the nodejs server
  *  should be accessible. By default it will listen on 127.0.0.1
