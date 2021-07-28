@@ -12,8 +12,6 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
-		#4.3.1
-		upgrade=1    from_commit=03c56e25d8e5ce4312bd0b9bd6bd37469f396a22
 		#4.6.0
 		upgrade=1    from_commit=198d9d2bbdb131354f4d8ba3179021de9e58a75a
 		backup_restore=1
@@ -23,8 +21,6 @@
 Email=
 Notification=none
 ;;; Upgrade options
-	; commit=e0fbc906d1445311541dd1b8b7005735b0435537
-		name=update to 4.3.1
 	; commit=198d9d2bbdb131354f4d8ba3179021de9e58a75a
 		name=update to 4.6.0
 		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr&is_public=1&password=pass&port=666&
