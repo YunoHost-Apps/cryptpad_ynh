@@ -13,7 +13,7 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 Éditeur chiffré collaboratif en temps réel.
 
-**Version incluse :** 4.9.0~ynh1
+**Version incluse :** 4.10.0~ynh1
 
 **Démo :** https://cryptpad.fr/
 
