@@ -127,6 +127,18 @@ module.exports = {
      */
     adminEmail: '__EMAIL__',
 
+    /*  We're very proud that CryptPad is available to the public as free software!
+     *  We do, however, still need to pay our bills as we develop the platform.
+     *
+     *  By default CryptPad will prompt users to consider donating to
+     *  our OpenCollective campaign. We publish the state of our finances periodically
+     *  so you can decide for yourself whether our expenses are reasonable.
+     *
+     *  You can disable any solicitations for donations by setting 'removeDonateButton' to true,
+     *  but we'd appreciate it if you didn't!
+     */
+    removeDonateButton: true,
+
     /*
      *  By default, CryptPad contacts one of our servers once a day.
      *  This check-in will also send some very basic information about your instance including its
