@@ -127,6 +127,16 @@ module.exports = {
      */
     adminEmail: '__EMAIL__',
 
+    /*
+     *  By default, CryptPad contacts one of our servers once a day.
+     *  This check-in will also send some very basic information about your instance including its
+     *  version and the adminEmail so we can reach you if we are aware of a serious problem.
+     *  We will never sell it or send you marketing mail.
+     *
+     *  If you want to block this check-in and remain set 'blockDailyCheck' to true.
+     */
+    blockDailyCheck: true,
+
     /* =====================
      *        STORAGE
      * ===================== */
