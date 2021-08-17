@@ -118,9 +118,22 @@ module.exports = {
      */
 /*
     adminKeys: [
-        //"[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
+        "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
     ],
 */
+
+    /*  CryptPad's administration panel includes a "support" tab
+     *  wherein administrators with a secret key can view messages
+     *  sent from users via the encrypted forms on the /support/ page
+     *
+     *  To enable this functionality:
+     *    run `node ./scripts/generate-admin-keys.js`
+     *    save the public key in your config in the value below
+     *    add the private key via the admin panel
+     *    and back it up in a secure manner
+     *
+     */
+    supportMailboxPublicKey: '',
 
     /*  CryptPad will display a point of contact for your instance on its contact page
      *  (/contact.html) if you provide it below.
