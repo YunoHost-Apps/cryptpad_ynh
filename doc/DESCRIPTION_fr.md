@@ -1,0 +1,1 @@
+CryptPad est une suite de collaboration chiffrée de bout en bout et open source. Il est conçu pour permettre la collaboration, en synchronisant les modifications apportées aux documents en temps réel. Étant donné que toutes les données sont chiffrées, le service et ses administrateurs n'ont aucun moyen de voir le contenu modifié et stocké. 
