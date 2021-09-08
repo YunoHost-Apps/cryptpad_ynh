@@ -13,7 +13,6 @@
         "website": "https://cryptpad.fr/",
         "demo": "https://cryptpad.fr/",
         "admindoc": "https://docs.cryptpad.fr/en/",
-        "userdoc": "https://yunohost.org/apps",
         "code": "https://github.com/xwiki-labs/cryptpad"
     },
     "license": "AGPL-3.0-only",

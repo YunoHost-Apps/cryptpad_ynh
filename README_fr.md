@@ -30,7 +30,6 @@ Comment configurer cette application : via le panneau d'administration ainsi que
 ## Documentations et ressources
 
 * Site officiel de l'app : https://cryptpad.fr/
-* Documentation officielle utilisateur : https://yunohost.org/apps
 * Documentation officielle de l'admin : https://docs.cryptpad.fr/en/
 * Dépôt de code officiel de l'app : https://github.com/xwiki-labs/cryptpad
 * Documentation YunoHost pour cette app : https://yunohost.org/app_cryptpad
