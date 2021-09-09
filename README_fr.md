@@ -13,7 +13,7 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 CryptPad est une suite de collaboration chiffrée de bout en bout et open source. Il est conçu pour permettre la collaboration, en synchronisant les modifications apportées aux documents en temps réel. Étant donné que toutes les données sont chiffrées, le service et ses administrateurs n'ont aucun moyen de voir le contenu modifié et stocké. 
 
-**Version incluse :** 4.10.0~ynh1
+**Version incluse :** 4.11.0~ynh1
 
 **Démo :** https://cryptpad.fr/
 
@@ -25,7 +25,15 @@ CryptPad est une suite de collaboration chiffrée de bout en bout et open source
 
 ## Configuration
 
-Comment configurer cette application : via le panneau d'administration ainsi que le fichier de configuration `/var/www/cryptpad/config/config.js`.
+Une fois CryptPad installé, créez un compte via le bouton S'inscrire sur la page d'accueil. Pour faire de ce compte un administrateur d'instance :
+
+1. Copiez la clé publique trouvée dans le menu utilisateur (avatar en haut à droite) > Paramètres > Compte > Clé de signature publique
+2. Collez cette clé dans `/var/www/cryptpad/config/config.js` dans le tableau suivant (décommentez et remplacez l'espace réservé) :
+``` 
+adminKeys: [
+        "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
+],
+```
 
 ## Documentations et ressources
 
