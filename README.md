@@ -17,7 +17,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. It is built to enable collaboration, synchronizing changes to documents in real time. Because all data is encrypted, the service and its administrators have no way of seeing the content being edited and stored.
 
-**Shipped version:** 4.10.0~ynh1
+**Shipped version:** 4.11.0~ynh1
 
 **Demo:** https://cryptpad.fr/
 
@@ -29,7 +29,15 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 ## Configuration
 
-* How to configure this app: From the admin panel and the plain file `/var/www/cryptpad/config/config.js.`
+Once CryptPad is installed, create an account via the Register button on the home page. To make this account an instance administrator:
+
+1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
+2. Paste this key in `/var/www/cryptpad/config/config.js` in the following array (uncomment and replace the placeholder):
+``` 
+adminKeys: [
+        "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
+],
+```
 
 ## Documentation and resources
 
