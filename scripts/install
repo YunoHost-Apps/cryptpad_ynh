@@ -122,7 +122,7 @@ chown $app "$final_path/config/config.js"
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
-ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
+ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
 
 pushd "$final_path"
 	ynh_use_nodejs
@@ -191,4 +191,4 @@ ynh_send_readme_to_admin "$message"
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of CryptPad completed" --last
+ynh_script_progression --message="Installation of $app completed" --last

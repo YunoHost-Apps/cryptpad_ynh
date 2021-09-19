@@ -23,5 +23,3 @@ Notification=none
 ;;; Upgrade options
 	; commit=2a54cd03f90c93b07150a64644ffc7f208110a18
 		name=update to 4.10.0
-
-		

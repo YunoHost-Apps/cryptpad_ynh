@@ -51,7 +51,7 @@ fi
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
-ynh_script_progression --message="Backing up CryptPad before upgrading (may take a while)..." --weight=1
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=1
 
 # Backup the current version of the app
 ynh_backup_before_upgrade
@@ -120,7 +120,7 @@ ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
-ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
+ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
 
 pushd "$final_path" 
 	ynh_exec_warn_less npm install --allow-root
@@ -164,4 +164,4 @@ ynh_systemd_action --service_name=nginx --action=reload
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of CryptPad completed" --last
+ynh_script_progression --message="Upgrade of $app completed" --last
