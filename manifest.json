@@ -4,16 +4,15 @@
     "packaging_format": 1,
     "description": {
         "en": "Zero Knowledge realtime collaborative editor",
-        "fr": "Éditeur chiffré collaboratif en temps réel."
+        "fr": "Éditeur chiffré collaboratif en temps réel"
     },
-    "version": "4.10.0~ynh1",
+    "version": "4.11.0~ynh1",
     "url": "https://cryptpad.fr/",
     "upstream": {
         "license": "AGPL-3.0-only",
         "website": "https://cryptpad.fr/",
         "demo": "https://cryptpad.fr/",
         "admindoc": "https://docs.cryptpad.fr/en/",
-        "userdoc": "https://yunohost.org/apps",
         "code": "https://github.com/xwiki-labs/cryptpad"
     },
     "license": "AGPL-3.0-only",
@@ -37,13 +36,11 @@
                 "help": {
                     "en": "CryptPad needs to be installed in a dedicated domain or sub-domain.",
                     "fr": "CryptPad doit être installé dans un domaine ou sous-domaine dédié."
-                },
-                "example": "cryptpad.example.com"
+                }
             },
             {
                 "name": "admin",
-                "type": "user",
-                "example": "johndoe"
+                "type": "user"
             },
             {
                 "name": "is_public",

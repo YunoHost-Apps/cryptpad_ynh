@@ -111,4 +111,4 @@ ynh_systemd_action --service_name=nginx --action=reload
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Restoration completed for CryptPad" --last
+ynh_script_progression --message="Restoration completed for $app" --last

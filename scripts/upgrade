@@ -51,7 +51,7 @@ fi
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
-ynh_script_progression --message="Backing up CryptPad before upgrading (may take a while)..." --weight=1
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=1
 
 # Backup the current version of the app
 ynh_backup_before_upgrade
@@ -93,7 +93,6 @@ then
 	chmod 750 "$final_path"
 	chmod -R o-rwx "$final_path"
 	chown -R $app:$app "$final_path"
-	chmod 600 "$final_path/config/config.js"
 fi
 
 #=================================================
@@ -121,7 +120,7 @@ ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
-ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
+ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
 
 pushd "$final_path" 
 	ynh_exec_warn_less npm install --allow-root
@@ -136,7 +135,6 @@ popd
 ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
 
 ynh_replace_string --match_string="__ENV_PATH__" --replace_string="$PATH" --target_file="../conf/systemd.service"
-ynh_replace_string --match_string="__YNH_NPM__" --replace_string="$ynh_npm" --target_file="../conf/systemd.service"
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
@@ -166,4 +164,4 @@ ynh_systemd_action --service_name=nginx --action=reload
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of CryptPad completed" --last
+ynh_script_progression --message="Upgrade of $app completed" --last

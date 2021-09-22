@@ -122,14 +122,14 @@ chown $app "$final_path/config/config.js"
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
-ynh_script_progression --message="Building CryptPad... (this will take some time and resources!)" --weight=60
+ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
 
-pushd "$final_path" || ynh_die
+pushd "$final_path"
 	ynh_use_nodejs
 	ynh_exec_warn_less npm install --allow-root
 	ynh_exec_warn_less npm install -g bower
 	ynh_exec_warn_less bower install --allow-root
-popd || ynh_die
+popd
 
 #=================================================
 # INTEGRATE SERVICE IN YUNOHOST
@@ -191,4 +191,4 @@ ynh_send_readme_to_admin "$message"
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of CryptPad completed" --last
+ynh_script_progression --message="Installation of $app completed" --last

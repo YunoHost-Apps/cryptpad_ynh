@@ -12,10 +12,8 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
-		#4.6.0
-		upgrade=1    from_commit=198d9d2bbdb131354f4d8ba3179021de9e58a75a
-		#4.9.0
-		upgrade=1    from_commit=c61a2ee40b5ef747219793a6cc5a409f366c8a94
+		#4.10.0
+		upgrade=1    from_commit=2a54cd03f90c93b07150a64644ffc7f208110a18
 		backup_restore=1
 		multi_instance=0
 		change_url=1
@@ -23,9 +21,5 @@
 Email=
 Notification=none
 ;;; Upgrade options
-	; commit=198d9d2bbdb131354f4d8ba3179021de9e58a75a
-		name=update to 4.6.0
-	; commit=c61a2ee40b5ef747219793a6cc5a409f366c8a94
-		name=update to 4.9.0
-
-		
+	; commit=2a54cd03f90c93b07150a64644ffc7f208110a18
+		name=update to 4.10.0
