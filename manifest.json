@@ -6,7 +6,7 @@
         "en": "Zero Knowledge realtime collaborative editor",
         "fr": "Éditeur chiffré collaboratif en temps réel"
     },
-    "version": "4.11.0~ynh1",
+    "version": "4.12.0~ynh1",
     "url": "https://cryptpad.fr/",
     "upstream": {
         "license": "AGPL-3.0-only",
@@ -29,7 +29,7 @@
         "nginx"
     ],
     "arguments": {
-        "install" : [
+        "install": [
             {
                 "name": "domain",
                 "type": "domain",
