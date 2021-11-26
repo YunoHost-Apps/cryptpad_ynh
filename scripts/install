@@ -112,7 +112,7 @@ ynh_replace_string --match_string="__ENV_PATH__" --replace_string="$PATH" --targ
 ynh_add_systemd_config
 
 #=================================================
-# CONFIGURE CONFIG.JS	
+# CONFIGURE CONFIG.JS
 #=================================================
 
 ynh_add_config --template="../conf/config.js" --destination="$final_path/config/config.js"
@@ -132,6 +132,14 @@ pushd "$final_path"
 popd
 
 #=================================================
+# SETUP LOGROTATE
+#=================================================
+ynh_script_progression --message="Configuring log rotation..." --weight=1
+
+# Use logrotate to manage application logfile(s)
+ynh_use_logrotate
+
+#=================================================
 # INTEGRATE SERVICE IN YUNOHOST
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
@@ -144,7 +152,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 ynh_script_progression --message="Starting a systemd service..." --weight=2
 
 # Start a systemd service
-ynh_systemd_action --service_name=$app --action=start --log_path="systemd" --line_match="server available"
+ynh_systemd_action --service_name=$app --action=start --log_path="systemd" --line_match="Serving content"
 
 #=================================================
 # SETUP SSOWAT
