@@ -6,7 +6,7 @@
         "en": "Zero Knowledge realtime collaborative editor",
         "fr": "Éditeur chiffré collaboratif en temps réel"
     },
-    "version": "4.12.1~ynh1",
+    "version": "4.12.0~ynh1",
     "url": "https://cryptpad.fr/",
     "upstream": {
         "license": "AGPL-3.0-only",
@@ -22,7 +22,7 @@
         "url": "https://frju365.yunohost.support"
     },
     "requirements": {
-        "yunohost": ">= 4.3.2"
+        "yunohost": ">= 4.2.4"
     },
     "multi_instance": false,
     "services": [
