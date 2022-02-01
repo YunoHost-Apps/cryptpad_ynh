@@ -39,6 +39,8 @@ adminKeys: [
 ],
 ```
 
+3. Restart CryptPad service (In YunoHost webadmin -> Services -> cryptpad -> Restart)
+
 ## Documentation and resources
 
 * Official app website: https://cryptpad.fr/
