@@ -38,6 +38,7 @@ adminKeys: [
         "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
 ],
 ```
+3. Restart the CryptPad service
 
 ## Documentation and resources
 
