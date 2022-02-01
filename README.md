@@ -38,7 +38,8 @@ adminKeys: [
         "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
 ],
 ```
-3. Restart the CryptPad service
+
+3. Restart CryptPad service (In YunoHost webadmin -> Services -> cryptpad -> Restart)
 
 ## Documentation and resources
 
