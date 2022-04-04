@@ -46,6 +46,12 @@ ynh_backup --src_path="$final_path"
 ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
 #=================================================
+# BACKUP LOGROTATE
+#=================================================
+
+ynh_backup --src_path="/etc/logrotate.d/$app"
+
+#=================================================
 # SPECIFIC BACKUP
 #=================================================
 # BACKUP SYSTEMD
