@@ -123,10 +123,10 @@ ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
 
 pushd "$final_path" 
-	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm install --allow-root
-	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm install -g bower
-	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH bower update --allow-root
-	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm i
+	ynh_exec_warn_less npm install --allow-root
+	ynh_exec_warn_less npm install -g bower
+	ynh_exec_warn_less bower update --allow-root
+	ynh_exec_warn_less npm i
 popd
 
 #=================================================
