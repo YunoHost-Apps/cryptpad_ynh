@@ -125,9 +125,9 @@ ynh_script_progression --message="Building $app... (this will take some time and
 
 pushd "$final_path"
 	ynh_use_nodejs
-	ynh_exec_warn_less npm install --allow-root
-	ynh_exec_warn_less npm install -g bower
-	ynh_exec_warn_less bower install --allow-root
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm install --allow-root
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm install -g bower
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH bower install --allow-root
 popd
 
 #=================================================
