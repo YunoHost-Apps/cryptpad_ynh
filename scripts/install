@@ -90,10 +90,6 @@ ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$final_path"
 
-chmod 750 "$final_path"
-chmod -R o-rwx "$final_path"
-chown -R $app:$app "$final_path"
-
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
@@ -129,6 +125,10 @@ pushd "$final_path"
 	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm install -g bower
 	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH bower install --allow-root
 popd
+
+chmod 750 "$final_path"
+chmod -R o-rwx "$final_path"
+chown -R $app:$app "$final_path"
 
 #=================================================
 # SETUP LOGROTATE
