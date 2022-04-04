@@ -13,7 +13,7 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 CryptPad est une suite de collaboration chiffrée de bout en bout et open source. Il est conçu pour permettre la collaboration, en synchronisant les modifications apportées aux documents en temps réel. Étant donné que toutes les données sont chiffrées, le service et ses administrateurs n'ont aucun moyen de voir le contenu modifié et stocké. 
 
-**Version incluse :** 4.13.0~ynh1
+**Version incluse :** 4.14.0~ynh1
 
 **Démo :** https://cryptpad.fr/
 
