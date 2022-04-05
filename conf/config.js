@@ -72,7 +72,7 @@ module.exports = {
  *
  *  CUSTOMIZE AND UNCOMMENT THIS FOR PRODUCTION INSTALLATIONS.
  */
-    httpSafeOrigin: "https://__SANDBOX_DOMAIN__",
+    //httpSafeOrigin: "https://_SANDBOX_DOMAIN_",
 
 /*  httpAddress specifies the address on which the nodejs server
  *  should be accessible. By default it will listen on 127.0.0.1
