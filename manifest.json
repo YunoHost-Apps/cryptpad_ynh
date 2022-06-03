@@ -39,10 +39,6 @@
                 }
             },
             {
-                "name": "admin",
-                "type": "user"
-            },
-            {
                 "name": "is_public",
                 "type": "boolean",
                 "help": {
@@ -50,6 +46,10 @@
                     "fr": "Si cette case est cochée, CryptPad sera accessible aux personnes n’ayant pas de compte. Vous pourrez changer ceci plus tard via la webadmin."
                 },
                 "default": true
+            },
+            {
+                "name": "admin",
+                "type": "user"
             }
         ]
     }
