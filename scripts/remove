@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC STARTING
+# GENERIC START
 #=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
@@ -16,8 +16,8 @@ ynh_script_progression --message="Loading installation settings..." --weight=1
 
 app=$YNH_APP_INSTANCE_NAME
 
-port=$(ynh_app_setting_get --app=$app --key=port)
 domain=$(ynh_app_setting_get --app=$app --key=domain)
+port=$(ynh_app_setting_get --app=$app --key=port)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 
 #=================================================
@@ -29,7 +29,7 @@ final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 # Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
 if ynh_exec_warn_less yunohost service status $app >/dev/null
 then
-	ynh_script_progression --message="Removing $app service..." --weight=3
+	ynh_script_progression --message="Removing $app service integration..." --weight=3
 	yunohost service remove $app
 fi
 
@@ -42,16 +42,9 @@ ynh_script_progression --message="Stopping and removing the systemd service..." 
 ynh_remove_systemd_config
 
 #=================================================
-# REMOVE NODEJS
-#=================================================
-ynh_script_progression --message="Removing dependencies..." --weight=3
-
-ynh_remove_nodejs
-
-#=================================================
 # REMOVE APP MAIN DIR
 #=================================================
-ynh_script_progression --message="Removing $app main directory..." --weight=3
+ynh_script_progression --message="Removing app main directory..." --weight=3
 
 # Remove the app directory securely
 ynh_secure_remove --file="$final_path"
@@ -63,6 +56,13 @@ ynh_script_progression --message="Removing NGINX web server configuration..." --
 
 # Remove the dedicated NGINX config
 ynh_remove_nginx_config
+
+#=================================================
+# REMOVE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Removing dependencies..." --weight=3
+
+ynh_remove_nodejs
 
 #=================================================
 # GENERIC FINALIZATION
