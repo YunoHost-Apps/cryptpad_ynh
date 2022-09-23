@@ -32,11 +32,7 @@
         "install": [
             {
                 "name": "domain",
-                "type": "domain",
-                "help": {
-                    "en": "CryptPad needs to be installed in a dedicated domain or sub-domain.",
-                    "fr": "CryptPad doit être installé dans un domaine ou sous-domaine dédié."
-                }
+                "type": "domain"
             },
             {
                 "name": "is_public",
