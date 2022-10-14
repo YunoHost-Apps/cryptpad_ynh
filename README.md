@@ -20,6 +20,7 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 **Shipped version:** 5.1.0~ynh1
 
 
+
 **Demo:** https://cryptpad.fr/
 
 ## Screenshots
