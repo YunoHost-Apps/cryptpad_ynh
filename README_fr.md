@@ -23,7 +23,7 @@ CryptPad est une suite de collaboration chiffrée de bout en bout et open source
 
 ## Captures d'écran
 
-![Capture d'écran de CryptPad](./doc/screenshots/screenshot.png)
+![Capture d'écran de CryptPad](./doc/screenshots/drive-preview-sandpaper.png)
 
 ## Avertissements / informations importantes
 
