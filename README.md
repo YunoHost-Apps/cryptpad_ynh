@@ -29,14 +29,7 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 ## Configuration
 
-Once CryptPad is installed.
-
-We have created for you the mandatory sandbox domain.
-You still need to install the certificate for it.
-So first, hit the diagnosis page so we make sure your DNS configuration is correct.
-Then, go into your domain SSL configuration to generate your Let's Encrypt certificate. 
-
-Create an account via the Register button on the home page. To make this account an instance administrator:
+Once CryptPad is installed, create an account via the Register button on the home page. To make this account an instance administrator:
 
 1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
 2. Paste this key in `/var/www/cryptpad/config/config.js` in the following array (uncomment and replace the placeholder):
