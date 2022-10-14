@@ -67,6 +67,12 @@ porti=$(ynh_find_port --port=$(($port + 1)))
 ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 #=================================================
+# CREATE A SANDBOX DOMAIN
+#=================================================
+sandboxdomain=sandbox-$domain
+yunohost domain add $sandboxdomain
+
+#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=20
@@ -155,12 +161,22 @@ ynh_systemd_action --service_name=$app --action="start" --log_path="systemd" --l
 #=================================================
 ynh_script_progression --message="Configuring permissions..." --weight=1
 
+ynh_permission_url --permission="main" --add_url=$sandboxdomain --auth_header=true
+
 # Make app public if necessary
 if [ $is_public -eq 1 ]
 then
 	ynh_permission_update --permission="main" --add="visitors"
 fi
 
+#=================================================
+# APPLY FOLDER RIGHTS
+#=================================================
+chgrp -R www-data $final_path
+#=================================================
+# COPY NGINX CONF IN SANDBOX DOMAIN
+#=================================================
+ynh_add_config --template="/etc/nginx/conf.d/$domain.d/cryptpad.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/cryptpad.conf"
 #=================================================
 # RELOAD NGINX
 #=================================================
@@ -175,9 +191,14 @@ ynh_script_progression --message="Sending a readme for the admin..." --weight=1
 
 message="CryptPad was successfully installed :)
 
-Please open your $app domain: https://$domain$path_url
+We have created for you the mandatory sandbox domain at $sandboxdomain.
 
-Once CryptPad is installed, create an account via the Register button on the home page. To make this account an instance administrator:
+You still need to install the certificate for it.
+So first, hit the diagnosis page so we make sure your DNS configuration is correct.
+Then, go into your domain SSL configuration to generate your Let's Encrypt certificate. 
+
+Please open your $app domain: https://$domain$path_url
+Create an account via the Register button on the home page. To make this account an instance administrator:
 
 1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
 2. Paste this key in /var/www/cryptpad/config/config.js in the following array (uncomment and replace the placeholder):
