@@ -52,6 +52,13 @@ ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=admin --value=$admin
 
 #=================================================
+# CHECK IF THE SANDBOX DOMAIN IS ALREADY SETUP WITH CORRECT CERTIFICATE
+#=================================================
+if ! yunohost domain cert status $domain | grep -q "summary: Great!"; then
+	ynh_die "The domain $domain does not have correct Let's Encrypt certificates !"
+fi
+
+#=================================================
 # STANDARD MODIFICATIONS
 #=================================================
 # FIND AND OPEN A PORT
