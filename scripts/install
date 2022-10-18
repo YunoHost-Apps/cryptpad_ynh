@@ -82,7 +82,7 @@ if ! yunohost app list | grep -q "id: cryptpad_sandboxing_ynh"; then
 		ynh_die "The domain $sandboxdomain provided for Cryptpad Sandboxing App is already used by another app. Please chose another one !"
 	fi
 	public=public
-	echo $YNH_APP_ARG_IS_PUBLIC
+	echo "$YNH_APP_ARG_IS_PUBLIC"
 	if $YNH_APP_ARG_IS_PUBLIC then
 		yunohost app install https://github.com/YunoHost-Apps/cryptpad_sandboxing_ynh --force --args "domain=$sandboxdomain&is_$public=true"
 	else
