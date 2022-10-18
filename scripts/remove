@@ -65,12 +65,6 @@ ynh_script_progression --message="Removing dependencies..." --weight=3
 ynh_remove_nodejs
 
 #=================================================
-# REMOVE SANDBOX DOMAIN
-#=================================================
-sandboxdomain=sandbox-$domain
-yunohost domain remove $sandboxdomain
-
-#=================================================
 # GENERIC FINALIZATION
 #=================================================
 # REMOVE DEDICATED USER
