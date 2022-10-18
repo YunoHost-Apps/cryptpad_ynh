@@ -190,10 +190,7 @@ fi
 # APPLY FOLDER RIGHTS
 #=================================================
 chgrp -R www-data $final_path
-#=================================================
-# COPY NGINX CONF IN SANDBOX DOMAIN
-#=================================================
-ynh_add_config --template="/etc/nginx/conf.d/$domain.d/cryptpad.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/cryptpad.conf"
+
 #=================================================
 # RELOAD NGINX
 #=================================================
