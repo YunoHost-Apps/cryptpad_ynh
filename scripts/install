@@ -70,7 +70,24 @@ ynh_app_setting_set --app=$app --key=porti --value=$porti
 # CREATE A SANDBOX DOMAIN
 #=================================================
 sandboxdomain=sandbox-$domain
-yunohost domain add $sandboxdomain
+#=================================================
+# CHECK IF CRYPTAD_SANDBOX IS INSTALLED, IF NOT INSTALL IT
+#=================================================
+ynh_script_progression --message="Installing Cryptpad Sandboxing App if needed..." --weight=18
+
+if ! yunohost app list | grep -q "id: cryptpad_sandboxing_ynh"; then
+	echo "Cryptpad Sandboxing App is not installed. Installing... "
+	yunohost tools update
+	if yunohost app list | grep -q "$sandboxdomain"; then
+		ynh_die "The domain $sandboxdomain provided for Cryptpad Sandboxing App is already used by another app. Please chose another one !"
+	fi
+	public=public
+	if $YNH_APP_ARG_IS_PUBLIC then
+		yunohost app install https://github.com/YunoHost-Apps/cryptpad_sandboxing_ynh --force --args "domain=$sandboxdomain&is_$public=true"
+	else
+		yunohost app install https://github.com/YunoHost-Apps/cryptpad_sandboxing_ynh --force --args "domain=$sandboxdomain&is_$public=false"
+	fi
+fi
 
 #=================================================
 # INSTALL DEPENDENCIES
