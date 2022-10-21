@@ -98,6 +98,11 @@ then
 fi
 
 #=================================================
+# APPLY FOLDER GROUP RIGHTS FOR WWW-DATA
+#=================================================
+chgrp -R www-data $final_path
+
+#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=1
