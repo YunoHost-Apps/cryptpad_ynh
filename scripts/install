@@ -217,12 +217,6 @@ ynh_script_progression --message="Sending a readme for the admin..." --weight=1
 
 message="CryptPad was successfully installed :)
 
-We have created for you the mandatory sandbox domain at $sandboxdomain.
-
-You still need to install the certificate for it.
-So first, hit the diagnosis page so we make sure your DNS configuration is correct.
-Then, go into your domain SSL configuration to generate your Let's Encrypt certificate. 
-
 Please open your $app domain: https://$domain$path_url
 Create an account via the Register button on the home page. To make this account an instance administrator:
 
