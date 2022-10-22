@@ -65,11 +65,10 @@ ynh_script_progression --message="Removing dependencies..." --weight=3
 ynh_remove_nodejs
 
 #=================================================
-# REMOVE APP SANDBOXING
+# REMOVE SANDBOX DOMAIN
 #=================================================
-if yunohost app list | grep -q "id: cryptpad_sandboxing"; then
-	yunohost app remove cryptpad_sandboxing
-fi
+sandboxdomain=sandbox-$domain
+yunohost domain remove $sandboxdomain
 
 #=================================================
 # GENERIC FINALIZATION
