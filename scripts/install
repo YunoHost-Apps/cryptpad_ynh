@@ -192,7 +192,10 @@ chgrp -R www-data $final_path
 #=================================================
 # COPY NGINX CONF IN SANDBOX DOMAIN
 #=================================================
-ynh_add_config --template="/etc/nginx/conf.d/$domain.d/cryptpad.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/cryptpad.conf"
+# We don't test that in CI
+if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+	ynh_add_config --template="/etc/nginx/conf.d/$domain.d/cryptpad.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/cryptpad.conf"
+fi
 
 #=================================================
 # RELOAD NGINX
