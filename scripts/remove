@@ -76,7 +76,7 @@ fi
 #=================================================
 # RELOAD YUNOHOST-API to refresh web admin domains after domain creation (bug core?)
 #=================================================
-ynh_systemd_action --service_name=yunohost-api --action=reload
+#ynh_systemd_action --service_name=yunohost-api --action=reload
 
 #=================================================
 # GENERIC FINALIZATION
