@@ -68,7 +68,10 @@ ynh_remove_nodejs
 # REMOVE SANDBOX DOMAIN
 #=================================================
 sandboxdomain=sandbox-$domain
-yunohost domain remove $sandboxdomain
+if  sudo yunohost domain list | grep -q $sandboxdomain
+then #if domain exist we remove it
+	yunohost domain remove $sandboxdomain
+fi
 
 #=================================================
 # RELOAD YUNOHOST-API to refresh web admin domains after domain creation (bug core?)
