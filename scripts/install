@@ -82,6 +82,7 @@ sandboxdomain=sandbox-$domain
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	yunohost domain add $sandboxdomain
+	yunohost domain config set -a mail_in=0&mail_out=0
 fi
 
 #=================================================
