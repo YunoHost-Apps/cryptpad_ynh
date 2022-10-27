@@ -73,7 +73,7 @@ ynh_script_progression --message="Removing sandbox domain..." --weight=1
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	sandboxdomain=sandbox-$domain
 		
-	if  sudo yunohost domain list | grep -q $sandboxdomain
+	if yunohost domain list | grep -q $sandboxdomain
 	then #if domain exist we remove it
 		yunohost domain remove $sandboxdomain
 	fi
