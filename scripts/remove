@@ -72,9 +72,7 @@ ynh_script_progression --message="Removing sandbox domain..." --weight=1
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	sandboxdomain=sandbox-$domain
-	
-	ynh_permission_url --permission="main" --remove_url=${sandboxdomain%/} --auth_header=false
-	
+		
 	if  sudo yunohost domain list | grep -q $sandboxdomain
 	then #if domain exist we remove it
 		yunohost domain remove $sandboxdomain
