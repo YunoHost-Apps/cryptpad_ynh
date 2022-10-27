@@ -83,7 +83,7 @@ sandboxdomain=sandbox-$domain
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	yunohost domain add $sandboxdomain
 	yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
-	ynh_webpath_register --app=$app --domain=$sandboxdomain --path_url=$path_url
+	ynh_webpath_register --app=sandbox-$app --domain=$sandboxdomain --path_url=$path_url
 fi
 
 #=================================================
