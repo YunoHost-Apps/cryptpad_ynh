@@ -67,6 +67,8 @@ ynh_remove_nodejs
 #=================================================
 # REMOVE SANDBOX DOMAIN
 #=================================================
+ynh_script_progression --message="Removing sandbox domain..." --weight=1
+
 sandboxdomain=sandbox-$domain
 if  sudo yunohost domain list | grep -q $sandboxdomain
 then #if domain exist we remove it
