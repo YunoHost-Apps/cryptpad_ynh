@@ -181,7 +181,7 @@ if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	# we use jq to correct /etc/ssowat/conf.json
 	uri1=$domain
 	uri2=$sandboxdomain
-	app=$app
+	app="CryptPad"
 	
 	#we delete the uris from cryptpad.main
 	cat /etc/ssowat/conf.json | jq 'del(.permissions[] | select(.label=="$app") | .uris)'
