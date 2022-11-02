@@ -76,6 +76,8 @@ if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	if yunohost domain list | grep -q $sandboxdomain
 	then #if domain exist we remove it
 		yunohost domain remove $sandboxdomain
+		# we clean the nginx configuration we added
+		ynh_secure_remove --file="/etc/nginx/conf.d/$sandboxdomain.d/cryptpad.conf"
 	fi
 fi
 
