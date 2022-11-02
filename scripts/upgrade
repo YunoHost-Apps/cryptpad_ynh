@@ -158,6 +158,11 @@ ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
 yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
+# ADD UPGRADED CONFIG WITH SANDBOX
+#=================================================
+ynh_add_config --template="../conf/config.js" --destination="$final_path/config/config.js"
+
+#=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
