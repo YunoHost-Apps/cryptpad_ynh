@@ -77,19 +77,6 @@ if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 fi
 
 #=================================================
-# CHECK IF THE MAIN DOMAIN IS ALREADY SETUP WITH CORRECT CERTIFICATE WHEN PUBLIC
-#=================================================
-# We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	if [ $is_public -eq 1 ]
-	then
-		if ! yunohost domain cert status $domain | grep -q "summary: Great!"; then
-			ynh_die "The domain $domain does not have correct Let's Encrypt certificates !"
-		fi
-	fi
-fi
-
-#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=20
