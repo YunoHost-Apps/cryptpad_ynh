@@ -186,10 +186,8 @@ if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	# so we use ${sandboxdomain%/} to remove the eccessive trailing slash # it doesnt work
 	# we use jq to correct /etc/ssowat/conf.json
 	uri2=$sandboxdomain
-	touch /etc/ssowat/tmp.conf.json
-	cat /etc/ssowat/conf.json | jq --arg uri2 "$uri2" '(.permissions[] | select(.label=="CryptPad") | .uris[1]) |=$uri2' > /etc/ssowat/tmp.conf.json
-	ynh_secure_remove --file="/etc/ssowat/conf.json"
-	mv /etc/ssowat/tmp.conf.json /etc/ssowat/conf.json
+	touch /etc/ssowat/conf.json.persistent
+	cat /etc/ssowat/conf.json | jq --arg uri2 "$uri2" '(.permissions[] | select(.label=="CryptPad") | .uris[1]) |=$uri2' >> /etc/ssowat/conf.json.persistent
 fi
 
 #=================================================
