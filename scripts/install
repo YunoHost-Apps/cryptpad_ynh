@@ -82,7 +82,9 @@ fi
 ynh_script_progression --message="Installing dependencies..." --weight=20
 
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
-ynh_package_install jq
+
+# WE NEED jq TO REWRITE ssowat conf because of core bug trailing slash with sandbox domain
+ynh_install_app_dependencies --package=jq
 
 #=================================================
 # CREATE DEDICATED USER
