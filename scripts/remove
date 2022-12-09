@@ -65,6 +65,29 @@ ynh_script_progression --message="Removing dependencies..." --weight=3
 ynh_remove_nodejs
 
 #=================================================
+# REMOVE SANDBOX DOMAIN
+#=================================================
+ynh_script_progression --message="Removing sandbox domain..." --weight=1
+
+# We don't test that in CI
+if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+	sandboxdomain=sandbox-$domain
+		
+	if yunohost domain list | grep -q $sandboxdomain
+	then #if domain exist we remove it
+		yunohost domain remove $sandboxdomain
+		# we clean the nginx configuration we added
+		ynh_secure_remove --file="/etc/nginx/conf.d/$sandboxdomain.d/"
+	fi
+fi
+
+
+#=================================================
+# RELOAD YUNOHOST-API to refresh web admin domains after domain creation (bug core?)
+#=================================================
+#ynh_systemd_action --service_name=yunohost-api --action=reload
+
+#=================================================
 # GENERIC FINALIZATION
 #=================================================
 # REMOVE DEDICATED USER

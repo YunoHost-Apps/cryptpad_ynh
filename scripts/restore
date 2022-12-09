@@ -69,6 +69,11 @@ chown -R $app:$app "$final_path"
 chmod 600 "$final_path/config/config.js"
 
 #=================================================
+# APPLY FOLDER GROUP RIGHTS FOR WWW-DATA
+#=================================================
+chgrp -R www-data $final_path
+
+#=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Reinstalling dependencies..." --weight=7

@@ -67,6 +67,16 @@ porti=$(ynh_find_port --port=$(($port + 1)))
 ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 #=================================================
+# CREATE A SANDBOX DOMAIN
+#=================================================
+sandboxdomain=sandbox-$domain
+# We don't test that in CI
+if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+	yunohost domain add $sandboxdomain
+	yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
+fi
+
+#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=20
@@ -131,6 +141,8 @@ pushd "$final_path"
 	ynh_exec_warn_less npm install --allow-root
 	ynh_exec_warn_less npm install -g bower
 	ynh_exec_warn_less bower install --allow-root
+	ynh_exec_warn_less bower update --allow-root
+	ynh_exec_warn_less npm run build
 popd
 
 #=================================================
@@ -161,6 +173,36 @@ then
 	ynh_permission_update --permission="main" --add="visitors"
 fi
 
+# We authorize access to sandbox domain
+# We don't test that in CI
+if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+	ynh_permission_url --permission="main" --add_url=$sandboxdomain --auth_header=true
+	# there is a bug in core that add a slash at the end of domain in ssowat conf for uris var
+	# so we use ${sandboxdomain%/} to remove the eccessive trailing slash # it doesnt work
+	# we use jq to correct /etc/ssowat/conf.json
+	uri2=$sandboxdomain
+	touch /etc/ssowat/conf.json.persistent
+	cat /etc/ssowat/conf.json | jq --arg uri2 "$uri2" '(.permissions[] | select(.label=="CryptPad") | .uris[1]) |=$uri2' >> /etc/ssowat/conf.json.persistent
+fi
+
+#=================================================
+# APPLY FOLDER RIGHTS
+#=================================================
+chgrp -R www-data $final_path
+
+#=================================================
+# COPY NGINX CONF IN SANDBOX DOMAIN
+#=================================================
+# We don't test that in CI
+if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+	ynh_add_config --template="/etc/nginx/conf.d/$domain.d/cryptpad.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/cryptpad.conf"
+fi
+
+#=================================================
+# RELOAD YUNOHOST-API to refresh web admin domains after domain creation (normal?)
+#=================================================
+ynh_systemd_action --service_name=yunohost-api --action=reload
+
 #=================================================
 # RELOAD NGINX
 #=================================================
@@ -175,9 +217,10 @@ ynh_script_progression --message="Sending a readme for the admin..." --weight=1
 
 message="CryptPad was successfully installed :)
 
-Please open your $app domain: https://$domain$path_url
+We have added a sandbox domain for you but you still need to configure your DNS and generate Let's Encrypt Certificates for it.
 
-Once CryptPad is installed, create an account via the Register button on the home page. To make this account an instance administrator:
+Then you can please open your $app domain: https://$domain$path_url
+Create an account via the Register button on the home page. To make this account an instance administrator:
 
 1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
 2. Paste this key in /var/www/cryptpad/config/config.js in the following array (uncomment and replace the placeholder):
