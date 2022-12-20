@@ -13,6 +13,8 @@
 		upgrade=1
 		#4.10.0
 		upgrade=1	from_commit=2a54cd03f90c93b07150a64644ffc7f208110a18
+		#4.12.0
+		upgrade=1	from_commit=1e36039893dc35533b320257ca7f93ef1d07a164
 		backup_restore=1
 		multi_instance=0
 		port_already_use=0
@@ -23,3 +25,6 @@ Notification=none
 ;;; Upgrade options
 	; commit=2a54cd03f90c93b07150a64644ffc7f208110a18
 		name=update to 4.10.0
+;;; Upgrade options
+	; commit=1e36039893dc35533b320257ca7f93ef1d07a164
+		name=update to 4.12.0
