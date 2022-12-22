@@ -13,7 +13,8 @@
         "website": "https://cryptpad.fr/",
         "demo": "https://cryptpad.fr/",
         "admindoc": "https://docs.cryptpad.fr/en/",
-        "code": "https://github.com/xwiki-labs/cryptpad"
+        "code": "https://github.com/xwiki-labs/cryptpad",
+        "cpe": "cpe:2.3:a:xwiki:cryptpad"
     },
     "license": "AGPL-3.0-only",
     "maintainer": {
@@ -22,7 +23,7 @@
         "url": "https://frju365.yunohost.support"
     },
     "requirements": {
-        "yunohost": ">= 4.3.0"
+        "yunohost": ">= 11.0.9"
     },
     "multi_instance": false,
     "services": [
