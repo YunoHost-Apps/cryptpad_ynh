@@ -3,8 +3,8 @@
     "id": "cryptpad",
     "packaging_format": 1,
     "description": {
-        "en": "Zero Knowledge realtime collaborative editor",
-        "fr": "Éditeur chiffré collaboratif en temps réel"
+        "en": "Zero Knowledge realtime collaborative office suite",
+        "fr": "Suite bureautique chiffrée collaborative en temps réel"
     },
     "version": "5.1.0~ynh1",
     "url": "https://cryptpad.fr/",
