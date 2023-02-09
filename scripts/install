@@ -71,15 +71,15 @@ ynh_app_setting_set --app=$app --key=porti --value=$porti
 #=================================================
 
 # if the main domain for the app is a root domain, we create a correct sandbox subdomain
-if [ $domain == *"."* ]; then
+if [[ $domain == *"."* ]]; then
 	sandboxdomain=sandbox.$domain
 fi
 # if the main domain for the app is already a sub-domain, we create a correct sandbox domain
-if [ $domain == *"."*"."* ]; then
+if [[ $domain == *"."*"."* ]]; then
 	sandboxdomain=sandbox-$domain
 fi
 # if the main domain for the app is a .local root domain, we create a correct sandbox subdomain
-if [ $domain == *".local" ]; then
+if [[ $domain == *".local" ]]; then
 	sandboxdomain=sandbox-$domain
 fi
 
