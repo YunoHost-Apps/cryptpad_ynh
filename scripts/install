@@ -83,7 +83,7 @@ if [[ $domain == *".local" ]]; then
 	sandboxdomain=sandbox-$domain
 fi
 
-ynh_script_progression --message="Setting up sandobx domain $sandboxdomain..." --weight=1
+ynh_script_progression --message="Setting up sandobx domain : $sandboxdomain" --weight=1
 
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
