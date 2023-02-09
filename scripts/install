@@ -191,7 +191,7 @@ fi
 # We authorize access to sandbox domain
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	ynh_permission_url --permission="main" --add_url=re:$sandboxdomain --auth_header=true
+	ynh_permission_url --permission="main" --add_url=$sandboxdomain --auth_header=true
 	# there is a bug in core that add a slash at the end of domain in ssowat conf for uris var
 	# we use jq to correct /etc/ssowat/conf.json
 	#uri2=$sandboxdomain
