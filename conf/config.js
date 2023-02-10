@@ -324,5 +324,5 @@ module.exports = {
      *  such as Docker.
      *
      */
-    installMethod: 'unspecified',
+    installMethod: 'yunohost',
 };
