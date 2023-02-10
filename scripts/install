@@ -228,7 +228,8 @@ message="CryptPad was successfully installed :)
 
 READ CAREFULLY !!
 
-We have added a sandbox domain : $sandboxdomain for you but you still need to configure your DNS and generate Let's Encrypt Certificates for it.
+We have added a sandbox domain : $sandboxdomain for you but you still need to configure your DNS and generate the Let's Encrypt Certificates for it.
+You will need also to restart CryptPad service after this is done.
 
 Then you can please open your $app domain: https://$domain$path_url
 Once CryptPad is installed, create an account via the Sign Up button on the home page which will take you to the Register page.
