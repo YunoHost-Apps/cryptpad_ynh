@@ -69,7 +69,22 @@ ynh_app_setting_set --app=$app --key=porti --value=$porti
 #=================================================
 # CREATE A SANDBOX DOMAIN
 #=================================================
-sandboxdomain=sandbox-$domain
+
+# if the main domain for the app is a root domain, we create a correct sandbox subdomain
+if [[ $domain == *"."* ]]; then
+	sandboxdomain=sandbox.$domain
+fi
+# if the main domain for the app is already a sub-domain, we create a correct sandbox domain
+if [[ $domain == *"."*"."* ]]; then
+	sandboxdomain=sandbox-$domain
+fi
+# if the main domain for the app is a .local root domain, we create a correct sandbox subdomain
+if [[ $domain == *".local" ]]; then
+	sandboxdomain=sandbox-$domain
+fi
+
+ynh_script_progression --message="Setting up sandobx domain : $sandboxdomain" --weight=1
+
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	yunohost domain add $sandboxdomain
@@ -177,12 +192,6 @@ fi
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	ynh_permission_url --permission="main" --add_url=$sandboxdomain --auth_header=true
-	# there is a bug in core that add a slash at the end of domain in ssowat conf for uris var
-	# so we use ${sandboxdomain%/} to remove the eccessive trailing slash # it doesnt work
-	# we use jq to correct /etc/ssowat/conf.json
-	uri2=$sandboxdomain
-	touch /etc/ssowat/conf.json.persistent
-	cat /etc/ssowat/conf.json | jq --arg uri2 "$uri2" '(.permissions[] | select(.label=="CryptPad") | .uris[1]) |=$uri2' >> /etc/ssowat/conf.json.persistent
 fi
 
 #=================================================
@@ -217,7 +226,9 @@ ynh_script_progression --message="Sending a readme for the admin..." --weight=1
 
 message="CryptPad was successfully installed :)
 
-We have added a sandbox domain for you but you still need to configure your DNS and generate Let's Encrypt Certificates for it.
+READ CAREFULLY !!
+
+We have added a sandbox domain : $sandboxdomain for you but you still need to configure your DNS and generate Let's Encrypt Certificates for it.
 
 Then you can please open your $app domain: https://$domain$path_url
 Once CryptPad is installed, create an account via the Sign Up button on the home page which will take you to the Register page.
