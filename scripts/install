@@ -210,7 +210,7 @@ fi
 #=================================================
 # RELOAD YUNOHOST-API to refresh web admin domains after domain creation (normal?)
 #=================================================
-ynh_systemd_action --service_name=yunohost-api --action=reload
+#ynh_systemd_action --service_name=yunohost-api --action=reload
 
 #=================================================
 # RELOAD NGINX
