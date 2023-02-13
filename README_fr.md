@@ -6,6 +6,7 @@ It shall NOT be edited by hand.
 # CryptPad pour YunoHost
 
 [![Niveau d’intégration](https://dash.yunohost.org/integration/cryptpad.svg)](https://dash.yunohost.org/appci/app/cryptpad) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/cryptpad.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/cryptpad.maintain.svg)
+
 [![Installer CryptPad avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=cryptpad)
 
 *[Read this readme in english.](./README.md)*
