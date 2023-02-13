@@ -5,25 +5,26 @@ It shall NOT be edited by hand.
 
 # CryptPad pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/cryptpad.svg)](https://dash.yunohost.org/appci/app/cryptpad) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/cryptpad.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/cryptpad.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/cryptpad.svg)](https://dash.yunohost.org/appci/app/cryptpad) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/cryptpad.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/cryptpad.maintain.svg)
+
 [![Installer CryptPad avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=cryptpad)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer CryptPad rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer CryptPad rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 CryptPad est une suite de collaboration chiffrée de bout en bout et open source. Il est conçu pour permettre la collaboration, en synchronisant les modifications apportées aux documents en temps réel. Étant donné que toutes les données sont chiffrées, le service et ses administrateurs n'ont aucun moyen de voir le contenu modifié et stocké. 
 
-**Version incluse :** 4.12.0~ynh2
+**Version incluse :** 5.2.1~ynh1
 
 **Démo :** https://cryptpad.fr/
 
-## Captures d'écran
+## Captures d’écran
 
-![Capture d'écran de CryptPad](./doc/screenshots/screenshot.png)
+![Capture d’écran de CryptPad](./doc/screenshots/screenshot.png)
 
 ## Avertissements / informations importantes
 
@@ -43,9 +44,9 @@ adminKeys: [
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://cryptpad.fr/>
-* Documentation officielle de l'admin : <https://docs.cryptpad.fr/en/>
-* Dépôt de code officiel de l'app : <https://github.com/xwiki-labs/cryptpad>
+* Site officiel de l’app : <https://cryptpad.fr/>
+* Documentation officielle de l’admin : <https://docs.cryptpad.fr/en/>
+* Dépôt de code officiel de l’app : <https://github.com/xwiki-labs/cryptpad>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_cryptpad>
 * Signaler un bug : <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
 
@@ -61,4 +62,4 @@ ou
 sudo yunohost app upgrade cryptpad -u https://github.com/YunoHost-Apps/cryptpad_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>

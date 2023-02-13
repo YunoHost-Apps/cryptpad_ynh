@@ -67,6 +67,31 @@ porti=$(ynh_find_port --port=$(($port + 1)))
 ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 #=================================================
+# CREATE A SANDBOX DOMAIN
+#=================================================
+
+# if the main domain for the app is a root domain, we create a correct sandbox subdomain
+if [[ $domain == *"."* ]]; then
+	sandboxdomain=sandbox.$domain
+fi
+# if the main domain for the app is already a sub-domain, we create a correct sandbox domain
+if [[ $domain == *"."*"."* ]]; then
+	sandboxdomain=sandbox-$domain
+fi
+# if the main domain for the app is a .local root domain, we create a correct sandbox subdomain
+if [[ $domain == *".local" ]]; then
+	sandboxdomain=sandbox-$domain
+fi
+
+ynh_script_progression --message="Setting up sandobx domain : $sandboxdomain" --weight=1
+
+# We don't test that in CI
+if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+	yunohost domain add $sandboxdomain
+	yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
+fi
+
+#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Installing dependencies..." --weight=20
@@ -131,6 +156,8 @@ pushd "$final_path"
 	ynh_exec_warn_less npm install --allow-root
 	ynh_exec_warn_less npm install -g bower
 	ynh_exec_warn_less bower install --allow-root
+	ynh_exec_warn_less bower update --allow-root
+	ynh_exec_warn_less npm run build
 popd
 
 #=================================================
@@ -161,6 +188,30 @@ then
 	ynh_permission_update --permission="main" --add="visitors"
 fi
 
+# We authorize access to sandbox domain
+# We don't test that in CI
+if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+	ynh_permission_url --permission="main" --add_url=$sandboxdomain --auth_header=true
+fi
+
+#=================================================
+# APPLY FOLDER RIGHTS
+#=================================================
+chgrp -R www-data $final_path
+
+#=================================================
+# COPY NGINX CONF IN SANDBOX DOMAIN
+#=================================================
+# We don't test that in CI
+if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+	ynh_add_config --template="/etc/nginx/conf.d/$domain.d/cryptpad.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/cryptpad.conf"
+fi
+
+#=================================================
+# RELOAD YUNOHOST-API to refresh web admin domains after domain creation (normal?)
+#=================================================
+ynh_systemd_action --service_name=yunohost-api --action=reload
+
 #=================================================
 # RELOAD NGINX
 #=================================================
@@ -175,9 +226,14 @@ ynh_script_progression --message="Sending a readme for the admin..." --weight=1
 
 message="CryptPad was successfully installed :)
 
-Please open your $app domain: https://$domain$path_url
+READ CAREFULLY !!
 
-Once CryptPad is installed, create an account via the Register button on the home page. To make this account an instance administrator:
+We have added a sandbox domain : $sandboxdomain for you but you still need to configure your DNS and generate the Let's Encrypt Certificates for it.
+You will need also to restart CryptPad service after this is done.
+
+Then you can please open your $app domain: https://$domain$path_url
+Once CryptPad is installed, create an account via the Sign Up button on the home page which will take you to the Register page.
+To make this account an instance administrator:
 
 1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
 2. Paste this key in /var/www/cryptpad/config/config.js in the following array (uncomment and replace the placeholder):
