@@ -118,12 +118,15 @@ if [[ $domain == *".local" ]]; then
 	sandboxdomain=sandbox-$domain
 fi
 
-ynh_script_progression --message="Setting up sandobx domain : $sandboxdomain" --weight=1
+ynh_script_progression --message="Setting up sandobx domain: $sandboxdomain" --weight=1
 
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	yunohost domain add $sandboxdomain
-	yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
+	# If sandboxdomain doesn't exist, create it
+	if [ -z "$sandboxdomain" ]; then
+		yunohost domain add $sandboxdomain
+		yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
+	fi
 fi
 
 #=================================================
