@@ -30,6 +30,8 @@ CryptPad est une suite de collaboration chiffrée de bout en bout et open source
 
 ## Configuration
 
+Nous avons ajouté le domaine obligatoire sandbox pour vous mais vous devez encore configurer votre DNS et générer les certificats pour celui-ci.
+
 Une fois CryptPad installé, créez un compte via le bouton S'inscrire sur la page d'accueil. Pour faire de ce compte un administrateur d'instance :
 
 1. Copiez la clé publique trouvée dans le menu utilisateur (avatar en haut à droite) > Paramètres > Compte > Clé de signature publique
