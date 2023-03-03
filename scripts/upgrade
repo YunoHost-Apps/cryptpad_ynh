@@ -192,10 +192,7 @@ ynh_systemd_action --service_name=$app --action="start" --log_path=systemd --lin
 #=================================================
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	bck_domain=$domain
-	domain=$sandboxdomain
-	ynh_add_nginx_config
-	domain=$bck_domain
+	ynh_add_config --template="cryptpad.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/$app.conf"
 fi
 
 # We authorize access to sandbox domain
