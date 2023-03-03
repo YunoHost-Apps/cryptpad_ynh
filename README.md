@@ -18,7 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. It is built to enable collaboration, synchronizing changes to documents in real time. Because all data is encrypted, the service and its administrators have no way of seeing the content being edited and stored.
 
-**Shipped version:** 5.2.1~ynh2
+**Shipped version:** 5.2.1~ynh5
 
 **Demo:** https://cryptpad.fr/
 
@@ -29,6 +29,8 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 ## Disclaimers / important information
 
 ## Configuration
+
+We have added the mandatory sandbox domain for you but you still need to configure your DNS and generate Let's Encrypt Certificates for it !!
 
 Once CryptPad is installed, create an account via the Register button on the home page. To make this account an instance administrator:
 

@@ -6,7 +6,7 @@
         "en": "Zero Knowledge realtime collaborative office suite",
         "fr": "Suite bureautique chiffrée pour la collaboration en temps réel"
     },
-    "version": "5.2.1~ynh2",
+    "version": "5.2.1~ynh5",
     "url": "https://cryptpad.fr/",
     "upstream": {
         "license": "AGPL-3.0-only",
