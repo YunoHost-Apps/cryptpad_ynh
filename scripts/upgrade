@@ -123,7 +123,7 @@ ynh_script_progression --message="Setting up sandobx domain: $sandboxdomain" --w
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	# If sandboxdomain doesn't exist, create it
-	if yunohost domain list --output-as json | jq .domains[] | tr -d '"' | grep -q "$sandboxdomain" != "$sandboxdomain"; then
+	if ! yunohost domain list --output-as json | jq -r .domains[] | grep -q "^$sandboxdomain\$"; then
 		yunohost domain add $sandboxdomain
 		yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
 	fi
