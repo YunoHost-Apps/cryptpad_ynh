@@ -88,6 +88,12 @@ ynh_script_progression --message="Upgrading NGINX web server configuration..." -
 # Create a dedicated NGINX config
 ynh_add_nginx_config
 
+env_path="$PATH"
+# Create a dedicated systemd config
+ynh_add_systemd_config
+
+yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
+
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
@@ -109,27 +115,13 @@ pushd "$install_dir"
 popd
 
 #=================================================
-# SETUP SYSTEMD
-#=================================================
-ynh_script_progression --message="Upgrading systemd configuration..." --weight=1
-
-env_path="$PATH"
-# Create a dedicated systemd config
-ynh_add_systemd_config
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
-
-yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
-
-#=================================================
 # ADD UPGRADED CONFIG WITH SANDBOX
 #=================================================
+
 ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
+
+chmod 600 "$install_dir/config/config.js"
+chown $app "$install_dir/config/config.js"
 
 #=================================================
 # START SYSTEMD SERVICE
