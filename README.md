@@ -18,31 +18,13 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. It is built to enable collaboration, synchronizing changes to documents in real time. Because all data is encrypted, the service and its administrators have no way of seeing the content being edited and stored.
 
-**Shipped version:** 5.2.1~ynh6
+**Shipped version:** 5.2.1~ynh7
 
 **Demo:** https://cryptpad.fr/
 
 ## Screenshots
 
 ![Screenshot of CryptPad](./doc/screenshots/screenshot.png)
-
-## Disclaimers / important information
-
-## Configuration
-
-We have added the mandatory sandbox domain for you but you still need to configure your DNS and generate Let's Encrypt Certificates for it !!
-
-Once CryptPad is installed, create an account via the Register button on the home page. To make this account an instance administrator:
-
-1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
-2. Paste this key in `/var/www/cryptpad/config/config.js` in the following array (uncomment and replace the placeholder):
-``` 
-adminKeys: [
-        "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
-],
-```
-
-3. Restart CryptPad service (In YunoHost webadmin -> Services -> cryptpad -> Restart)
 
 ## Documentation and resources
 
