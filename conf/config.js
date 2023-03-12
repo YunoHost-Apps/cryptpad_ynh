@@ -95,7 +95,7 @@ module.exports = {
  *  that of your httpPort + 1. You probably don't need to change this.
  *
  */
-    httpSafePort: __PORTI__,
+    httpSafePort: __PORT_PORTI__,
 
 /*  CryptPad will launch a child process for every core available
  *  in order to perform CPU-intensive tasks in parallel.

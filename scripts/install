@@ -10,61 +10,10 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# MANAGE SCRIPT FAILURE
-#=================================================
-
-#REMOVEME? ynh_clean_setup () {
-	ynh_clean_check_starting
-}
-# Exit if an error occurs during the execution of the script
-#REMOVEME? ynh_abort_if_errors
-
-#=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
 
-#REMOVEME? domain=$YNH_APP_ARG_DOMAIN
-path="/"
-#REMOVEME? is_public=$YNH_APP_ARG_IS_PUBLIC
-#REMOVEME? admin=$YNH_APP_ARG_ADMIN
 email=$(ynh_user_get_info --username=$admin --key=mail)
-
-#REMOVEME? app=$YNH_APP_INSTANCE_NAME
-
-#=================================================
-# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
-#=================================================
-#REMOVEME? ynh_script_progression --message="Validating installation parameters..." --weight=1
-
-#REMOVEME? install_dir=/var/www/$app
-#REMOVEME? test ! -e "$install_dir" || ynh_die --message="This path already contains a folder"
-
-# Register (book) web path
-#REMOVEME? ynh_webpath_register --app=$app --domain=$domain --path=$path
-
-#=================================================
-# STORE SETTINGS FROM MANIFEST
-#=================================================
-#REMOVEME? ynh_script_progression --message="Storing installation settings..."
-
-#REMOVEME? ynh_app_setting_set --app=$app --key=domain --value=$domain
-#REMOVEME? ynh_app_setting_set --app=$app --key=path --value=$path
-#REMOVEME? ynh_app_setting_set --app=$app --key=admin --value=$admin
-
-#=================================================
-# STANDARD MODIFICATIONS
-#=================================================
-# FIND AND OPEN A PORT
-#=================================================
-#REMOVEME? ynh_script_progression --message="Finding an available port..." --weight=1
-
-# Find an available port
-#REMOVEME? port=$(ynh_find_port --port=3000)
-#REMOVEME? ynh_app_setting_set --app=$app --key=port --value=$port
-
-# Find an available port
-#REMOVEME? porti=$(ynh_find_port --port=$(($port + 1)))
-#REMOVEME? ynh_app_setting_set --app=$app --key=porti --value=$porti
 
 #=================================================
 # CREATE A SANDBOX DOMAIN
@@ -99,33 +48,29 @@ fi
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
-# CREATE DEDICATED USER
-#=================================================
-#REMOVEME? ynh_script_progression --message="Configuring system user..." --weight=1
-
-# Create a system user
-#REMOVEME? ynh_system_user_create --username=$app --home_dir="$install_dir"
-
-#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_script_progression --message="Setting up source files..." --weight=10
 
-#REMOVEME? ynh_app_setting_set --app=$app --key=install_dir --value=$install_dir
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir"
 
-chmod 750 "$install_dir"
 chmod -R o-rwx "$install_dir"
 chown -R $app:$app "$install_dir"
 
 #=================================================
-# NGINX CONFIGURATION
+# SYSTEM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring NGINX web server..." --weight=1
+ynh_script_progression --message="Adding system configurations related to $app..." --weight=1
 
 # Create a dedicated NGINX config
 ynh_add_nginx_config
+
+env_path="$PATH"
+# Create a dedicated systemd config
+ynh_add_systemd_config
+
+yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # ADD A CONFIGURATION
@@ -136,15 +81,6 @@ ynh_add_config --template="../conf/config.js" --destination="$install_dir/config
 
 chmod 600 "$install_dir/config/config.js"
 chown $app "$install_dir/config/config.js"
-
-#=================================================
-# SETUP SYSTEMD
-#=================================================
-ynh_script_progression --message="Configuring a systemd service..." --weight=1
-
-env_path="$PATH"
-# Create a dedicated systemd config
-ynh_add_systemd_config
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -161,15 +97,6 @@ pushd "$install_dir"
 popd
 
 #=================================================
-# GENERIC FINALIZATION
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..." --weight=1
-
-yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
-
-#=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=2
@@ -180,13 +107,7 @@ ynh_systemd_action --service_name=$app --action="start" --log_path="systemd"
 #=================================================
 # SETUP SSOWAT
 #=================================================
-#REMOVEME? ynh_script_progression --message="Configuring permissions..." --weight=1
-
-# Make app public if necessary
-#REMOVEME? if [ $is_public -eq 1 ]
-then
-#REMOVEME? 	ynh_permission_update --permission="main" --add="visitors"
-fi
+#ynh_script_progression --message="Configuring permissions..." --weight=1
 
 # We authorize access to sandbox domain
 # We don't test that in CI
@@ -197,50 +118,17 @@ fi
 #=================================================
 # APPLY FOLDER RIGHTS
 #=================================================
+
 chgrp -R www-data $install_dir
 
 #=================================================
 # COPY NGINX CONF IN SANDBOX DOMAIN
 #=================================================
+
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 	ynh_add_config --template="/etc/nginx/conf.d/$domain.d/cryptpad.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/cryptpad.conf"
 fi
-
-#=================================================
-# RELOAD NGINX
-#=================================================
-#REMOVEME? ynh_script_progression --message="Reloading NGINX web server..." --weight=1
-
-#REMOVEME? ynh_systemd_action --service_name=nginx --action=reload
-
-#=================================================
-# SEND A README FOR THE ADMIN
-#=================================================
-ynh_script_progression --message="Sending a readme for the admin..." --weight=1
-
-message="CryptPad was successfully installed :)
-
-READ CAREFULLY !!
-
-We have added a sandbox domain : $sandboxdomain for you but you still need to configure your DNS and generate the Let's Encrypt Certificates for it.
-You will need also to restart CryptPad service after this is done.
-
-Then you can please open your $app domain: https://$domain$path
-Once CryptPad is installed, create an account via the Sign Up button on the home page which will take you to the Register page.
-To make this account an instance administrator:
-
-1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
-2. Paste this key in /var/www/cryptpad/config/config.js in the following array (uncomment and replace the placeholder):
-
-adminKeys: [
-        "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
-],
-
-
-If you are facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/cryptpad_ynh"
-
-ynh_send_readme_to_admin "$message"
 
 #=================================================
 # END OF SCRIPT
