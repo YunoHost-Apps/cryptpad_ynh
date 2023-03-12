@@ -1,7 +1,7 @@
 We have added a sandbox domain : __SANDBOXDOMAIN__ for you but you still need to configure your DNS and generate the Let's Encrypt Certificates for it.
 You will need also to restart CryptPad service after this is done.
 
-Then you can please open your $app domain: https://$domain$path
+Then you can please open your __APP__ domain: https://__DOMAIN__
 Once CryptPad is installed, create an account via the Sign Up button on the home page which will take you to the Register page.
 To make this account an instance administrator:
 
@@ -11,6 +11,3 @@ To make this account an instance administrator:
 adminKeys: [
         "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
 ],
-
-
-If you are facing an issue or want to improve this app, please open a new issue in this project: https://github.com/YunoHost-Apps/cryptpad_ynh"

@@ -32,6 +32,8 @@ if [[ $domain == *".local" ]]; then
 	sandboxdomain=sandbox-$domain
 fi
 
+ynh_app_setting_set --app=$app --key=sandboxdomain --value=$sandboxdomain
+
 ynh_script_progression --message="Setting up sandobx domain : $sandboxdomain" --weight=1
 
 # We don't test that in CI
@@ -43,7 +45,7 @@ fi
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-#REMOVEME? ynh_script_progression --message="Installing dependencies..." --weight=20
+ynh_script_progression --message="Installing dependencies..." --weight=20
 
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
@@ -107,7 +109,6 @@ ynh_systemd_action --service_name=$app --action="start" --log_path="systemd"
 #=================================================
 # SETUP SSOWAT
 #=================================================
-#ynh_script_progression --message="Configuring permissions..." --weight=1
 
 # We authorize access to sandbox domain
 # We don't test that in CI

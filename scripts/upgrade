@@ -40,7 +40,7 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir" --keep="config/config.js"
+	ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
 	
 	chmod -R o-rwx "$install_dir"
 	chown -R $app:$app "$install_dir"
@@ -117,6 +117,7 @@ popd
 #=================================================
 # ADD UPGRADED CONFIG WITH SANDBOX
 #=================================================
+ynh_script_progression --message="Updating a configuration file..." --weight=1
 
 ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
 
