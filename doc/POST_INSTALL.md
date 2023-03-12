@@ -1,7 +1,7 @@
-We have added a sandbox domain : __SANDBOXDOMAIN__ for you but you still need to configure your DNS and generate the Let's Encrypt Certificates for it.
+We have added a sandbox domain: __SANDBOXDOMAIN__ for you but you still need to configure your DNS and generate the Let's Encrypt Certificates for it.
 You will need also to restart CryptPad service after this is done.
 
-Then you can please open your __APP__ domain: https://__DOMAIN__
+Then you can please open CryptPad domain: https://__DOMAIN__
 Once CryptPad is installed, create an account via the Sign Up button on the home page which will take you to the Register page.
 To make this account an instance administrator:
 
