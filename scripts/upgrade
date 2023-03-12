@@ -12,17 +12,17 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..." --weight=1
+#REMOVEME? ynh_script_progression --message="Loading installation settings..." --weight=1
 
-app=$YNH_APP_INSTANCE_NAME
+#REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
-domain=$(ynh_app_setting_get --app=$app --key=domain)
-path_url=$(ynh_app_setting_get --app=$app --key=path)
-admin=$(ynh_app_setting_get --app=$app --key=admin)
-final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+#REMOVEME? domain=$(ynh_app_setting_get --app=$app --key=domain)
+#REMOVEME? path=$(ynh_app_setting_get --app=$app --key=path)
+#REMOVEME? admin=$(ynh_app_setting_get --app=$app --key=admin)
+#REMOVEME? #REMOVEME? install_dir=$(ynh_app_setting_get --app=$app --key=install_dir)
 email=$(ynh_user_get_info --username=$admin --key=mail)
-port=$(ynh_app_setting_get --app=$app --key=port)
-porti=$(ynh_app_setting_get --app=$app --key=porti)
+#REMOVEME? port=$(ynh_app_setting_get --app=$app --key=port)
+#REMOVEME? porti=$(ynh_app_setting_get --app=$app --key=porti)
 
 #=================================================
 # CHECK VERSION
@@ -34,17 +34,17 @@ upgrade_type=$(ynh_check_app_version_changed)
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
-ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=1
+#REMOVEME? ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=1
 
 # Backup the current version of the app
-ynh_backup_before_upgrade
-ynh_clean_setup () {
+#REMOVEME? ynh_backup_before_upgrade
+#REMOVEME? ynh_clean_setup () {
 	ynh_clean_check_starting
 	# Restore it if the upgrade fails
-	ynh_restore_upgradebackup
+#REMOVEME? 	ynh_restore_upgradebackup
 }
 # Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
+#REMOVEME? ynh_abort_if_errors
 
 #=================================================
 # STANDARD UPGRADE STEPS
@@ -60,15 +60,15 @@ ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..." --weight=2
 
-# If final_path doesn't exist, create it
-if [ -z "$final_path" ]; then
-	final_path=/var/www/$app
-	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
+# If install_dir doesn't exist, create it
+if [ -z "$install_dir" ]; then
+#REMOVEME? 	install_dir=/var/www/$app
+#REMOVEME? 	ynh_app_setting_set --app=$app --key=install_dir --value=$install_dir
 fi
 
 # Cleaning legacy permissions
-if ynh_legacy_permissions_exists; then
-	ynh_legacy_permissions_delete_all
+#REMOVEME? if ynh_legacy_permissions_exists; then
+#REMOVEME? 	ynh_legacy_permissions_delete_all
 
 	ynh_app_setting_delete --app=$app --key=is_public
 fi
@@ -76,10 +76,10 @@ fi
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
+#REMOVEME? ynh_script_progression --message="Making sure dedicated system user exists..." --weight=1
 
 # Create a dedicated user (if not existing)
-ynh_system_user_create --username=$app --home_dir="$final_path"
+#REMOVEME? ynh_system_user_create --username=$app --home_dir="$install_dir"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -90,17 +90,17 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$final_path" --keep="config/config.js"
+	ynh_setup_source --dest_dir="$install_dir" --keep="config/config.js"
 	
-	chmod 750 "$final_path"
-	chmod -R o-rwx "$final_path"
-	chown -R $app:$app "$final_path"
+	chmod 750 "$install_dir"
+	chmod -R o-rwx "$install_dir"
+	chown -R $app:$app "$install_dir"
 fi
 
 #=================================================
 # APPLY FOLDER GROUP RIGHTS FOR WWW-DATA
 #=================================================
-chgrp -R www-data $final_path
+chgrp -R www-data $install_dir
 
 #=================================================
 # CREATE A SANDBOX DOMAIN
@@ -140,7 +140,7 @@ ynh_add_nginx_config
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=6
+#REMOVEME? ynh_script_progression --message="Upgrading dependencies..." --weight=6
 
 ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
@@ -149,7 +149,7 @@ ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 #=================================================
 ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
 
-pushd "$final_path" 
+pushd "$install_dir" 
 	ynh_exec_warn_less npm install --allow-root
 	ynh_exec_warn_less npm install -g bower
 	ynh_exec_warn_less bower update --allow-root
@@ -178,7 +178,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 # ADD UPGRADED CONFIG WITH SANDBOX
 #=================================================
-ynh_add_config --template="../conf/config.js" --destination="$final_path/config/config.js"
+ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
 
 #=================================================
 # START SYSTEMD SERVICE
@@ -206,9 +206,9 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading NGINX web server..." --weight=1
+#REMOVEME? ynh_script_progression --message="Reloading NGINX web server..." --weight=1
 
-ynh_systemd_action --service_name=nginx --action=reload
+#REMOVEME? ynh_systemd_action --service_name=nginx --action=reload
 
 #=================================================
 # SEND A README FOR THE ADMIN
@@ -217,7 +217,7 @@ ynh_script_progression --message="Sending a readme for the admin..." --weight=1
 
 message="CryptPad was successfully upgraded :)
 We have added a sandbox domain for you but you still need to configure your DNS and generate Let's Encrypt Certificates for it !!
-If not already done, then you can please open your $app domain: https://$domain$path_url
+If not already done, then you can please open your $app domain: https://$domain$path
 Create an account via the Register button on the home page. To make this account an instance administrator:
 1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
 2. Paste this key in /var/www/cryptpad/config/config.js in the following array (uncomment and replace the placeholder):
