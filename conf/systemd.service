@@ -1,12 +1,12 @@
 [Unit]
-Description=Zero Knowledge realtime collaborative editor.
+Description=CryptPad: Zero Knowledge realtime collaborative editor.
 After=syslog.target network.target
 
 [Service]
 Type=simple
 User=__APP__
 Group=__APP__
-WorkingDirectory=__FINALPATH__
+WorkingDirectory=__INSTALL_DIR__
 Environment=PATH=__ENV_PATH__
 Environment=NODE_ENV=production
 ExecStart=__YNH_NPM__ start
