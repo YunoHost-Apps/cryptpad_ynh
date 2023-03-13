@@ -7,7 +7,7 @@ description.fr = "Suite bureautique chiffrée pour la collaboration en temps ré
 
 version = "5.2.1~ynh7"
 
-maintainers = ["frju365"]
+maintainers = ["ddataa"]
 
 [upstream]
 license = "AGPL-3.0-only"
