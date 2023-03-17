@@ -122,6 +122,14 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression --message="Updating a configuration file..." --weight=1
 
+CONF=$install_dir/config/config.js
+if test -f "$CONF"; then
+    	supportMailboxKey=$(ynh_read_var_in_file --file=$CONF --key=supportMailboxPublicKey)
+	adminKeys=$(ynh_read_var_in_file --file=$CONF --key=adminKeys)
+	echo $supportMailboxKey
+	echo $adminKeys
+fi
+
 ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
