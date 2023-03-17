@@ -89,11 +89,6 @@ ynh_script_progression --message="Upgrading NGINX web server configuration..." -
 ynh_add_nginx_config
 
 env_path="$PATH"
-# Create a dedicated systemd config
-ynh_add_systemd_config
-
-yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
-
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
@@ -113,6 +108,14 @@ pushd "$install_dir"
 	ynh_exec_warn_less npm i
 	ynh_exec_warn_less npm run build
 popd
+
+#=================================================
+# CREATE SYSTEMD SERVICE
+#=================================================
+# Create a dedicated systemd config
+ynh_add_systemd_config
+
+yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # ADD UPGRADED CONFIG WITH SANDBOX
