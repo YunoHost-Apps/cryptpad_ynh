@@ -1,0 +1,61 @@
+packaging_format = 2
+
+id = "cryptpad"
+name = "CryptPad"
+description.en = "Zero Knowledge realtime collaborative office suite"
+description.fr = "Suite bureautique chiffrée pour la collaboration en temps réel"
+
+version = "5.2.1~ynh7"
+
+maintainers = ["ddataa"]
+
+[upstream]
+license = "AGPL-3.0-only"
+website = "https://cryptpad.fr/"
+demo = "https://cryptpad.fr/"
+admindoc = "https://docs.cryptpad.fr/en/"
+code = "https://github.com/xwiki-labs/cryptpad"
+cpe = "cpe:2.3:a:xwiki:cryptpad"
+fund = "https://opencollective.com/cryptpad/contribute?language=fr"
+
+[integration]
+yunohost = ">= 11.1.15"
+architectures = "all"
+multi_instance = false
+ldap = false
+sso = false
+disk = "50M"
+ram.build = "350M"
+ram.runtime = "50M"
+
+[install]
+    [install.domain]
+    help.en = "CryptPad needs to be installed in a dedicated domain or sub-domain."
+    help.fr = "CryptPad doit être installé dans un domaine ou sous-domaine dédié."
+    type = "domain"
+    full_domain = true
+
+    [install.init_main_permission]
+    help.en = "If enabled, CryptPad will be accessible by people who do not have an account. This can be changed later via the webadmin."
+    help.fr = "Si cette case est cochée, CryptPad sera accessible aux personnes n’ayant pas de compte. Vous pourrez changer ceci plus tard via la webadmin."
+    type = "group"
+    default = "visitors"
+
+    [install.admin]
+    type = "user"
+
+[resources]
+        [resources.sources.main]
+        url = "https://github.com/xwiki-labs/cryptpad/archive/5.2.1.tar.gz"
+        sha256 = "945abe5bae0da25a4e2ef8e02730aaa5bb5e5a0b8bfd7a23a09ec38422d7c47f"
+
+    [resources.ports]
+    main.default = 3000
+    porti.default = 3001
+
+    [resources.system_user]
+
+    [resources.install_dir]
+
+    [resources.permissions]
+    main.url = "/"
