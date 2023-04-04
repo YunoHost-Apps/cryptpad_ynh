@@ -19,7 +19,7 @@ cpe = "cpe:2.3:a:xwiki:cryptpad"
 fund = "https://opencollective.com/cryptpad/contribute?language=fr"
 
 [integration]
-yunohost = ">= 11.1.15"
+yunohost = ">= 11.1.16"
 architectures = "all"
 multi_instance = false
 ldap = false
@@ -48,6 +48,7 @@ ram.runtime = "50M"
         [resources.sources.main]
         url = "https://github.com/xwiki-labs/cryptpad/archive/5.2.1.tar.gz"
         sha256 = "945abe5bae0da25a4e2ef8e02730aaa5bb5e5a0b8bfd7a23a09ec38422d7c47f"
+        autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
     main.default = 3000
