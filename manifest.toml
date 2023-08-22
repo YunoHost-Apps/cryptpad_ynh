@@ -5,7 +5,7 @@ name = "CryptPad"
 description.en = "Zero Knowledge realtime collaborative office suite"
 description.fr = "Suite bureautique chiffrée pour la collaboration en temps réel"
 
-version = "5.3.0~ynh1"
+version = "5.4.1~ynh1"
 
 maintainers = ["ddataa"]
 
@@ -45,8 +45,8 @@ ram.runtime = "50M"
 
 [resources]
         [resources.sources.main]
-        url = "https://github.com/xwiki-labs/cryptpad/archive/refs/tags/5.3.0.tar.gz"
-        sha256 = "470e75203e7080d19482bacf6216c50ec13070fc7d0ff2e4fc855f57668fb919"
+        url = "https://github.com/xwiki-labs/cryptpad/archive/refs/tags/5.4.1.tar.gz"
+        sha256 = "638a3124f7e65439277c774cda9db74b9503bea3d998696b550486be36d79ffa"
         autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
