@@ -93,7 +93,7 @@ pushd "$install_dir"
 	ynh_use_nodejs
 	ynh_exec_warn_less npm install --allow-root
 	ynh_exec_warn_less npm install -g bower
-	ynh_exec_warn_less bower init
+	ynh_exec_warn_less sudo -u $app bower init
 	ynh_exec_warn_less bower install --allow-root
 	ynh_exec_warn_less bower update --allow-root
 	ynh_exec_warn_less npm run build
