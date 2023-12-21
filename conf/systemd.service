@@ -9,7 +9,8 @@ Group=__APP__
 WorkingDirectory=__INSTALL_DIR__
 Environment=PATH=__ENV_PATH__
 Environment=NODE_ENV=production
-ExecStart=__YNH_NPM__ __INSTALL_DIR__/server.js
+ExecStart=__YNH_NPM__ start
+#ExecStart=__YNH_NPM__ __INSTALL_DIR__/server.js
 Restart=always
 RestartSec=2
 StandardOutput=journal
