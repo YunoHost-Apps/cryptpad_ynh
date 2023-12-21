@@ -93,6 +93,7 @@ pushd "$install_dir"
 	ynh_use_nodejs
 	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm ci
 	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run install:components
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run build
 popd
 
 #=================================================
