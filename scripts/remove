@@ -16,23 +16,15 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression --message="Removing system configurations related to $app..." --weight=1
 
-# Remove the service from the list of services known by YunoHost (added from `yunohost service add`)
 if ynh_exec_warn_less yunohost service status $app >/dev/null
 then
 	ynh_script_progression --message="Removing $app service integration..." --weight=3
 	yunohost service remove $app
 fi
 
-# Remove the dedicated systemd config
 ynh_remove_systemd_config
 
-# Remove the dedicated NGINX config
 ynh_remove_nginx_config
-
-#=================================================
-# REMOVE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Removing dependencies..." --weight=3
 
 ynh_remove_nodejs
 
@@ -56,7 +48,7 @@ if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 		sandboxdomain=sandbox-$domain
 	fi
 	
-	ynh_script_progression --message="Removing sandbox domain : $sandboxdomain" --weight=1
+	ynh_script_progression --message="Removing sandbox domain: $sandboxdomain" --weight=1
 	
 	if yunohost domain list | grep -q $sandboxdomain
 	then #if domain exist we remove it
