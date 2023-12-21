@@ -79,7 +79,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression --message="Adding a configuration file..."
 
-ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
+ynh_add_config --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
 chown $app "$install_dir/config/config.js"
@@ -91,11 +91,11 @@ ynh_script_progression --message="Building $app... (this will take some time and
 
 pushd "$install_dir"
 	ynh_use_nodejs
-	ynh_exec_warn_less npm install --allow-root
-	ynh_exec_warn_less npm install -g bower
-	ynh_exec_warn_less bower install --allow-root
-	ynh_exec_warn_less bower update --allow-root
-	ynh_exec_warn_less npm run build
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm install --allow-root
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm install -g bower
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH bower install --allow-root
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH bower update --allow-root
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run build
 popd
 
 #=================================================
