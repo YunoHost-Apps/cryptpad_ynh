@@ -34,7 +34,7 @@ fi
 
 ynh_app_setting_set --app=$app --key=sandboxdomain --value=$sandboxdomain
 
-ynh_script_progression --message="Setting up sandobx domain : $sandboxdomain" --weight=1
+ynh_script_progression --message="Setting up sandbox domain: $sandboxdomain" --weight=1
 
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
@@ -77,9 +77,9 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding a configuration file..."
+ynh_script_progression --message="Adding a configuration file..." --weight=1
 
-ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
+ynh_add_config --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
 chown $app "$install_dir/config/config.js"
@@ -87,15 +87,13 @@ chown $app "$install_dir/config/config.js"
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
-ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
+ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=30
 
 pushd "$install_dir"
 	ynh_use_nodejs
-	ynh_exec_warn_less npm install --allow-root
-	ynh_exec_warn_less npm install -g bower
-	ynh_exec_warn_less bower install --allow-root
-	ynh_exec_warn_less bower update --allow-root
-	ynh_exec_warn_less npm run build
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm ci
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run install:components
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run build
 popd
 
 #=================================================

@@ -29,7 +29,7 @@ upgrade_type=$(ynh_check_app_version_changed)
 #=================================================
 ynh_script_progression --message="Stopping a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name=$app --action="stop" --log_path="systemd"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -39,7 +39,6 @@ if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
 	ynh_script_progression --message="Upgrading source files..." --weight=1
 
-	# Download, check integrity, uncompress and patch the source from app.src
 	ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
 	
 	chmod -R o-rwx "$install_dir"
@@ -69,7 +68,7 @@ if [[ $domain == *".local" ]]; then
 	sandboxdomain=sandbox-$domain
 fi
 
-ynh_script_progression --message="Setting up sandobx domain: $sandboxdomain" --weight=1
+ynh_script_progression --message="Setting up sandbox domain: $sandboxdomain" --weight=1
 
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
@@ -81,6 +80,13 @@ if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 fi
 
 #=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading dependencies..." --weight=6
+
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+
+#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=1
@@ -89,30 +95,6 @@ ynh_script_progression --message="Upgrading NGINX web server configuration..." -
 ynh_add_nginx_config
 
 env_path="$PATH"
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=6
-
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
-
-#=================================================
-# INSTALL CRYPTPAD
-#=================================================
-ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
-
-pushd "$install_dir" 
-	ynh_exec_warn_less npm install --allow-root
-	ynh_exec_warn_less npm install -g bower
-	ynh_exec_warn_less bower update --allow-root
-	ynh_exec_warn_less npm i
-	ynh_exec_warn_less npm run build
-popd
-
-#=================================================
-# CREATE SYSTEMD SERVICE
-#=================================================
-# Create a dedicated systemd config
 ynh_add_systemd_config
 
 yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
@@ -122,17 +104,29 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression --message="Updating a configuration file..." --weight=1
 
-ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
+ynh_add_config --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
 chown $app "$install_dir/config/config.js"
+
+#=================================================
+# INSTALL CRYPTPAD
+#=================================================
+ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=30
+
+pushd "$install_dir"
+	ynh_use_nodejs
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm ci
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run install:components
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run build
+popd
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Starting a systemd service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="start" --log_path=systemd --line_match="server available"
+ynh_systemd_action --service_name=$app --action="start" --log_path="systemd"
 
 #=================================================
 # COPY NGINX CONF IN SANDBOX DOMAIN

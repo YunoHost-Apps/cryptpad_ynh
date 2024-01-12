@@ -6,7 +6,6 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-# Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
@@ -56,7 +55,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression --message="Reloading NGINX web server and $app's service..." --weight=1
 
-ynh_systemd_action --service_name=$app --action="start" --log_path=systemd --line_match="server available"
+ynh_systemd_action --service_name=$app --action="start" --log_path="systemd"
 
 ynh_systemd_action --service_name=nginx --action=reload
 

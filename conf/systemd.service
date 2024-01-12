@@ -1,5 +1,5 @@
 [Unit]
-Description=CryptPad: Zero Knowledge realtime collaborative editor.
+Description=CryptPad: Zero Knowledge realtime collaborative editor
 After=syslog.target network.target
 
 [Service]
@@ -11,6 +11,10 @@ Environment=PATH=__ENV_PATH__
 Environment=NODE_ENV=production
 ExecStart=__YNH_NPM__ start
 Restart=always
+RestartSec=2
+StandardOutput=journal
+StandardError=journal+console
+LimitNOFILE=1000000
 
 # Sandboxing options to harden security
 # Depending on specificities of your service/app, you may need to tweak these 
