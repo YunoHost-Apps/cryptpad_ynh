@@ -33,7 +33,6 @@ ram.runtime = "50M"
     help.en = "CryptPad needs to be installed in a dedicated domain or sub-domain."
     help.fr = "CryptPad doit être installé dans un domaine ou sous-domaine dédié."
     type = "domain"
-    full_domain = true
 
     [install.init_main_permission]
     help.en = "If 'Visitors' enabled, CryptPad will be accessible by people who do not have an account. This can be changed later via the webadmin."
