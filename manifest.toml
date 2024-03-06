@@ -2,8 +2,8 @@ packaging_format = 2
 
 id = "cryptpad"
 name = "CryptPad"
-description.en = "Zero Knowledge realtime collaborative office suite"
-description.fr = "Suite bureautique chiffrée pour la collaboration en temps réel"
+description.en = "Collaborative office suite that is end-to-end encrypted"
+description.fr = "Suite bureautique collaborative chiffrée de bout en bout"
 
 version = "5.7.0~ynh1"
 
@@ -11,10 +11,10 @@ maintainers = ["ddataa"]
 
 [upstream]
 license = "AGPL-3.0-only"
-website = "https://cryptpad.fr/"
+website = "https://cryptpad.org"
 demo = "https://cryptpad.fr/"
-admindoc = "https://docs.cryptpad.fr/en/"
-code = "https://github.com/xwiki-labs/cryptpad"
+admindoc = "https://docs.cryptpad.org/"
+code = "https://github.com/cryptpad/cryptpad/"
 cpe = "cpe:2.3:a:xwiki:cryptpad"
 fund = "https://opencollective.com/cryptpad/contribute?language=fr"
 
