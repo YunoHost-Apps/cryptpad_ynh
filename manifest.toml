@@ -50,7 +50,7 @@ ram.runtime = "50M"
         [resources.sources.main]
         url = "https://github.com/xwiki-labs/cryptpad/archive/refs/tags/5.7.0.tar.gz"
         sha256 = "87cf091f2d0f26bc4d2df53460bade79e3b0d1804dfe6ef1e592ceb2654cd21f"
-        autoupdate.strategy = "latest_github_tag"
+        autoupdate.strategy = "latest_github_release"
 
     [resources.ports]
     main.default = 3000
