@@ -94,7 +94,7 @@ module.exports = {
  *  that of your httpPort + 1. You probably don't need to change this.
  *
  */
-    httpSafePort: __PORT_PORTI__,
+    //httpSafePort: 3001,
 
 /*  Websockets need to be exposed on a separate port from the rest of
  *  the platform's HTTP traffic. Port 3003 is used by default.
