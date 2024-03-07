@@ -28,12 +28,11 @@ CryptPad est une suite de collaboration chiffrée de bout en bout et open source
 
 ## Documentations et ressources
 
-* Site officiel de l’app : <https://cryptpad.org>
-* Documentation officielle de l’admin : <https://docs.cryptpad.org/>
-* Dépôt de code officiel de l’app : <https://github.com/cryptpad/cryptpad/>
-* YunoHost Store: <https://apps.yunohost.org/app/cryptpad>
-* Signaler un bug : <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
-
+- Site officiel de l’app : <https://cryptpad.org>
+- Documentation officielle de l’admin : <https://docs.cryptpad.org/>
+- Dépôt de code officiel de l’app : <https://github.com/cryptpad/cryptpad/>
+- YunoHost Store : <https://apps.yunohost.org/app/cryptpad>
+- Signaler un bug : <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
 
 ## Informations pour les développeurs
 
