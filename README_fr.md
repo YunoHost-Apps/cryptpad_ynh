@@ -34,6 +34,7 @@ CryptPad est une suite de collaboration chiffrée de bout en bout et open source
 * YunoHost Store: <https://apps.yunohost.org/app/cryptpad>
 * Signaler un bug : <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
 
+
 ## Informations pour les développeurs
 
 Merci de faire vos pull request sur la [branche testing](https://github.com/YunoHost-Apps/cryptpad_ynh/tree/testing).
