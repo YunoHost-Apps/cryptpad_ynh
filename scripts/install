@@ -68,7 +68,6 @@ ynh_script_progression --message="Adding system configurations related to $app..
 # Create a dedicated NGINX config
 ynh_add_nginx_config
 
-env_path="$PATH"
 # Create a dedicated systemd config
 ynh_add_systemd_config
 

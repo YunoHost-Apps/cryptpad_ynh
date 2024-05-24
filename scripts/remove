@@ -29,11 +29,6 @@ ynh_remove_systemd_config
 # Remove the dedicated NGINX config
 ynh_remove_nginx_config
 
-#=================================================
-# REMOVE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Removing dependencies..." --weight=3
-
 ynh_remove_nodejs
 
 #=================================================
