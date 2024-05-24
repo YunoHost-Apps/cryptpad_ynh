@@ -78,7 +78,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression --message="Adding a configuration file..."
 
-ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
+ynh_add_config --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
 chown $app "$install_dir/config/config.js"
