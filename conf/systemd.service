@@ -9,6 +9,7 @@ Group=__APP__
 WorkingDirectory=__INSTALL_DIR__
 Environment=PATH=__YNH_NODE_LOAD_PATH__
 Environment=NODE_ENV=production
+Environment='PWD="__INSTALL_DIR__"'
 ExecStart=__YNH_NPM__ start
 Restart=always
 RestartSec=2
