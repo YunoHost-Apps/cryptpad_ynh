@@ -10,12 +10,6 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# RETRIEVE ARGUMENTS FROM THE MANIFEST
-#=================================================
-
-email=$(ynh_user_get_info --username=$admin --key=mail)
-
-#=================================================
 # CREATE A SANDBOX DOMAIN
 #=================================================
 
