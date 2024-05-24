@@ -44,10 +44,10 @@ ram.runtime = "50M"
     default = "visitors"
 
 [resources]
-        [resources.sources.main]
-        url = "https://github.com/cryptpad/cryptpad/archive/refs/tags/2024.3.1.tar.gz"
-        sha256 = "9149c55f09b245cde2d295efe1f373c394db7a7652ba32432d05dc11c2ddb697"
-        autoupdate.strategy = "latest_github_tag"
+    [resources.sources.main]
+    url = "https://github.com/cryptpad/cryptpad/archive/refs/tags/2024.3.1.tar.gz"
+    sha256 = "9149c55f09b245cde2d295efe1f373c394db7a7652ba32432d05dc11c2ddb697"
+    autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
     main.default = 3000
