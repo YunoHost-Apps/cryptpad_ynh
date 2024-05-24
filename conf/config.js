@@ -79,7 +79,7 @@ module.exports = {
  *  a specific address, specify it here. e.g '192.168.0.1'
  *
  */
-    httpAddress: '::',
+    httpAddress: 'localhost',
 
 /*  httpPort specifies on which port the nodejs server should listen.
  *  By default it will serve content over port 3000, which is suitable
