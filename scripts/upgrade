@@ -17,10 +17,11 @@ ynh_script_progression --message="Loading installation settings..." --weight=1
 email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
-# CHECK VERSION
+# UPGRADE DEPENDENCIES
 #=================================================
+ynh_script_progression --message="Upgrading dependencies..." --weight=6
 
-upgrade_type=$(ynh_check_app_version_changed)
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
 # STANDARD UPGRADE STEPS
@@ -34,16 +35,12 @@ ynh_systemd_action --service_name=$app --action="stop" --log_path="systemd"
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
+ynh_script_progression --message="Upgrading source files..." --weight=1
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Upgrading source files..." --weight=1
-
-	ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
+ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
 	
-	chmod -R o-rwx "$install_dir"
-	chown -R $app:$app "$install_dir"
-fi
+chmod -R o-rwx "$install_dir"
+chown -R $app:$app "$install_dir"
 
 #=================================================
 # APPLY FOLDER GROUP RIGHTS FOR WWW-DATA
@@ -78,13 +75,6 @@ if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
 		yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
 	fi
 fi
-
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=6
-
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
 # NGINX CONFIGURATION
