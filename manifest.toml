@@ -43,9 +43,6 @@ ram.runtime = "50M"
     type = "group"
     default = "visitors"
 
-    [install.admin]
-    type = "user"
-
 [resources]
         [resources.sources.main]
         url = "https://github.com/cryptpad/cryptpad/archive/refs/tags/2024.3.1.tar.gz"
