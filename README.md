@@ -30,7 +30,7 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 - Official app website: <https://cryptpad.fr/>
 - Official admin documentation: <https://docs.cryptpad.fr/en/>
-- Upstream app code repository: <https://github.com/xwiki-labs/cryptpad>
+- Upstream app code repository: <https://github.com/cryptpad/cryptpad>
 - YunoHost Store: <https://apps.yunohost.org/app/cryptpad>
 - Report a bug: <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
 

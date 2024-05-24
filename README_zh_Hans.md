@@ -30,7 +30,7 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 - 官方应用网站： <https://cryptpad.fr/>
 - 官方管理文档： <https://docs.cryptpad.fr/en/>
-- 上游应用代码库： <https://github.com/xwiki-labs/cryptpad>
+- 上游应用代码库： <https://github.com/cryptpad/cryptpad>
 - YunoHost 商店： <https://apps.yunohost.org/app/cryptpad>
 - 报告 bug： <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
 
