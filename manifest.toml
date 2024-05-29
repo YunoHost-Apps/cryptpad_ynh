@@ -11,9 +11,9 @@ maintainers = ["ddataa"]
 
 [upstream]
 license = "AGPL-3.0-only"
-website = "https://cryptpad.fr/"
-demo = "https://cryptpad.fr/"
-admindoc = "https://docs.cryptpad.fr/en/"
+website = "https://cryptpad.org"
+demo = "https://cryptpad.fr"
+admindoc = "https://docs.cryptpad.org/en/"
 code = "https://github.com/cryptpad/cryptpad"
 cpe = "cpe:2.3:a:xwiki:cryptpad"
 fund = "https://opencollective.com/cryptpad/contribute?language=fr"
