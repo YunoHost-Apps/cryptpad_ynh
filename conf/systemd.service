@@ -8,10 +8,12 @@ User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__
 Environment=PATH=__YNH_NODE_LOAD_PATH__
-Environment=NODE_ENV=production
+#Environment=NODE_ENV=production
 Environment='PWD="__INSTALL_DIR__"'
 ExecStart=__YNH_NPM__ start
+#ExecStart=__YNH_NPM__ __INSTALL_DIR__/server.js
 Restart=always
+LimitNOFILE=1000000
 
 # Sandboxing options to harden security
 # Depending on specificities of your service/app, you may need to tweak these 
