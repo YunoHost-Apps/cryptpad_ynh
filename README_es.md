@@ -20,7 +20,7 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 **Versión actual:** 2024.3.1~ynh1
 
-**Demo:** <https://cryptpad.fr/>
+**Demo:** <https://cryptpad.fr>
 
 ## Capturas
 
@@ -28,8 +28,8 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 ## Documentaciones y recursos
 
-- Sitio web oficial: <https://cryptpad.fr/>
-- Documentación administrador oficial: <https://docs.cryptpad.fr/en/>
+- Sitio web oficial: <https://cryptpad.org>
+- Documentación administrador oficial: <https://docs.cryptpad.org/en/>
 - Repositorio del código fuente oficial de la aplicación : <https://github.com/cryptpad/cryptpad>
 - Catálogo YunoHost: <https://apps.yunohost.org/app/cryptpad>
 - Reportar un error: <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
