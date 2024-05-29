@@ -10,13 +10,6 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# LOAD SETTINGS
-#=================================================
-ynh_script_progression --message="Loading installation settings..." --weight=1
-
-email=$(ynh_user_get_info --username=$admin --key=mail)
-
-#=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Upgrading dependencies..." --weight=6
@@ -95,12 +88,12 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
 
-pushd "$install_dir" 
-	ynh_exec_warn_less npm install --allow-root
-	ynh_exec_warn_less npm install -g bower
-	ynh_exec_warn_less bower update --allow-root
-	ynh_exec_warn_less npm i
-	ynh_exec_warn_less npm run build
+pushd "$install_dir"
+	ynh_use_nodejs
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm ci
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run install:components
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run build
+	#./install-onlyoffice.sh
 popd
 
 #=================================================
