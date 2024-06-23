@@ -34,7 +34,7 @@ fi
 
 ynh_app_setting_set --app=$app --key=sandboxdomain --value=$sandboxdomain
 
-ynh_script_progression --message="Setting up sandobx domain : $sandboxdomain" --weight=1
+ynh_script_progression --message="Setting up sandobx domain: $sandboxdomain" --weight=1
 
 # We don't test that in CI
 if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
@@ -68,7 +68,6 @@ ynh_script_progression --message="Adding system configurations related to $app..
 # Create a dedicated NGINX config
 ynh_add_nginx_config
 
-env_path="$PATH"
 # Create a dedicated systemd config
 ynh_add_systemd_config
 
@@ -77,9 +76,9 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding a configuration file..."
+ynh_script_progression --message="Adding a configuration file..." --weight=1
 
-ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
+ynh_add_config --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
 chown $app "$install_dir/config/config.js"

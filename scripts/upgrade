@@ -17,10 +17,11 @@ ynh_script_progression --message="Loading installation settings..." --weight=1
 email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
-# CHECK VERSION
+# UPGRADE DEPENDENCIES
 #=================================================
+ynh_script_progression --message="Upgrading dependencies..." --weight=6
 
-upgrade_type=$(ynh_check_app_version_changed)
+ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
 
 #=================================================
 # STANDARD UPGRADE STEPS
@@ -34,17 +35,13 @@ ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
+ynh_script_progression --message="Upgrading source files..." --weight=1
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Upgrading source files..." --weight=1
-
-	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
 	
-	chmod -R o-rwx "$install_dir"
-	chown -R $app:$app "$install_dir"
-fi
+chmod -R o-rwx "$install_dir"
+chown -R $app:$app "$install_dir"
 
 #=================================================
 # APPLY FOLDER GROUP RIGHTS FOR WWW-DATA
@@ -88,13 +85,10 @@ ynh_script_progression --message="Upgrading NGINX web server configuration..." -
 # Create a dedicated NGINX config
 ynh_add_nginx_config
 
-env_path="$PATH"
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=6
+# Create a dedicated systemd config
+ynh_add_systemd_config
 
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -110,19 +104,11 @@ pushd "$install_dir"
 popd
 
 #=================================================
-# CREATE SYSTEMD SERVICE
-#=================================================
-# Create a dedicated systemd config
-ynh_add_systemd_config
-
-yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
-
-#=================================================
 # ADD UPGRADED CONFIG WITH SANDBOX
 #=================================================
 ynh_script_progression --message="Updating a configuration file..." --weight=1
 
-ynh_add_config --template="../conf/config.js" --destination="$install_dir/config/config.js"
+ynh_add_config --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
 chown $app "$install_dir/config/config.js"

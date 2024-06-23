@@ -7,7 +7,7 @@ Once CryptPad is installed, create an account via the Sign Up button on the home
 To make this account an instance administrator:
 
 1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
-2. Paste this key in `/var/www/cryptpad/config/config.js` in the following array (uncomment and replace the placeholder):
+2. Paste this key in `__INSTALL_DIR__/config/config.js` in the following array (uncomment and replace the placeholder):
 
 ```
 adminKeys: [
