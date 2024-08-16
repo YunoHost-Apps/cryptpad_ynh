@@ -30,7 +30,7 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 - Website aplikasi resmi: <https://cryptpad.fr/>
 - Dokumentasi admin resmi: <https://docs.cryptpad.fr/en/>
-- Repositori kode aplikasi hulu: <https://github.com/xwiki-labs/cryptpad>
+- Depot kode aplikasi hulu: <https://github.com/cryptpad/cryptpad>
 - Gudang YunoHost: <https://apps.yunohost.org/app/cryptpad>
 - Laporkan bug: <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
 
