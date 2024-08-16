@@ -20,7 +20,7 @@ CryptPad est une suite de collaboration chiffrée de bout en bout et open source
 
 **Version incluse :** 2024.6.1~ynh1
 
-**Démo :** <https://cryptpad.fr>
+**Démo :** <https://cryptpad.fr/>
 
 ## Captures d’écran
 
