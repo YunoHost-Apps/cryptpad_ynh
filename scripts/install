@@ -10,12 +10,6 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# RETRIEVE ARGUMENTS FROM THE MANIFEST
-#=================================================
-
-email=$(ynh_user_get_info --username=$admin --key=mail)
-
-#=================================================
 # CREATE A SANDBOX DOMAIN
 #=================================================
 
@@ -90,11 +84,10 @@ ynh_script_progression --message="Building $app... (this will take some time and
 
 pushd "$install_dir"
 	ynh_use_nodejs
-	ynh_exec_warn_less npm install --allow-root
-	ynh_exec_warn_less npm install -g bower
-	ynh_exec_warn_less bower install --allow-root
-	ynh_exec_warn_less bower update --allow-root
-	ynh_exec_warn_less npm run build
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm ci
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run install:components
+	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run build
+	#./install-onlyoffice.sh
 popd
 
 #=================================================
