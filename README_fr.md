@@ -18,9 +18,9 @@ Il NE doit PAS être modifié à la main.
 
 CryptPad est une suite de collaboration chiffrée de bout en bout et open source. Il est conçu pour permettre la collaboration, en synchronisant les modifications apportées aux documents en temps réel. Étant donné que toutes les données sont chiffrées, le service et ses administrateurs n'ont aucun moyen de voir le contenu modifié et stocké. 
 
-**Version incluse :** 2024.6.0~ynh1
+**Version incluse :** 2024.6.1~ynh1
 
-**Démo :** <https://cryptpad.fr>
+**Démo :** <https://cryptpad.fr/>
 
 ## Captures d’écran
 
@@ -28,8 +28,8 @@ CryptPad est une suite de collaboration chiffrée de bout en bout et open source
 
 ## Documentations et ressources
 
-- Site officiel de l’app : <https://cryptpad.org>
-- Documentation officielle de l’admin : <https://docs.cryptpad.org/en/>
+- Site officiel de l’app : <https://cryptpad.fr/>
+- Documentation officielle de l’admin : <https://docs.cryptpad.fr/en/>
 - Dépôt de code officiel de l’app : <https://github.com/cryptpad/cryptpad>
 - YunoHost Store : <https://apps.yunohost.org/app/cryptpad>
 - Signaler un bug : <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
