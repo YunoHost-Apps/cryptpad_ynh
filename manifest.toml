@@ -14,7 +14,7 @@ license = "AGPL-3.0-only"
 website = "https://cryptpad.fr/"
 demo = "https://cryptpad.fr/"
 admindoc = "https://docs.cryptpad.fr/en/"
-code = "https://github.com/xwiki-labs/cryptpad"
+code = "https://github.com/cryptpad/cryptpad"
 cpe = "cpe:2.3:a:xwiki:cryptpad"
 fund = "https://opencollective.com/cryptpad/contribute?language=fr"
 
@@ -48,7 +48,7 @@ ram.runtime = "50M"
 
 [resources]
         [resources.sources.main]
-        url = "https://github.com/xwiki-labs/cryptpad/archive/refs/tags/2024.6.1.tar.gz"
+        url = "https://github.com/cryptpad/cryptpad/archive/refs/tags/2024.6.1.tar.gz"
         sha256 = "318ff90668e4acfa46dbfa31d0074d8b672571169ac2ef846251e08e9b5f424a"
         autoupdate.strategy = "latest_github_tag"
 
