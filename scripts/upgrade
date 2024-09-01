@@ -20,18 +20,9 @@ ynh_systemctl --service=$app --action="stop"
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
+ynh_script_progression "Upgrading source files..."
 
-# FIXME: this is still supported but the recommendation is now to *always* re-setup the app sources wether or not the upstream sources changed
-if ynh_app_upstream_version_changed
-then
-	ynh_script_progression "Upgrading source files..."
-
-	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
-
-	#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
-	#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:$app "$install_dir"
-fi
+ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
 
 #=================================================
 # APPLY FOLDER GROUP RIGHTS FOR WWW-DATA
@@ -75,7 +66,6 @@ ynh_script_progression "Upgrading NGINX web server configuration..."
 # Create a dedicated NGINX config
 ynh_config_add_nginx
 
-env_path="$PATH"
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
@@ -89,7 +79,6 @@ ynh_nodejs_install
 ynh_script_progression "Building $app... (this will take some time and resources!)"
 
 pushd "$install_dir"
-
 	ynh_hide_warnings npm install --allow-root
 	ynh_hide_warnings npm install -g bower
 	ynh_hide_warnings bower update --allow-root
@@ -100,7 +89,7 @@ popd
 #=================================================
 # CREATE SYSTEMD SERVICE
 #=================================================
-# Create a dedicated systemd config
+
 ynh_config_add_systemd
 
 yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
@@ -111,9 +100,6 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 ynh_script_progression "Updating configuration..."
 
 ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
-
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 600 "$install_dir/config/config.js"
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown $app "$install_dir/config/config.js"
 
 #=================================================
 # START SYSTEMD SERVICE
