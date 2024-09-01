@@ -63,15 +63,13 @@ fi
 #=================================================
 ynh_script_progression "Upgrading NGINX web server configuration..."
 
-# Create a dedicated NGINX config
 ynh_config_add_nginx
 
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression "Upgrading dependencies..."
-
 ynh_nodejs_install
+
+ynh_config_add_systemd
+
+yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -85,14 +83,6 @@ pushd "$install_dir"
 	ynh_hide_warnings npm i
 	ynh_hide_warnings npm run build
 popd
-
-#=================================================
-# CREATE SYSTEMD SERVICE
-#=================================================
-
-ynh_config_add_systemd
-
-yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # ADD UPGRADED CONFIG WITH SANDBOX
