@@ -5,7 +5,7 @@ name = "CryptPad"
 description.en = "Zero Knowledge realtime collaborative office suite"
 description.fr = "Suite bureautique chiffrée pour la collaboration en temps réel"
 
-version = "2024.6.1~ynh1"
+version = "2024.9.0~ynh1"
 
 maintainers = ["ddataa"]
 
@@ -19,7 +19,7 @@ cpe = "cpe:2.3:a:xwiki:cryptpad"
 fund = "https://opencollective.com/cryptpad/contribute?language=fr"
 
 [integration]
-yunohost = ">= 11.2.20"
+yunohost = ">= 11.2.30"
 architectures = "all"
 multi_instance = false
 
@@ -45,8 +45,8 @@ ram.runtime = "50M"
 
 [resources]
         [resources.sources.main]
-        url = "https://github.com/cryptpad/cryptpad/archive/refs/tags/2024.6.1.tar.gz"
-        sha256 = "318ff90668e4acfa46dbfa31d0074d8b672571169ac2ef846251e08e9b5f424a"
+        url = "https://github.com/xwiki-labs/cryptpad/archive/refs/tags/2024.9.0.tar.gz"
+        sha256 = "5d014a12f1cd0c42b6b59da26bc7290d6b181f5f0c1b773fbaa409fb815fad2b"
         autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
