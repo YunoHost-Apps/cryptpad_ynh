@@ -6,7 +6,6 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression "Loading installation settings..."
 
 email=$(ynh_user_get_info --username=$admin --key=mail)
 
