@@ -14,7 +14,7 @@ license = "AGPL-3.0-only"
 website = "https://cryptpad.fr/"
 demo = "https://cryptpad.fr/"
 admindoc = "https://docs.cryptpad.fr/en/"
-code = "https://github.com/xwiki-labs/cryptpad"
+code = "https://github.com/cryptpad/cryptpad"
 cpe = "cpe:2.3:a:xwiki:cryptpad"
 fund = "https://opencollective.com/cryptpad/contribute?language=fr"
 
@@ -44,9 +44,6 @@ ram.runtime = "50M"
     type = "group"
     default = "visitors"
 
-    [install.admin]
-    type = "user"
-
 [resources]
         [resources.sources.main]
         url = "https://github.com/xwiki-labs/cryptpad/archive/refs/tags/2024.9.0.tar.gz"
@@ -55,7 +52,7 @@ ram.runtime = "50M"
 
     [resources.ports]
     main.default = 3000
-    porti.default = 3001
+    socket.default = 3003
 
     [resources.system_user]
 

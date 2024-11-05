@@ -9,8 +9,10 @@ Group=__APP__
 WorkingDirectory=__INSTALL_DIR__
 Environment=PATH=PATH=__PATH_WITH_NODEJS__
 Environment=NODE_ENV=production
+Environment='PWD="__INSTALL_DIR__"'
 ExecStart=__NODEJS_DIR__/npm start
 Restart=always
+LimitNOFILE=1000000
 
 # Sandboxing options to harden security
 # Depending on specificities of your service/app, you may need to tweak these 

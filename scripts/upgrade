@@ -76,11 +76,10 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 ynh_script_progression "Building $app... (this will take some time and resources!)"
 
 pushd "$install_dir"
-	ynh_hide_warnings npm install --allow-root
-	ynh_hide_warnings npm install -g bower
-	ynh_hide_warnings bower update --allow-root
-	ynh_hide_warnings npm i
-	ynh_hide_warnings npm run build
+	ynh_hide_warnings ynh_exec_as_app npm ci
+	ynh_hide_warnings ynh_exec_as_app run install:components
+	ynh_hide_warnings ynh_exec_as_app npm run build
+	#./install-onlyoffice.sh
 popd
 
 #=================================================
