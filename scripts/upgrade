@@ -6,29 +6,26 @@ source /usr/share/yunohost/helpers
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=6
+ynh_script_progression "Upgrading dependencies..."
 
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+ynh_nodejs_install
 
-#=================================================
-# STANDARD UPGRADE STEPS
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping a systemd service..." --weight=1
+ynh_script_progression "Stopping $app's systemd service..."
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemctl --service=$app --action="stop"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Upgrading source files..." --weight=1
+ynh_script_progression "Upgrading source files..."
 
 ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
-	
-chmod -R o-rwx "$install_dir"
-chown -R $app:$app "$install_dir"
 
+#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
+#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:$app "$install_dir"
 #=================================================
 # APPLY FOLDER GROUP RIGHTS FOR WWW-DATA
 #=================================================
@@ -52,10 +49,10 @@ if [[ $domain == *".local" ]]; then
 	sandboxdomain=sandbox-$domain
 fi
 
-ynh_script_progression --message="Setting up sandobx domain: $sandboxdomain" --weight=1
+ynh_script_progression "Setting up sandobx domain: $sandboxdomain"
 
 # We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+if ! ynh_in_ci_tests; then
 	# If sandboxdomain doesn't exist, create it
 	if ! yunohost domain list --output-as json | jq -r .domains[] | grep -q "^$sandboxdomain\$"; then
 		yunohost domain add $sandboxdomain
@@ -66,58 +63,58 @@ fi
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=1
+ynh_script_progression "Upgrading NGINX web server configuration..."
 
-ynh_add_nginx_config
+ynh_config_add_nginx
 
-ynh_add_systemd_config
+ynh_config_add_systemd
 
 yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
-ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
+ynh_script_progression "Building $app... (this will take some time and resources!)"
 
 pushd "$install_dir"
-	ynh_use_nodejs
-	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm ci
-	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run install:components
-	ynh_exec_warn_less sudo -u $app env $ynh_node_load_PATH $ynh_npm run build
+
+	ynh_hide_warnings ynh_exec_as_app node_load_PATH npm ci
+	ynh_hide_warnings ynh_exec_as_app node_load_PATH npm run install:components
+	ynh_hide_warnings ynh_exec_as_app node_load_PATH npm run build
 	#./install-onlyoffice.sh
 popd
 
 #=================================================
 # ADD UPGRADED CONFIG WITH SANDBOX
 #=================================================
-ynh_script_progression --message="Updating a configuration file..." --weight=1
+ynh_script_progression "Updating configuration..."
 
-ynh_add_config --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
 
-chmod 600 "$install_dir/config/config.js"
-chown $app "$install_dir/config/config.js"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 600 "$install_dir/config/config.js"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown $app "$install_dir/config/config.js"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=1
+ynh_script_progression "Starting $app's systemd service..."
 
-ynh_systemd_action --service_name=$app --action="start" --log_path=systemd
+ynh_systemctl --service=$app --action="start" --log_path=systemd
 
 #=================================================
 # COPY NGINX CONF IN SANDBOX DOMAIN
 #=================================================
 
 # We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+if ! ynh_in_ci_tests; then
 	if [ -n "$sandboxdomain" ]; then
-		ynh_add_config --template="nginx.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/$app.conf"
+		ynh_config_add --template="nginx.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/$app.conf"
 	fi
 fi
 
 # We authorize access to sandbox domain
 # We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
+if ! ynh_in_ci_tests; then
 	ynh_permission_url --permission="main" --add_url=$sandboxdomain --auth_header=true
 fi
 
@@ -125,4 +122,4 @@ fi
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed" --last
+ynh_script_progression "Upgrade of $app completed"
