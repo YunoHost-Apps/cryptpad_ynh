@@ -19,13 +19,12 @@ cpe = "cpe:2.3:a:xwiki:cryptpad"
 fund = "https://opencollective.com/cryptpad/contribute?language=fr"
 
 [integration]
-yunohost = ">= 11.2.18"
+yunohost = ">= 11.2.30"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = false
 
 ldap = false
-
 sso = false
 
 disk = "50M"
@@ -45,6 +44,7 @@ ram.runtime = "50M"
     default = "visitors"
 
 [resources]
+
         [resources.sources.main]
         url = "https://github.com/xwiki-labs/cryptpad/archive/refs/tags/2024.9.0.tar.gz"
         sha256 = "5d014a12f1cd0c42b6b59da26bc7290d6b181f5f0c1b773fbaa409fb815fad2b"

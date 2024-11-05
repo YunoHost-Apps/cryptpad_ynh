@@ -44,8 +44,6 @@ ynh_script_progression "Setting up source files..."
 
 ynh_setup_source --dest_dir="$install_dir"
 
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R $app:$app "$install_dir"
 #=================================================
 # SYSTEM CONFIGURATION
 #=================================================
@@ -64,8 +62,7 @@ ynh_script_progression "Adding $app's configuration..."
 
 ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
 
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 600 "$install_dir/config/config.js"
-#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown $app "$install_dir/config/config.js"
+chmod 600 "$install_dir/config/config.js"
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -74,9 +71,9 @@ ynh_script_progression "Building $app... (this will take some time and resources
 
 pushd "$install_dir"
 
-	ynh_hide_warnings ynh_exec_as_app node_load_PATH npm ci
-	ynh_hide_warnings ynh_exec_as_app node_load_PATH npm run install:components
-	ynh_hide_warnings ynh_exec_as_app node_load_PATH npm run build
+	ynh_hide_warnings ynh_exec_as_app npm ci
+	ynh_hide_warnings ynh_exec_as_app npm run install:components
+	ynh_hide_warnings ynh_exec_as_app npm run build
 	#./install-onlyoffice.sh
 popd
 
@@ -85,7 +82,6 @@ popd
 #=================================================
 ynh_script_progression "Starting $app's systemd service..."
 
-# Start a systemd service
 ynh_systemctl --service=$app --action="start" --log_path="systemd"
 
 #=================================================
