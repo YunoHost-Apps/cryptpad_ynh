@@ -68,7 +68,7 @@ pushd "$install_dir"
 	ynh_hide_warnings ynh_exec_as_app npm ci
 	ynh_hide_warnings ynh_exec_as_app npm run install:components
 	ynh_hide_warnings ynh_exec_as_app npm run build
-	#./install-onlyoffice.sh
+	ynh_hide_warnings bash install-onlyoffice.sh --accept-license
 popd
 
 #=================================================
