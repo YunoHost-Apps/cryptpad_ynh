@@ -16,6 +16,8 @@ ynh_backup "$install_dir"
 #=================================================
 
 ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
+ynh_backup /etc/nginx/conf.d/sandbox."$domain".conf
+ynh_backup /etc/nginx/conf.d/"$app"-shared.conf.inc
 
 ynh_backup "/etc/systemd/system/$app.service"
 

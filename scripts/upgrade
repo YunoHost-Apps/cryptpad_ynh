@@ -3,6 +3,20 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+
+#=================================================
+# MANAGING MIGRATIONS
+#=================================================
+ynh_script_progression "Managing migrations..."
+
+# remove the legacy way to manage sandbox domain
+if yunohost domain list --output-as plain | grep -q "$sandboxdomain"; then
+	yunohost domain remove "$sandboxdomain"
+fi
+
+sandboxdomain=sandbox.$domain
+ynh_app_setting_set --key=sandboxdomain --value="$sandboxdomain"
+
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
@@ -31,38 +45,14 @@ ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
 chgrp -R www-data $install_dir
 
 #=================================================
-# CREATE A SANDBOX DOMAIN
-#=================================================
-
-# if the main domain for the app is a root domain, we create a correct sandbox subdomain
-if [[ $domain == *"."* ]]; then
-	sandboxdomain=sandbox.$domain
-fi
-# if the main domain for the app is already a sub-domain, we create a correct sandbox domain
-if [[ $domain == *"."*"."* ]]; then
-	sandboxdomain=sandbox-$domain
-fi
-# if the main domain for the app is a .local root domain, we create a correct sandbox subdomain
-if [[ $domain == *".local" ]]; then
-	sandboxdomain=sandbox-$domain
-fi
-
-ynh_script_progression "Setting up sandobx domain: $sandboxdomain"
-
-# We don't test that in CI
-if ! ynh_in_ci_tests; then
-	# If sandboxdomain doesn't exist, create it
-	if ! yunohost domain list --output-as json | jq -r .domains[] | grep -q "^$sandboxdomain\$"; then
-		yunohost domain add $sandboxdomain
-		yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
-	fi
-fi
-
-#=================================================
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression "Upgrading NGINX web server configuration..."
 
+ynh_config_add --template=nginx-sandbox.conf --destination=/etc/nginx/conf.d/sandbox."$domain".conf
+ynh_config_add --template=nginx-shared.conf --destination=/etc/nginx/conf.d/"$app"-shared.conf.inc
+chown www-data:www-data /etc/nginx/conf.d/sandbox."$domain".conf
+chown www-data:www-data /etc/nginx/conf.d/"$app"-shared.conf.inc
 ynh_config_add_nginx
 
 ynh_config_add_systemd
@@ -96,23 +86,6 @@ chmod 600 "$install_dir/config/config.js"
 ynh_script_progression "Starting $app's systemd service..."
 
 ynh_systemctl --service=$app --action="start" --log_path=systemd
-
-#=================================================
-# COPY NGINX CONF IN SANDBOX DOMAIN
-#=================================================
-
-# We don't test that in CI
-if ! ynh_in_ci_tests; then
-	if [ -n "$sandboxdomain" ]; then
-		ynh_config_add --template="nginx.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/$app.conf"
-	fi
-fi
-
-# We authorize access to sandbox domain
-# We don't test that in CI
-if ! ynh_in_ci_tests; then
-	ynh_permission_url --permission="main" --add_url=$sandboxdomain --auth_header=true
-fi
 
 #=================================================
 # END OF SCRIPT

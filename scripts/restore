@@ -29,6 +29,10 @@ ynh_nodejs_install
 ynh_script_progression "Restoring system configurations related to $app..."
 
 ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
+ynh_restore /etc/nginx/conf.d/sandbox."$domain".conf
+ynh_restore /etc/nginx/conf.d/"$app"-shared.conf.inc
+chown www-data:www-data /etc/nginx/conf.d/sandbox."$domain".conf
+chown www-data:www-data /etc/nginx/conf.d/"$app"-shared.conf.inc
 
 ynh_restore "/etc/systemd/system/$app.service"
 systemctl enable $app.service --quiet
