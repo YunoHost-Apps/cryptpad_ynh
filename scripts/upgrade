@@ -12,7 +12,7 @@ ynh_script_progression "Managing migrations..."
 # remove the legacy way to manage sandbox domain
 if yunohost domain list --output-as plain | grep -q "$sandboxdomain"; then
 	yunohost domain remove "$sandboxdomain"
-	ynh_print_warn "Since some changes was done on the sandbox domain, you will need to regenerate the certificate for $domain"
+	ynh_print_warn "Since some changes was done on the sandbox domain, you will need to regenerate the certificate for $domain and update your DNS config accordingly."
 fi
 
 sandboxdomain=sandbox.$domain
