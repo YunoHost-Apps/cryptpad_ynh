@@ -5,7 +5,9 @@ Hij mag NIET handmatig aangepast worden.
 
 # CryptPad voor Yunohost
 
-[![Integratieniveau](https://dash.yunohost.org/integration/cryptpad.svg)](https://ci-apps.yunohost.org/ci/apps/cryptpad/) ![Mate van functioneren](https://ci-apps.yunohost.org/ci/badges/cryptpad.status.svg) ![Onderhoudsstatus](https://ci-apps.yunohost.org/ci/badges/cryptpad.maintain.svg)
+[![Integratieniveau](https://apps.yunohost.org/badge/integration/cryptpad)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
+![Mate van functioneren](https://apps.yunohost.org/badge/state/cryptpad)
+![Onderhoudsstatus](https://apps.yunohost.org/badge/maintained/cryptpad)
 
 [![CryptPad met Yunohost installeren](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=cryptpad)
 
@@ -18,7 +20,7 @@ Hij mag NIET handmatig aangepast worden.
 
 CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. It is built to enable collaboration, synchronizing changes to documents in real time. Because all data is encrypted, the service and its administrators have no way of seeing the content being edited and stored.
 
-**Geleverde versie:** 2024.9.1~ynh1
+**Geleverde versie:** 2024.12.0~ynh1
 
 **Demo:** <https://cryptpad.fr/>
 
