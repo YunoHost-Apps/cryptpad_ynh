@@ -1,119 +1,67 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
-
-#=================================================
-# RETRIEVE ARGUMENTS FROM THE MANIFEST
-#=================================================
-
-email=$(ynh_user_get_info --username=$admin --key=mail)
-
-#=================================================
-# CREATE A SANDBOX DOMAIN
-#=================================================
-
-# if the main domain for the app is a root domain, we create a correct sandbox subdomain
-if [[ $domain == *"."* ]]; then
-	sandboxdomain=sandbox.$domain
-fi
-# if the main domain for the app is already a sub-domain, we create a correct sandbox domain
-if [[ $domain == *"."*"."* ]]; then
-	sandboxdomain=sandbox-$domain
-fi
-# if the main domain for the app is a .local root domain, we create a correct sandbox subdomain
-if [[ $domain == *".local" ]]; then
-	sandboxdomain=sandbox-$domain
-fi
-
-ynh_app_setting_set --app=$app --key=sandboxdomain --value=$sandboxdomain
-
-ynh_script_progression --message="Setting up sandobx domain: $sandboxdomain" --weight=1
-
-# We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	yunohost domain add $sandboxdomain
-	yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
-fi
+sandboxdomain=sandbox.$domain
+ynh_app_setting_set --key=sandboxdomain --value="$sandboxdomain"
 
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..." --weight=20
+ynh_script_progression "Installing dependencies..."
 
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+ynh_nodejs_install
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Setting up source files..." --weight=10
+ynh_script_progression "Setting up source files..."
 
-# Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir"
-
-chmod -R o-rwx "$install_dir"
-chown -R $app:$app "$install_dir"
 
 #=================================================
 # SYSTEM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding system configurations related to $app..." --weight=1
+ynh_script_progression "Adding system configurations related to $app..."
 
-# Create a dedicated NGINX config
-ynh_add_nginx_config
+ynh_config_add --template=nginx-sandbox.conf --destination=/etc/nginx/conf.d/sandbox."$domain".conf
+ynh_config_add --template=nginx-shared.conf --destination=/etc/nginx/conf.d/"$app"-shared.conf.inc
+chown www-data:www-data /etc/nginx/conf.d/sandbox."$domain".conf
+chown www-data:www-data /etc/nginx/conf.d/"$app"-shared.conf.inc
+ynh_config_add_nginx
 
-# Create a dedicated systemd config
-ynh_add_systemd_config
+ynh_config_add_systemd
 
 yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding a configuration file..." --weight=1
+ynh_script_progression "Adding $app's configuration..."
 
-ynh_add_config --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
-chown $app "$install_dir/config/config.js"
 
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
-ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
+ynh_script_progression "Building $app... (this will take some time and resources!)"
 
 pushd "$install_dir"
-	ynh_use_nodejs
-	ynh_exec_warn_less npm install --allow-root
-	ynh_exec_warn_less npm install -g bower
-	ynh_exec_warn_less bower install --allow-root
-	ynh_exec_warn_less bower update --allow-root
-	ynh_exec_warn_less npm run build
+
+	ynh_hide_warnings ynh_exec_as_app npm ci
+	ynh_hide_warnings ynh_exec_as_app npm run install:components
+	ynh_hide_warnings ynh_exec_as_app npm run build
+	ynh_hide_warnings bash install-onlyoffice.sh --accept-license
 popd
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=2
+ynh_script_progression "Starting $app's systemd service..."
 
-# Start a systemd service
-ynh_systemd_action --service_name=$app --action="start" --log_path="systemd"
-
-#=================================================
-# SETUP SSOWAT
-#=================================================
-
-# We authorize access to sandbox domain
-# We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	ynh_permission_url --permission="main" --add_url=$sandboxdomain --auth_header=true
-fi
+ynh_systemctl --service=$app --action="start" --log_path="systemd"
 
 #=================================================
 # APPLY FOLDER RIGHTS
@@ -122,16 +70,7 @@ fi
 chgrp -R www-data $install_dir
 
 #=================================================
-# COPY NGINX CONF IN SANDBOX DOMAIN
-#=================================================
-
-# We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	ynh_add_config --template="/etc/nginx/conf.d/$domain.d/cryptpad.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/cryptpad.conf"
-fi
-
-#=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed" --last
+ynh_script_progression "Installation of $app completed"

@@ -5,7 +5,9 @@ It shall NOT be edited by hand.
 
 # CryptPad for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/cryptpad.svg)](https://dash.yunohost.org/appci/app/cryptpad) ![Working status](https://ci-apps.yunohost.org/ci/badges/cryptpad.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/cryptpad.maintain.svg)
+[![Integration level](https://apps.yunohost.org/badge/integration/cryptpad)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
+![Working status](https://apps.yunohost.org/badge/state/cryptpad)
+![Maintenance status](https://apps.yunohost.org/badge/maintained/cryptpad)
 
 [![Install CryptPad with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=cryptpad)
 
@@ -18,7 +20,7 @@ It shall NOT be edited by hand.
 
 CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. It is built to enable collaboration, synchronizing changes to documents in real time. Because all data is encrypted, the service and its administrators have no way of seeing the content being edited and stored.
 
-**Shipped version:** 5.3.0~ynh2
+**Shipped version:** 2024.12.0~ynh1
 
 **Demo:** <https://cryptpad.fr/>
 
@@ -30,7 +32,7 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 - Official app website: <https://cryptpad.fr/>
 - Official admin documentation: <https://docs.cryptpad.fr/en/>
-- Upstream app code repository: <https://github.com/xwiki-labs/cryptpad>
+- Upstream app code repository: <https://github.com/cryptpad/cryptpad>
 - YunoHost Store: <https://apps.yunohost.org/app/cryptpad>
 - Report a bug: <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
 

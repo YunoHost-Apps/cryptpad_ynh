@@ -1,47 +1,43 @@
 #!/bin/bash
 
-#=================================================
-# GENERIC START
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source _common.sh
 source /usr/share/yunohost/helpers
 
-#=================================================
-# LOAD SETTINGS
-#=================================================
-ynh_script_progression --message="Loading installation settings..." --weight=1
 
-email=$(ynh_user_get_info --username=$admin --key=mail)
+#=================================================
+# MANAGING MIGRATIONS
+#=================================================
+ynh_script_progression "Managing migrations..."
+
+# remove the legacy way to manage sandbox domain
+if yunohost domain list --output-as plain | grep -q "$sandboxdomain"; then
+	yunohost domain remove "$sandboxdomain"
+	ynh_print_warn "Since some changes was done on the sandbox domain, you will need to regenerate the certificate for $domain and update your DNS config accordingly."
+fi
+
+sandboxdomain=sandbox.$domain
+ynh_app_setting_set --key=sandboxdomain --value="$sandboxdomain"
 
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading dependencies..." --weight=6
+ynh_script_progression "Upgrading dependencies..."
 
-ynh_exec_warn_less ynh_install_nodejs --nodejs_version=$nodejs_version
+ynh_nodejs_install
 
-#=================================================
-# STANDARD UPGRADE STEPS
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping a systemd service..." --weight=1
+ynh_script_progression "Stopping $app's systemd service..."
 
-ynh_systemd_action --service_name=$app --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemctl --service=$app --action="stop"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Upgrading source files..." --weight=1
+ynh_script_progression "Upgrading source files..."
 
-# Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source --dest_dir="$install_dir" #--keep="config/config.js"
-	
-chmod -R o-rwx "$install_dir"
-chown -R $app:$app "$install_dir"
 
 #=================================================
 # APPLY FOLDER GROUP RIGHTS FOR WWW-DATA
@@ -50,95 +46,50 @@ chown -R $app:$app "$install_dir"
 chgrp -R www-data $install_dir
 
 #=================================================
-# CREATE A SANDBOX DOMAIN
-#=================================================
-
-# if the main domain for the app is a root domain, we create a correct sandbox subdomain
-if [[ $domain == *"."* ]]; then
-	sandboxdomain=sandbox.$domain
-fi
-# if the main domain for the app is already a sub-domain, we create a correct sandbox domain
-if [[ $domain == *"."*"."* ]]; then
-	sandboxdomain=sandbox-$domain
-fi
-# if the main domain for the app is a .local root domain, we create a correct sandbox subdomain
-if [[ $domain == *".local" ]]; then
-	sandboxdomain=sandbox-$domain
-fi
-
-ynh_script_progression --message="Setting up sandobx domain: $sandboxdomain" --weight=1
-
-# We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	# If sandboxdomain doesn't exist, create it
-	if ! yunohost domain list --output-as json | jq -r .domains[] | grep -q "^$sandboxdomain\$"; then
-		yunohost domain add $sandboxdomain
-		yunohost domain config set $sandboxdomain -a "mail_in=0&mail_out=0"
-	fi
-fi
-
-#=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=1
+ynh_script_progression "Upgrading NGINX web server configuration..."
 
-# Create a dedicated NGINX config
-ynh_add_nginx_config
+ynh_config_add --template=nginx-sandbox.conf --destination=/etc/nginx/conf.d/sandbox."$domain".conf
+ynh_config_add --template=nginx-shared.conf --destination=/etc/nginx/conf.d/"$app"-shared.conf.inc
+chown www-data:www-data /etc/nginx/conf.d/sandbox."$domain".conf
+chown www-data:www-data /etc/nginx/conf.d/"$app"-shared.conf.inc
+ynh_config_add_nginx
 
-# Create a dedicated systemd config
-ynh_add_systemd_config
+ynh_config_add_systemd
 
 yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # INSTALL CRYPTPAD
 #=================================================
-ynh_script_progression --message="Building $app... (this will take some time and resources!)" --weight=60
+ynh_script_progression "Building $app... (this will take some time and resources!)"
 
-pushd "$install_dir" 
-	ynh_exec_warn_less npm install --allow-root
-	ynh_exec_warn_less npm install -g bower
-	ynh_exec_warn_less bower update --allow-root
-	ynh_exec_warn_less npm i
-	ynh_exec_warn_less npm run build
+pushd "$install_dir"
+	ynh_hide_warnings ynh_exec_as_app npm ci
+	ynh_hide_warnings ynh_exec_as_app npm run install:components
+	ynh_hide_warnings ynh_exec_as_app npm run build
+	ynh_hide_warnings bash install-onlyoffice.sh --accept-license
 popd
 
 #=================================================
 # ADD UPGRADED CONFIG WITH SANDBOX
 #=================================================
-ynh_script_progression --message="Updating a configuration file..." --weight=1
+ynh_script_progression "Updating configuration..."
 
-ynh_add_config --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
-chown $app "$install_dir/config/config.js"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..." --weight=1
+ynh_script_progression "Starting $app's systemd service..."
 
-ynh_systemd_action --service_name=$app --action="start" --log_path=systemd --line_match="server available"
-
-#=================================================
-# COPY NGINX CONF IN SANDBOX DOMAIN
-#=================================================
-
-# We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	if [ -n "$sandboxdomain" ]; then
-		ynh_add_config --template="nginx.conf" --destination="/etc/nginx/conf.d/$sandboxdomain.d/$app.conf"
-	fi
-fi
-
-# We authorize access to sandbox domain
-# We don't test that in CI
-if ! [ ${PACKAGE_CHECK_EXEC:-0} -eq 1 ]; then
-	ynh_permission_url --permission="main" --add_url=$sandboxdomain --auth_header=true
-fi
+ynh_systemctl --service=$app --action="start" --log_path=systemd
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed" --last
+ynh_script_progression "Upgrade of $app completed"
