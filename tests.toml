@@ -2,6 +2,14 @@ test_format = 1.0
 
 [default]
 
+    # ------------
+    # Tests to run
+    # ------------
+
+    exclude = ["install.subdir"]
+
+    args.admin = "john"
+
     # -------------------------------
     # Commits to test upgrade from
     # -------------------------------
@@ -9,3 +17,5 @@ test_format = 1.0
     test_upgrade_from.2a54cd03.name = "Upgrade from 4.10.0"
 
     test_upgrade_from.1e360398.name = "Upgrade from 4.12.0"
+
+    test_upgrade_from.4075742998b77f2b5d6251ee70b1e6336acb171e.name = "Upgrade from 5.3.0~ynh2"

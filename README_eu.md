@@ -5,7 +5,9 @@ EZ editatu eskuz.
 
 # CryptPad YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/cryptpad.svg)](https://dash.yunohost.org/appci/app/cryptpad) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/cryptpad.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/cryptpad.maintain.svg)
+[![Integrazio maila](https://apps.yunohost.org/badge/integration/cryptpad)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
+![Funtzionamendu egoera](https://apps.yunohost.org/badge/state/cryptpad)
+![Mantentze egoera](https://apps.yunohost.org/badge/maintained/cryptpad)
 
 [![Instalatu CryptPad YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=cryptpad)
 
@@ -18,7 +20,7 @@ EZ editatu eskuz.
 
 CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. It is built to enable collaboration, synchronizing changes to documents in real time. Because all data is encrypted, the service and its administrators have no way of seeing the content being edited and stored.
 
-**Paketatutako bertsioa:** 5.3.0~ynh2
+**Paketatutako bertsioa:** 2024.12.0~ynh1
 
 **Demoa:** <https://cryptpad.fr/>
 
@@ -30,7 +32,7 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 - Aplikazioaren webgune ofiziala: <https://cryptpad.fr/>
 - Administratzaileen dokumentazio ofiziala: <https://docs.cryptpad.fr/en/>
-- Jatorrizko aplikazioaren kode-gordailua: <https://github.com/xwiki-labs/cryptpad>
+- Jatorrizko aplikazioaren kode-gordailua: <https://github.com/cryptpad/cryptpad>
 - YunoHost Denda: <https://apps.yunohost.org/app/cryptpad>
 - Eman errore baten berri: <https://github.com/YunoHost-Apps/cryptpad_ynh/issues>
 
