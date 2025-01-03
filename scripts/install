@@ -2,6 +2,7 @@
 
 source _common.sh
 source /usr/share/yunohost/helpers
+
 sandboxdomain=sandbox.$domain
 ynh_app_setting_set --key=sandboxdomain --value="$sandboxdomain"
 
