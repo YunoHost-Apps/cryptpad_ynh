@@ -1,6 +1,6 @@
 ## Configuration
 
-Nous avons ajouté le domaine obligatoire sandbox pour vous mais vous devez encore configurer votre DNS et générer les certificats pour celui-ci.
+Nous avons ajouté le domaine obligatoire sandbox pour vous mais vous devez encore configurer votre DNS et générer les certificats pour celui-ci. Les mails entrants et sortants doivent être désactivés sur le domaine de l'application pour renouveller le certificat let's encrypt.
 
 Une fois CryptPad installé, créez un compte via le bouton S'inscrire sur la page d'accueil. Pour faire de ce compte un administrateur d'instance :
 
