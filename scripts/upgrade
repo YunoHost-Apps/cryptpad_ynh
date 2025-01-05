@@ -8,6 +8,9 @@ source /usr/share/yunohost/helpers
 #=================================================
 ynh_script_progression "Managing migrations..."
 
+# sandboxdomain on versions 4 and 5
+sandboxdomain=sandbox-$domain
+
 # remove the legacy way to manage sandbox domain
 if yunohost domain list --output-as plain | grep -q "$sandboxdomain"; then
 	yunohost domain remove "$sandboxdomain"
