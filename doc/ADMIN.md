@@ -1,4 +1,4 @@
-We have added the mandatory sandbox domain for you but you still need to configure your DNS and generate Let's Encrypt Certificates for it !!
+We have added the mandatory sandbox domain for you but you still need to configure your DNS and generate Let's Encrypt Certificates for it !! Incoming and outgoing mail must be disabled on the application domain to renew the let’s encrypt certificate.
 
 Once CryptPad is installed, create an account via the Register button on the home page. To make this account an instance administrator:
 
