@@ -50,7 +50,6 @@ chmod 600 "$install_dir/config/config.js"
 ynh_script_progression "Building $app... (this will take some time and resources!)"
 
 pushd "$install_dir"
-
 	ynh_hide_warnings ynh_exec_as_app npm ci
 	ynh_hide_warnings ynh_exec_as_app npm run install:components
 	ynh_hide_warnings ynh_exec_as_app npm run build
