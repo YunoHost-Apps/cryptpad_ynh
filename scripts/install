@@ -3,6 +3,10 @@
 source _common.sh
 source /usr/share/yunohost/helpers
 
+#=================================================
+# INITIALIZE AND STORE SETTINGS
+#=================================================
+
 sandboxdomain=sandbox.$domain
 ynh_app_setting_set --key=sandboxdomain --value="$sandboxdomain"
 
@@ -27,8 +31,10 @@ ynh_script_progression "Adding system configurations related to $app..."
 
 ynh_config_add --template=nginx-sandbox.conf --destination=/etc/nginx/conf.d/sandbox."$domain".conf
 ynh_config_add --template=nginx-shared.conf --destination=/etc/nginx/conf.d/"$app"-shared.conf.inc
+
 chown www-data:www-data /etc/nginx/conf.d/sandbox."$domain".conf
 chown www-data:www-data /etc/nginx/conf.d/"$app"-shared.conf.inc
+
 ynh_config_add_nginx
 
 ynh_config_add_systemd
