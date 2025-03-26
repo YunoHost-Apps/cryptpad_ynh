@@ -3,7 +3,7 @@ Este archivo README esta generado automaticamente<https://github.com/YunoHost/ap
 No se debe editar a mano.
 -->
 
-# CryptPad para Yunohost
+# CryptPad para YunoHost
 
 [![Nivel de integración](https://apps.yunohost.org/badge/integration/cryptpad)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
 ![Estado funcional](https://apps.yunohost.org/badge/state/cryptpad)

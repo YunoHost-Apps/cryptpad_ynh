@@ -40,7 +40,7 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. 
 
 Bidali `pull request`a [`testing` abarrera](https://github.com/YunoHost-Apps/cryptpad_ynh/tree/testing).
 
-`testing` abarra probatzeko, ondorengoa egin:
+`testing` abarra probatzeko, honakoa egin:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/cryptpad_ynh/tree/testing --debug
