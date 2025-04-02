@@ -2,7 +2,7 @@ packaging_format = 2
 
 id = "cryptpad"
 name = "CryptPad"
-description.en = "Zero Knowledge realtime collaborative office suite"
+description.en = "Collaborative office suite that is end-to-end encrypted and open-source"
 description.fr = "Suite bureautique chiffrée pour la collaboration en temps réel"
 
 version = "2025.3.0~ynh1"
@@ -11,12 +11,12 @@ maintainers = ["ddataa"]
 
 [upstream]
 license = "AGPL-3.0-only"
-website = "https://cryptpad.fr/"
-demo = "https://cryptpad.fr/"
+website = "https://cryptpad.org"
+demo = "https://cryptpad.fr"
 admindoc = "https://docs.cryptpad.fr/en/"
 code = "https://github.com/cryptpad/cryptpad"
 cpe = "cpe:2.3:a:xwiki:cryptpad"
-fund = "https://opencollective.com/cryptpad/contribute?language=fr"
+fund = "https://opencollective.com/cryptpad/contribute"
 
 [integration]
 yunohost = ">= 12.0.9"
