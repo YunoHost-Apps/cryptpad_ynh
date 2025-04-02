@@ -3,7 +3,7 @@ Este archivo README esta generado automaticamente<https://github.com/YunoHost/ap
 No se debe editar a mano.
 -->
 
-# CryptPad para Yunohost
+# CryptPad para YunoHost
 
 [![Nivel de integración](https://apps.yunohost.org/badge/integration/cryptpad)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
 ![Estado funcional](https://apps.yunohost.org/badge/state/cryptpad)
@@ -20,7 +20,7 @@ No se debe editar a mano.
 
 CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. It is built to enable collaboration, synchronizing changes to documents in real time. Because all data is encrypted, the service and its administrators have no way of seeing the content being edited and stored.
 
-**Versión actual:** 2024.12.0~ynh4
+**Versión actual:** 2025.3.0~ynh1
 
 **Demo:** <https://cryptpad.fr/>
 

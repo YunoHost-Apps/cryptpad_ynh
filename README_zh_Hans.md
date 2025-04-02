@@ -20,7 +20,7 @@
 
 CryptPad is a collaboration suite that is end-to-end-encrypted and open-source. It is built to enable collaboration, synchronizing changes to documents in real time. Because all data is encrypted, the service and its administrators have no way of seeing the content being edited and stored.
 
-**分发版本：** 2024.12.0~ynh4
+**分发版本：** 2025.3.0~ynh1
 
 **演示：** <https://cryptpad.fr/>
 
