@@ -6,4 +6,5 @@ CryptPad is a collaboration suite that is end-to-end-encrypted and open source. 
 - All data on CryptPad is encrypted in the browser. This means no readable data leaves the user's device.
 - Built to enable collaboration with features such as team drives, calendar, and sharing. It synchronizes changes to documents in real time.
 - It's 100% free software. Anyone can host the platform in a personal or professional capacity.
+- Available in 20 different languages thanks to our [translation contributors](https://weblate.cryptpad.org).
 

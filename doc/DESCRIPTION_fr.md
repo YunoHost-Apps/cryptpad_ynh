@@ -6,4 +6,5 @@ CryptPad est une suite de collaboration chiffrée de bout en bout et open source
 - L'ensemble des données sur CryptPad sont chiffrées depuis votre navigateur. Aucune donnée non-chiffrée ne quitte votre appareil.
 - Construit pour permettre la collaboration avec des fonctionnalités comme les drives d'équipes, calendriers et le partage avancé. Tous les documents sont synchronisés en temps réel.
 - 100% logiciel libre. N'importe qui peut héberger la plateforme dans un contexte personnel comme professionnel.
+- Disponible dans 20 langues différentes grâce aux travaux de notre [communauté de traducteur·ices](https://weblate.cryptpad.org)
 
