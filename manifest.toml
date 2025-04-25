@@ -59,8 +59,12 @@ ram.runtime = "50M"
 
     [resources.install_dir]
 
+    [resources.extradomains]
+    sandbox.name = "sandbox"
+
     [resources.permissions]
     main.url = "/"
+    main.additional_urls = ["__DOMAIN_SANDBOX__/"]
 
     [resources.apt]
     packages = ["less"]
