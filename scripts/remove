@@ -21,36 +21,6 @@ ynh_config_remove_nginx
 ynh_nodejs_remove
 
 #=================================================
-# REMOVE SANDBOX DOMAIN
-#=================================================
-
-# We don't test that in CI
-if ! ynh_in_ci_tests; then
-
-	# if the main domain for the app is a root domain, we create a correct sandbox subdomain
-	if [[ $domain == *"."* ]]; then
-		sandboxdomain=sandbox.$domain
-	fi
-	# if the main domain for the app is already a sub-domain, we create a correct sandbox domain
-	if [[ $domain == *"."*"."* ]]; then
-		sandboxdomain=sandbox-$domain
-	fi
-	# if the main domain for the app is a .local root domain, we create a correct sandbox subdomain
-	if [[ $domain == *".local" ]]; then
-		sandboxdomain=sandbox-$domain
-	fi
-
-	ynh_script_progression "Removing sandbox domain: $sandboxdomain"
-
-	if yunohost domain list | grep -q $sandboxdomain
-	then #if domain exist we remove it
-		yunohost domain remove $sandboxdomain
-		# we clean the nginx configuration we added
-		ynh_safe_rm "/etc/nginx/conf.d/$sandboxdomain.d/"
-	fi
-fi
-
-#=================================================
 # END OF SCRIPT
 #=================================================
 
