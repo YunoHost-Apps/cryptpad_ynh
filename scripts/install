@@ -95,7 +95,7 @@ for item in "${ITEMS[@]}"; do
 				mkdir -p "$data_dir/$item"
 				chown cryptpad:cryptpad "$data_dir/$item"
 		fi
-		ln -s "$data_dir/$item" "$SRC/$item"
+		ln -s "$data_dir/$item" "$install_dir/$item"
 
 done
 
