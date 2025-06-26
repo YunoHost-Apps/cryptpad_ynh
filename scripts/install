@@ -91,7 +91,7 @@ for item in "${ITEMS[@]}"; do
     if [ -e "$install_dir/$item" ]; then
 				mv "$install_dir/$item" "$data_dir/"
       else
-        echo "⚠️  L'élément '$SRC/$item' n'existe pas." >&2
+        echo "⚠️  L'élément '$install_dir/$item' n'existe pas." >&2
 				mkdir -p "$data_dir/$item"
 				chown cryptpad:cryptpad "$data_dir/$item"
 		fi

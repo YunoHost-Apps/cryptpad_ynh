@@ -58,7 +58,7 @@ ram.runtime = "500M"
     [resources.system_user]
 
     [resources.data_dir]
-    subdirs = ["database"]
+  
 
     [resources.install_dir]
 
