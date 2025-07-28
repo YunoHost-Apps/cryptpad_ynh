@@ -85,25 +85,22 @@ ynh_systemctl --service=$app --action="stop"
 # CREATE DATA FOLDER
 #=================================================
 
+#=================================================
+# init DATA FOLDER
+#=================================================
+cd /home/yunohost.app/
+tar xvf /etc/yunohost/apps/cryptpad/conf/init_data >&2
+
 ITEMS=("blob" "block" "data" "datastore")
 
 for item in "${ITEMS[@]}"; do
     if [ -e "$install_dir/$item" ]; then
-				mv "$install_dir/$item" "$data_dir/"
+				rm "$install_dir/$item"
       else
-        echo "⚠️  L'élément '$install_dir/$item' n'existe pas." >&2
-				mkdir -p "$data_dir/$item"
-				chown cryptpad:cryptpad "$data_dir/$item"
+				echo "⚠️  L'élément '$install_dir/$item' n'existe pas.!!!!" >&2
 		fi
 		ln -s "$data_dir/$item" "$install_dir/$item"
-
 done
-
-#=================================================
-# init DATA FOLDER
-#=================================================
-cd "$data_dir/"
-tar xvf /etc/yunohost/apps/cryptpad/conf/init_data 
 
 ynh_systemctl --service=$app --action="start"
 
