@@ -82,7 +82,7 @@ chgrp -R www-data $install_dir
 ynh_systemctl --service=$app --action="stop"
 
 #=================================================
-# CREAT DATA FOLDER
+# CREATE DATA FOLDER
 #=================================================
 
 ITEMS=("blob" "block" "data" "datastore")
@@ -98,6 +98,12 @@ for item in "${ITEMS[@]}"; do
 		ln -s "$data_dir/$item" "$install_dir/$item"
 
 done
+
+#=================================================
+# init DATA FOLDER
+#=================================================
+cd "$data_dir/"
+tar xvf /etc/apps/cryptpad/conf/init_data 
 
 ynh_systemctl --service=$app --action="start"
 
