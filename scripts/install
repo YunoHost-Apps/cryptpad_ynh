@@ -103,7 +103,7 @@ done
 # init DATA FOLDER
 #=================================================
 cd "$data_dir/"
-tar xvf /etc/apps/cryptpad/conf/init_data 
+tar xvf /etc/yunohost/apps/cryptpad/conf/init_data 
 
 ynh_systemctl --service=$app --action="start"
 
