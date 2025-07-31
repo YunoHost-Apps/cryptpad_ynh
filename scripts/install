@@ -88,8 +88,9 @@ ynh_systemctl --service=$app --action="stop"
 #=================================================
 # init DATA FOLDER
 #=================================================
-cd /home/yunohost.app/
-tar xvf /etc/yunohost/apps/cryptpad/conf/init_data 
+ynh_add_config --template="init_data" --destination="$data_dir/.env"
+cd $data_dir
+tar xvf init_data -C /tmp
 
 ITEMS=("blob" "block" "data" "datastore")
 
@@ -97,8 +98,11 @@ for item in "${ITEMS[@]}"; do
     if [ -e "$install_dir/$item" ]; then
 				rm -rf "$install_dir/$item"
 		fi
+		mv "/tmp/cryptpad/$item" "$data_dir/$item"
 		ln -s "$data_dir/$item" "$install_dir/$item"
 done
+
+rm /tmp/cryptpad
 
 ynh_systemctl --service=$app --action="start"
 
