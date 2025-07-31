@@ -47,6 +47,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 ynh_script_progression "Adding $app's configuration..."
 
 ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="init_data" --destination="$data_dir/init_data"
 
 chmod 600 "$install_dir/config/config.js"
 
@@ -88,7 +89,7 @@ ynh_systemctl --service=$app --action="stop"
 #=================================================
 # init DATA FOLDER
 #=================================================
-ynh_add_config --template="init_data" --destination="$data_dir"
+
 cd $data_dir
 tar xvf init_data -C /tmp
 
@@ -102,7 +103,8 @@ for item in "${ITEMS[@]}"; do
 		ln -s "$data_dir/$item" "$install_dir/$item"
 done
 
-rm /tmp/cryptpad
+rm -rf /tmp/cryptpad
+rm init_data
 
 ynh_systemctl --service=$app --action="start"
 
