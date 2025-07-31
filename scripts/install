@@ -88,7 +88,7 @@ ynh_systemctl --service=$app --action="stop"
 #=================================================
 # init DATA FOLDER
 #=================================================
-ynh_add_config --template="init_data" --destination="$data_dir/.env"
+ynh_add_config --template="init_data" --destination="$data_dir"
 cd $data_dir
 tar xvf init_data -C /tmp
 
