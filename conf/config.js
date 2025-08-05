@@ -171,7 +171,7 @@ module.exports = {
      *
      */
     adminKeys: [
-      "[cryptpad-admin@__DOMAIN__/FXRb10RVX86ZhplPhKaXS1tynHQZzV1VxWZuTk9d-LE=]",
+      "[cryptpad-admin@__DOMAIN__/2YOUhk2Fp5t5NmnW-NsN2mfTA65FGWj25KS4NPbcWco=]",
     ],
 
     /* =====================
