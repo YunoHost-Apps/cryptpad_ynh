@@ -47,6 +47,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 ynh_script_progression "Adding $app's configuration..."
 
 ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="init_data" --destination="$data_dir/init_data"
 
 chmod 600 "$install_dir/config/config.js"
 
@@ -74,6 +75,35 @@ ynh_systemctl --service=$app --action="start" --log_path="systemd"
 #=================================================
 
 chgrp -R www-data $install_dir
+
+#=================================================
+# POST-INSTALL MAINTENANCE
+#=================================================
+
+ynh_systemctl --service=$app --action="stop"
+
+#=================================================
+# CREATE DATA FOLDER
+#=================================================
+
+#=================================================
+# init DATA FOLDER
+#=================================================
+
+cd $data_dir
+tar xvf init_data
+
+ITEMS=("blob" "block" "data" "datastore")
+
+for item in "${ITEMS[@]}"; do
+    if [ -e "$install_dir/$item" ]; then
+				rm -rf "$install_dir/$item"
+		fi
+		chown -R $app:$app "$data_dir/$item"
+		ln -s "$data_dir/$item" "$install_dir/$item"
+done
+rm init_data
+ynh_systemctl --service=$app --action="start"
 
 #=================================================
 # END OF SCRIPT

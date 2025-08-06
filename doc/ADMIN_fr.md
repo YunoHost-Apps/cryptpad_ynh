@@ -1,15 +1,10 @@
 ## Configuration
 
-Nous avons ajouté le domaine obligatoire sandbox pour vous mais vous devez encore configurer votre DNS et générer les certificats pour celui-ci.
+Nous avons ajouté un domaine sandbox : __SANDBOXDOMAIN__ pour vous, mais vous devez encore configurer votre DNS et régénérer les certificats Let's Encrypt pour le domaine principal.
 
-Une fois CryptPad installé, créez un compte via le bouton S'inscrire sur la page d'accueil. Pour faire de ce compte un administrateur d'instance :
+Vous devrez également redémarrer le service CryptPad une fois cette opération terminée.
+Redémarrer le service CryptPad (Dans webadmin YunoHost -> Services -> cryptpad -> Redémarrer)
 
-1. Copiez la clé publique trouvée dans le menu utilisateur (avatar en haut à droite) > Paramètres > Compte > Clé de signature publique
-2. Collez cette clé dans `__INSTALL_DIR__/config/config.js` dans le tableau suivant (décommentez et remplacez l'espace réservé) :
-``` 
-adminKeys: [
-        "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
-],
-```
+Vous pouvez ensuite ouvrir le domaine CryptPad : https://__DOMAIN__
 
-3. Redémarrer le service CryptPad (Dans webadmin YunoHost -> Services -> cryptpad -> Redémarrer)
+Une fois CryptPad installé, ouvrez le compte cryptpad-admin/Default-2025 et changer le mot de passe.
