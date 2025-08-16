@@ -7,7 +7,7 @@ Type=simple
 User=__APP__
 Group=__APP__
 WorkingDirectory=__INSTALL_DIR__
-Environment=PATH=PATH=__PATH_WITH_NODEJS__
+Environment=PATH=__PATH_WITH_NODEJS__
 Environment='PWD="__INSTALL_DIR__"'
 ExecStart=__NODEJS_DIR__/npm start
 Restart=always
