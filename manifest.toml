@@ -29,7 +29,7 @@ sso = false
 
 disk = "3500M"
 ram.build = "350M"
-ram.runtime = "50M"
+ram.runtime = "500M"
 
 [install]
     [install.domain]
@@ -55,6 +55,9 @@ ram.runtime = "50M"
     socket.default = 3003
 
     [resources.system_user]
+
+    [resources.data_dir]
+
 
     [resources.install_dir]
 
