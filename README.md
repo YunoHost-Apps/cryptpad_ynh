@@ -8,7 +8,7 @@ It shall NOT be edited by hand.
   CryptPad, packaged for YunoHost
 </h1>
 
-Collaborative office suite that is end-to-end encrypted and open-source
+Collaborative **office** suite that is end-to-end encrypted and open-source
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://cryptpad.org)
 [![App Demo](https://img.shields.io/badge/App_Demo-blue?style=for-the-badge)](https://cryptpad.fr)
