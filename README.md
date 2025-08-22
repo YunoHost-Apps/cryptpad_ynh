@@ -8,11 +8,11 @@ It shall NOT be edited by hand.
   CryptPad, packaged for YunoHost
 </h1>
 
-Collaborative office suite that is end-to-end encrypted and open-source
+Zero Knowledge realtime collaborative office suite
 
-[![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://cryptpad.org)
-[![App Demo](https://img.shields.io/badge/App_Demo-blue?style=for-the-badge)](https://cryptpad.fr)
-[![Version: 2025.3.1~ynh1](https://img.shields.io/badge/Version-2025.3.1~ynh1-rgba(0,150,0,1)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
+[![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://cryptpad.fr/)
+[![App Demo](https://img.shields.io/badge/App_Demo-blue?style=for-the-badge)](https://cryptpad.fr/)
+[![Version: 2025.3.0~ynh1](https://img.shields.io/badge/Version-2025.3.0~ynh1-rgba(0,150,0,1)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/cryptpad/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/cryptpad"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>

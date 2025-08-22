@@ -1,4 +1,4 @@
-Nous avons ajouté un domaine sandbox : __SANDBOXDOMAIN__ pour vous, mais vous devez encore configurer votre DNS et régénérer les certificats Let's Encrypt pour le domaine principal.
+Nous avons ajouté un domaine sandbox : __DOMAIN_SANDBOX__ pour vous, mais vous devez encore configurer votre DNS et régénérer les certificats Let's Encrypt pour le domaine principal.
 Vous devrez également redémarrer le service CryptPad une fois cette opération terminée.
 
 Vous pouvez ensuite ouvrir le domaine CryptPad : https://__DOMAIN__
