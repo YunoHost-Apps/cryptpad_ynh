@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../settings/scripts/_common.sh
+
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -21,7 +21,7 @@ chgrp -R www-data $install_dir
 #=================================================
 ynh_script_progression "Reinstalling dependencies..."
 
-ynh_nodejs_install
+#REMOVEME? ynh_nodejs_install
 
 #=================================================
 # RESTORE SYSTEM CONFIGURATIONS

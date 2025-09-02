@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source _common.sh
+
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -15,7 +15,7 @@ ynh_app_setting_set --key=sandboxdomain --value="$sandboxdomain"
 #=================================================
 ynh_script_progression "Installing dependencies..."
 
-ynh_nodejs_install
+#REMOVEME? ynh_nodejs_install
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
