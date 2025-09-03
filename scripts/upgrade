@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -21,13 +20,6 @@ fi
 
 sandboxdomain=sandbox.$domain
 ynh_app_setting_set --key=sandboxdomain --value="$sandboxdomain"
-
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-ynh_script_progression "Upgrading dependencies..."
-
-#REMOVEME? ynh_nodejs_install
 
 #=================================================
 # STOP SYSTEMD SERVICE

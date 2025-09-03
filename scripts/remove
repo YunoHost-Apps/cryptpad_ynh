@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -17,8 +16,6 @@ ynh_config_remove_systemd
 ynh_safe_rm /etc/nginx/conf.d/sandbox."$domain".conf
 ynh_safe_rm /etc/nginx/conf.d/"$app"-shared.conf.inc
 ynh_config_remove_nginx
-
-#REMOVEME? ynh_nodejs_remove
 
 #=================================================
 # REMOVE SANDBOX DOMAIN
