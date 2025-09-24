@@ -5,7 +5,7 @@ name = "CryptPad"
 description.en = "Collaborative office suite that is end-to-end encrypted and open-source"
 description.fr = "Suite bureautique chiffrée pour la collaboration en temps réel"
 
-version = "2025.6.0~ynh1"
+version = "2025.6.0~ynh2"
 
 maintainers = ["ddataa"]
 
@@ -19,7 +19,7 @@ cpe = "cpe:2.3:a:xwiki:cryptpad"
 fund = "https://opencollective.com/cryptpad/contribute"
 
 [integration]
-yunohost = ">= 12.0.9"
+yunohost = ">= 12.1.17"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
@@ -63,3 +63,6 @@ ram.runtime = "50M"
 
     [resources.apt]
     packages = ["less"]
+
+    [resources.nodejs]
+    version = "22"
