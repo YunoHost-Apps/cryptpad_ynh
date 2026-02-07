@@ -21,7 +21,6 @@ Collaborative office suite that is end-to-end encrypted and open-source
 
 
 ## Screenshots
-![Screenshot of CryptPad](./doc/screenshots/screenshot-suite.png)
 ![Screenshot of CryptPad](./doc/screenshots/screenshot.png)
 
 ## 📦 Developer info
