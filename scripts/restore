@@ -36,7 +36,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression "Reloading NGINX web server and $app's service..."
 
-ynh_systemctl --service=$app --action="start" --log_path=systemd
+ynh_systemctl --service=$app --action="start"
 
 ynh_systemctl --service=nginx --action=reload
 
