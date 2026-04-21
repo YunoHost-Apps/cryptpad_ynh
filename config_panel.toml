@@ -1,0 +1,15 @@
+version = "1.0"
+
+[main]
+name = "Main Settings"
+services = ["__APP__"]
+
+    [main.admin]
+    name = "Administration"
+
+        [main.admin.admin_keys]
+        ask = "List of admins users keys"
+        type = "tags"
+        pattern.regexp = '^\[.+@([^\W_A-Z]+([-]*[^\W_A-Z]+)*\.)+((xn--)?[^\W_]{2,})/[\w+=]+\]$'
+        pattern.error = 'The admin key need to be in format "[user@domain/pubkey]"'
+        help = "This specify the users which will have access to the crypt administration. This list is a list of keys. You can get the user key in user Menu (avatar at the top right) > Settings > Account > Public Signing Key. So for instance it should be something like this: [cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]"

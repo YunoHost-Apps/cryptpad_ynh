@@ -2,7 +2,10 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-/* globals module */
+//
+// WARNING: Don't edit this file. All change will be removed after each upgrade
+// In case you need to customize some value it could discussed in an issue of the cryptpad app to add a settings for this in the config panel.
+//
 
 /*  DISCLAIMER:
 
@@ -50,9 +53,9 @@ module.exports = {
  *  cryptpad/docs/example.nginx.conf (see the $main_domain variable)
  *
  */
-    httpUnsafeOrigin: 'https://__DOMAIN__',
+    httpUnsafeOrigin: 'https://{{ domain }}',
 
-/*  httpSafeOrigin is the URL that is used for the 'sandbox' described above.
+/*  httpSafeOrigin is the URL used for the 'sandbox' described above.
  *  If you're testing or developing with CryptPad on your local machine then
  *  it is appropriate to leave this blank. The default behaviour is to serve
  *  the main domain over port 3000 and to serve the sandbox content over port 3001.
@@ -71,7 +74,7 @@ module.exports = {
  *
  *  CUSTOMIZE AND UNCOMMENT THIS FOR PRODUCTION INSTALLATIONS.
  */
-    httpSafeOrigin: "https://__SANDBOXDOMAIN__",
+    httpSafeOrigin: "https://{{ sandboxdomain }}",
 
 /*  httpAddress specifies the address on which the nodejs server
  *  should be accessible. By default it will listen on localhost
@@ -87,14 +90,15 @@ module.exports = {
  *  which will proxy websocket traffic to your node server.
  *
  */
-    httpPort: __PORT__,
+    httpPort: {{ port }},
 
-/*  httpSafePort allows you to specify an alternative port from which
- *  the node process should serve sandboxed assets. The default value is
- *  that of your httpPort + 1. You probably don't need to change this.
+/*  httpSafePort purpose is to emulate another origin for the sandbox when
+ *  you don't have two domains at hand (i.e. when httpSafeOrigin not defined).
+ *  It is meant to be used only in case where you are working on a local
+ *  development instance. The default value is your httpPort + 1.
  *
  */
-    // httpSafePort: 3001,
+    //httpSafePort: 3001,
 
 /*  Websockets need to be exposed on a separate port from the rest of
  *  the platform's HTTP traffic. Port 3003 is used by default.
@@ -107,7 +111,7 @@ module.exports = {
  *  to this port.
  *
  */
-    websocketPort: __PORT_SOCKET__,
+    websocketPort: {{ port_socket }},
 
 /*  CryptPad will launch a child process for every core available
  *  in order to perform CPU-intensive tasks in parallel.
@@ -160,9 +164,10 @@ module.exports = {
 
     /*
      *  CryptPad contains an administration panel. Its access is restricted to specific
-     *  users using the following list.
+     *  users using the following list and the management interface on the instance.
      *  To give access to the admin panel to a user account, just add their public signing
-     *  key, which can be found on the settings page for registered users.
+     *  key, which can be found on the settings page for registered users. Access can be
+     *  revoked directly from the interface, unless you added the key below.
      *  Entries should be strings separated by a comma.
      *  adminKeys: [
      *      "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
@@ -171,7 +176,9 @@ module.exports = {
      *
      */
     adminKeys: [
-
+        {% for admin_key in admin_keys.split(',')  %}
+            "{{ admin_key }}",
+        {% endfor %}
     ],
 
     /* =====================
@@ -245,7 +252,7 @@ module.exports = {
      *  Specify a directory where files should be stored.
      *  It will be created automatically if it does not already exist.
      */
-    filePath: './datastore/',
+    filePath: './data/datastore/',
 
     /*  CryptPad offers the ability to archive data for a configurable period
      *  before deleting it, allowing a means of recovering data in the event
@@ -256,8 +263,8 @@ module.exports = {
      */
     archivePath: './data/archive',
 
-    /*  CryptPad allows logged in users to request that particular documents be
-     *  stored by the server indefinitely. This is called 'pinning'.
+    /*  CryptPad allows logged in users to request that the server
+     *  store particular documents indefinitely. This is called 'pinning'.
      *  Pin requests are stored in a pin-store. The location of this store is
      *  defined here.
      */
@@ -271,12 +278,12 @@ module.exports = {
     /*  if you would like users' authenticated blocks to be stored in
         a custom location, change the path below:
     */
-    blockPath: './block',
+    blockPath: './data/block',
 
     /*  CryptPad allows logged in users to upload encrypted files. Files/blobs
      *  are stored in a 'blob-store'. Set its location here.
      */
-    blobPath: './blob',
+    blobPath: './data/blob',
 
     /*  CryptPad stores incomplete blobs in a 'staging' area until they are
      *  fully uploaded. Set its location here.
@@ -288,7 +295,7 @@ module.exports = {
     /* CryptPad supports logging events directly to the disk in a 'logs' directory
      * Set its location here, or set it to false (or nothing) if you'd rather not log
      */
-    logPath: './data/logs',
+    logPath: './logs',
 
     /* =====================
      *       Debugging

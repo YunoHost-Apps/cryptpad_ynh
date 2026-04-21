@@ -21,19 +21,50 @@ fi
 sandboxdomain=sandbox.$domain
 ynh_app_setting_set --key=sandboxdomain --value="$sandboxdomain"
 
+# Manage migration of data dir and logs
+if [ ! -h "$install_dir/logs" ]; then
+    ynh_script_progression "Moving logs..."
+    if [ -e  "/var/log/$app" ]; then
+        mv "/var/log/$app" "/var/log/${app}_$(date '+%Y%m%d.%H%M%S')"
+    fi
+    [ -e "$install_dir/data/logs" ] && mv "$install_dir/data/logs" "/var/log/$app"
+    chown -R "$app:$app" "/var/log/$app"
+    chmod 750 "/var/log/$app"
+fi
+if [ ! -h "$install_dir/data" ]; then
+    ynh_script_progression "Moving data into data dir..."
+
+    if [ -n "$(ls -A "$data_dir")" ]; then
+        old_data_dir_path="${data_dir}_$(date '+%Y%m%d.%H%M%S')"
+        mkdir -p "$old_data_dir_path"
+        mv -t "$old_data_dir_path" "$data_dir"/*
+    fi
+
+    mv -t "$data_dir" "$install_dir/data/"*
+    ynh_safe_rm "$install_dir/data"
+
+    test -e "$install_dir/datastore" && mv "$install_dir/datastore" "$data_dir/datastore"
+    test -e "$install_dir/block"     && mv "$install_dir/block" "$data_dir/block"
+    test -e "$install_dir/blob"      && mv "$install_dir/blob" "$data_dir/blob"
+fi
+
+ynh_app_setting_set_default --key=admin_keys --value=''
+
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
 ynh_script_progression "Stopping $app's systemd service..."
 
-ynh_systemctl --service=$app --action="stop"
+ynh_systemctl --service="$app" --action="stop"
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_script_progression "Upgrading source files..."
 
-ynh_setup_source --dest_dir="$install_dir" --keep="customize"
+ynh_setup_source --full_replace --dest_dir="$install_dir" --keep='customize onlyoffice-conf www/common/onlyoffice/dist'
+ln -s "/var/log/$app" "$install_dir/logs"
+ln -s "$data_dir" "$install_dir/data"
 
 #=================================================
 # APPLY FOLDER GROUP RIGHTS FOR WWW-DATA
@@ -56,7 +87,7 @@ ynh_config_add_nginx
 
 ynh_config_add_systemd
 
-yunohost service add $app --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
+yunohost service add "$app" --description="Zero Knowledge realtime collaborative editor" --log="/var/log/$app/$app.log"
 
 #=================================================
 # INSTALL CRYPTPAD
@@ -75,7 +106,7 @@ popd
 #=================================================
 ynh_script_progression "Updating configuration..."
 
-ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --jinja --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
 
