@@ -28,6 +28,7 @@ if [ ! -h "$install_dir/logs" ]; then
         mv "/var/log/$app" "/var/log/${app}_$(date '+%Y%m%d.%H%M%S')"
     fi
     [ -e "$install_dir/data/logs" ] && mv "$install_dir/data/logs" "/var/log/$app"
+    mkdir -p "/var/log/$app"
     chown -R "$app:$app" "/var/log/$app"
     chmod 750 "/var/log/$app"
 fi
@@ -46,6 +47,7 @@ if [ ! -h "$install_dir/data" ]; then
     test -e "$install_dir/datastore" && mv "$install_dir/datastore" "$data_dir/datastore"
     test -e "$install_dir/block"     && mv "$install_dir/block" "$data_dir/block"
     test -e "$install_dir/blob"      && mv "$install_dir/blob" "$data_dir/blob"
+    chown -R "$app:$app" "$data_dir"
 fi
 
 ynh_app_setting_set_default --key=admin_keys --value=''
