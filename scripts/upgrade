@@ -41,7 +41,7 @@ if [ ! -h "$install_dir/data" ]; then
         mv -t "$old_data_dir_path" "$data_dir"/*
     fi
 
-    mv -t "$data_dir" "$install_dir/data/"*
+    mv -t "$data_dir" "$install_dir/data/"* || true
     ynh_safe_rm "$install_dir/data"
 
     test -e "$install_dir/datastore" && mv "$install_dir/datastore" "$data_dir/datastore"
