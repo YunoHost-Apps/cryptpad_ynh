@@ -10,6 +10,8 @@ services = ["__APP__"]
         [main.admin.admin_keys]
         ask = "List of admins users keys"
         type = "tags"
-        pattern.regexp = '^\[.+@([^\W_A-Z]+([-]*[^\W_A-Z]+)*\.)+((xn--)?[^\W_]{2,})/[\w+=]+\]$'
+        # Note we don't allow the chars [, ], " to avoid any issue in the config file. But technically it's possible to create a user in cryptpad with theses chars.
+        # But we don't expect that it's common to have theses char in the username for admins.
+        pattern.regexp = '^\[[^"\[\]]+@([^\W_A-Z]+([-]*[^\W_A-Z]+)*\.)+((xn--)?[^\W_]{2,})/[\w+/=]+\]$'
         pattern.error = 'The admin key need to be in format "[user@domain/pubkey]"'
         help = "This specify the users which will have access to the crypt administration. This list is a list of keys. You can get the user key in user Menu (avatar at the top right) > Settings > Account > Public Signing Key. So for instance it should be something like this: [cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]"
