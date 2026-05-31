@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source /usr/share/yunohost/helpers
+
+ynh_app_config_apply() {
+    _ynh_app_config_apply
+    ynh_config_add --jinja --template="config.js" --destination="$install_dir/config/config.js"
+    chmod 600 "$install_dir/config/config.js"
+}
+
+#=================================================
+# SELECT THE ACTION FOLLOWING THE GIVEN ARGUMENT
+#=================================================
+ynh_app_config_run "$1"

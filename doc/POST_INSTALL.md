@@ -12,11 +12,4 @@ Its certificate management is linked to the main domain `__DOMAIN__`.
 Once CryptPad is installed, create an account via the Register button on the home page. To grant this account administration rights:
 
 1. Copy the public key found in User Menu (avatar at the top right) > Settings > Account > Public Signing Key
-2. Paste this key in `__INSTALL_DIR__/config/config.js` in the following array (uncomment and replace the placeholder):
-```
-adminKeys: [
-    "[cryptpad-user1@my.awesome.website/YZgXQxKR0Rcb6r6CmxHPdAGLVludrAF2lEnkbx1vVOo=]",
-],
-```
-
-3. Restart CryptPad service (In YunoHost webadmin -> Services -> __APP__ -> Restart)
+2. Then just put the key in the config panel.

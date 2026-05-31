@@ -9,12 +9,27 @@ source /usr/share/yunohost/helpers
 sandboxdomain=sandbox.$domain
 ynh_app_setting_set --key=sandboxdomain --value="$sandboxdomain"
 
+if [ -n "$(ls -A "$data_dir")" ]; then
+    old_data_dir_path="${data_dir}_$(date '+%Y%m%d.%H%M%S')"
+    ynh_print_warn "Data directory was not empty. Data was moved to $old_data_dir_path"
+    mkdir -p "$old_data_dir_path"
+    mv -t "$old_data_dir_path" "$data_dir"/*
+fi
+
+mkdir -p "/var/log/$app"
+chown -R "$app:$app" "/var/log/$app"
+chmod 750 "/var/log/$app"
+
+ynh_app_setting_set_default --key=admin_keys --value=''
+
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_script_progression "Setting up source files..."
 
 ynh_setup_source --dest_dir="$install_dir"
+ln -s "/var/log/$app" "$install_dir/logs"
+ln -s "$data_dir" "$install_dir/data"
 
 #=================================================
 # SYSTEM CONFIGURATION
@@ -38,7 +53,7 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 #=================================================
 ynh_script_progression "Adding $app's configuration..."
 
-ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --jinja --template="config.js" --destination="$install_dir/config/config.js"
 
 chmod 600 "$install_dir/config/config.js"
 
@@ -65,7 +80,7 @@ ynh_systemctl --service=$app --action="start"
 # APPLY FOLDER RIGHTS
 #=================================================
 
-chgrp -R www-data $install_dir
+chgrp -R www-data "$install_dir"
 
 #=================================================
 # END OF SCRIPT
