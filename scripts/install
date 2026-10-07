@@ -39,8 +39,10 @@ yunohost service add $app --description="Zero Knowledge realtime collaborative e
 ynh_script_progression "Adding $app's configuration..."
 
 ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="infra.js" --destination="$install_dir/config/infra.js"
 
 chmod 600 "$install_dir/config/config.js"
+chmod 600 "$install_dir/config/infra.js"
 
 #=================================================
 # INSTALL CRYPTPAD
