@@ -1,3 +1,74 @@
+// SPDX-FileCopyrightText: 2026 XWiki CryptPad Team <contact@cryptpad.org> and contributors
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+module.exports = {
+    "public": {
+        // Public URL of the instance (used for Content-Security-Policy)
+        origin: "https://__DOMAIN__",
+        // Sandbox URL of the instance
+        sandboxOrigin: "https://__SANDBOXDOMAIN__",
+        // Address and port of the nodejs HTTP server
+        httpHost: "127.0.0.1",
+        httpPort: __PORT__,
+        //httpSafePort: 3001,
+        // (Optional) API server URL if hosted on a different domain (ws and http)
+        externalWebsocketURL: undefined,
+        fileHost: undefined,
+        // (Optional) httpServerId only useful for multi-server cases
+        httpServerId: "",
+    },
+    // Configure the topology here. Add or remove nodes on each level
+    // depending on your instance usage.
+    // "host" and "port" correspond to the nodejs HTTP server of each node
+    // "url" is optional and can be set if your nodes are on different machines.
+    // They must be able to reach each other from this URL
+    // "serverId" is optional and is only useful for multi-server cases
+    "front": [
+        {
+            host: "localhost",
+            port: 3010, // Public http and websocket port
+        },
+        {
+            host: "localhost",
+            port: 3011,
+        }
+    ],
+    "core": [
+        {
+            host: "localhost",
+            port: 3020, // Internal websocket between all nodes
+        },
+        {
+            host: "localhost",
+            port: 3021,
+        }
+    ],
+    "storage": [
+        {
+            host: "localhost",
+            port: 3030, // Public port to serve "blob", "block", etc.
+            wsPort: 3040, // Internal websocket between storage nodes
+        },
+        {
+            host: "localhost",
+            port: 3031,
+            wsPort: 3041,
+        }
+    ]
+};
+
+
+
+
+
+
+
+
+
+
+
+
 // SPDX-FileCopyrightText: 2023 XWiki CryptPad Team <contact@cryptpad.org> and contributors
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -23,33 +94,7 @@
 
 */
 module.exports = {
-/*  CryptPad is designed to serve its content over two domains.
- *  Account passwords and cryptographic content is handled on the 'main' domain,
- *  while the user interface is loaded on a 'sandbox' domain
- *  which can only access information which the main domain willingly shares.
- *
- *  In the event of an XSS vulnerability in the UI (that's bad)
- *  this system prevents attackers from gaining access to your account (that's good).
- *
- *  Most problems with new instances are related to this system blocking access
- *  because of incorrectly configured sandboxes. If you only see a white screen
- *  when you try to load CryptPad, this is probably the cause.
- *
- *  PLEASE READ THE FOLLOWING COMMENTS CAREFULLY.
- *
- */
 
-/*  httpUnsafeOrigin is the URL that clients will enter to load your instance.
- *  Any other URL that somehow points to your instance is supposed to be blocked.
- *  The default provided below assumes you are loading CryptPad from a server
- *  which is running on the same machine, using port 3000.
- *
- *  In a production instance this should be available ONLY over HTTPS
- *  using the default port for HTTPS (443) ie. https://cryptpad.fr
- *  In such a case this should be also handled by NGINX, as documented in
- *  cryptpad/docs/example.nginx.conf (see the $main_domain variable)
- *
- */
     httpUnsafeOrigin: 'https://__DOMAIN__',
 
 /*  httpSafeOrigin is the URL that is used for the 'sandbox' described above.

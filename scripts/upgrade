@@ -67,7 +67,7 @@ pushd "$install_dir"
 	ynh_hide_warnings ynh_exec_as_app npm ci
 	ynh_hide_warnings ynh_exec_as_app npm run install:components
 	ynh_hide_warnings ynh_exec_as_app npm run build
-	ynh_hide_warnings bash install-onlyoffice.sh --accept-license
+	ynh_hide_warnings bash install-office.sh #--accept-license
 popd
 
 #=================================================
@@ -75,9 +75,11 @@ popd
 #=================================================
 ynh_script_progression "Updating configuration..."
 
-ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="config.example.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="infra.example.js" --destination="$install_dir/config/infra.js"
 
 chmod 600 "$install_dir/config/config.js"
+chmod 600 "$install_dir/config/infra.js"
 
 #=================================================
 # START SYSTEMD SERVICE
