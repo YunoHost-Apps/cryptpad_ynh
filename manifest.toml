@@ -65,4 +65,4 @@ ram.runtime = "50M"
     packages = ["less"]
 
     [resources.nodejs]
-    version = "22"
+    version = "24"

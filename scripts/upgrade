@@ -75,9 +75,11 @@ popd
 #=================================================
 ynh_script_progression "Updating configuration..."
 
-ynh_config_add --template="config.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="config.example.js" --destination="$install_dir/config/config.js"
+ynh_config_add --template="infra.example.js" --destination="$install_dir/config/infra.js"
 
 chmod 600 "$install_dir/config/config.js"
+chmod 600 "$install_dir/config/infra.js"
 
 #=================================================
 # START SYSTEMD SERVICE
