@@ -125,5 +125,5 @@ module.exports = {
     /* ====================
      *         Extra
      * ==================== */
-    installMethod: 'unspecified',
+    installMethod: 'YunoHost',
 };
